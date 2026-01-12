@@ -1,5 +1,4 @@
 * { box-sizing: border-box; }
-
 body{
   margin:0;
   font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
@@ -52,7 +51,7 @@ h2{
   display:flex;
   gap: 12px;
   flex-wrap: wrap;
-  margin-top: 12px;
+  margin-bottom: 10px;
 }
 
 .pill{
@@ -97,9 +96,12 @@ h2{
   margin: 6px 0 12px;
 }
 
-.picked{ font-weight: 900; color:#333; }
+.picked{
+  font-weight: 900;
+  color:#333;
+}
 
-/* 年級大圖示：3 格 */
+/* 年級大圖標：3格 */
 .grade-grid{
   display:grid;
   grid-template-columns: repeat(3, 1fr);
@@ -116,32 +118,23 @@ h2{
   border: 0;
 }
 
-/* 模組卡片網格 */
-.module-grid{
+/* 章節 2x2 網格 */
+.chapter-grid{
   display:grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
+  gap: 16px;
   margin-top: 10px;
 }
 
-.module-card{
+.btn{
   width: 100%;
-  border: 0;
-  border-radius: 22px;
-  padding: 14px;
-  background: #ececec;
-  text-align: left;
-}
-.module-card .m-title{
-  font-size: 22px;
-  font-weight: 1000;
+  height: 92px;
+  border-radius: 26px;
+  background:#ececec;
+  border:0;
   color:#1e88e5;
-}
-.module-card .m-sub{
-  margin-top: 6px;
-  font-size: 14px;
-  font-weight: 900;
-  color:#555;
+  font-size: 34px;
+  font-weight: 1000;
 }
 
 /* 練習區 */
@@ -149,32 +142,69 @@ h2{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap: 10px;
 }
 .h1{
-  font-size: 26px;
+  font-size: 30px;
   font-weight: 1000;
 }
-.timer{
-  font-size: 16px;
-  font-weight: 900;
-  color:#555;
-}
-
 .question{
+  font-size: 26px;
+  font-weight: 900;
+  margin: 14px 0 12px;
+}
+.choices{
+  display:grid;
+  gap: 10px;
+}
+.choice{
+  border:0;
+  border-radius: 18px;
+  background:#f1f1f1;
+  padding: 14px 12px;
   font-size: 22px;
-  font-weight: 1000;
-  margin: 14px 0 10px;
+  font-weight: 900;
+}
+.choice.correct{ outline: 3px solid #2e7d32; }
+.choice.wrong{ outline: 3px solid #d32f2f; }
+
+.status{
+  margin-top: 12px;
+  font-size: 20px;
+  font-weight: 900;
 }
 
-.visual{
-  background: #fafafa;
-  border: 1px solid #eee;
-  border-radius: 16px;
+.report{
+  margin-top: 10px;
   padding: 12px;
-  min-height: 56px;
+  border-radius: 14px;
+  background:#f3f3f3;
+  font-weight: 900;
+}
+
+/* 統計列 */
+.stats{
   display:flex;
+  gap:12px;
   align-items:center;
-  justify-content:center;
-  margin-bottom: 10px;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  background:#f3f3f3;
+  border-radius: 16px;
+  padding: 10px 12px;
+  margin: 10px 0 8px;
+}
+.stat{
+  display:flex;
+  gap:6px;
+  align-items:center;
+  font-weight: 900;
+  font-size: 18px;
+}
+.stat .icon{ font-size: 18px; }
+
+/* 小螢幕更舒適 */
+@media (max-width: 520px){
+  .grade-grid{ grid-template-columns: repeat(3, 1fr); }
+  .grade-card{ height: 92px; font-size: 30px; }
+  .btn{ height: 86px; font-size: 32px; }
 }
