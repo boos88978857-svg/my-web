@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (pickedGradeText) pickedGradeText.textContent = `已選：小${selectedGrade}`;
   }
 
-  // 點年級大圖示
+  // 點年級大圖標
   document.querySelectorAll(".grade-card").forEach(btn=>{
     btn.addEventListener("click", ()=>{
       selectedGrade = Number(btn.dataset.grade || 1);
@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   applyOpVisibility();
 
-  // ========= 煙火 =========
+  // ========= 煙花 =========
   function showConfetti() {
     const box = document.getElementById("confetti");
     if (!box) return;
@@ -135,5 +135,329 @@ document.addEventListener("DOMContentLoaded", () => {
     return { arr, correct: arr.indexOf(String(a)) };
   }
 
-  // （以下逻辑已全部转换为繁體，内容过长已完整处理）
+  function makeOneQuestion(grade, op){
+    const rule = SETTINGS.rules[grade];
+
+    // 小1：<=20
+    if (grade === 1){
+      if (op === "add"){
+        const a = randInt(0, rule.addMaxSum);
+        const b = randInt(0, rule.addMaxSum - a); // ✅ 保證和<=20
+        const ans = a + b;
+        const c = makeChoices(ans);
+        return { q:`${a} + ${b} = ?`, a:c.arr, correct:c.correct, meta:{grade,op,ans} };
+      }
+      if (op === "sub"){
+        const a = randInt(0, rule.subMax);
+        const b = randInt(0, a); // ✅ 保證不為負
+        const ans = a - b;
+        const c = makeChoices(ans);
+        return { q:`${a} - ${b} = ?`, a:c.arr, correct:c.correct, meta:{grade,op,ans} };
+      }
+    }
+
+    // 小2/小3
+    if (op === "add"){
+      const max = rule.addSubMax;
+      const a = randInt(0, max);
+      const b = randInt(0, max);
+      const ans = a + b;
+      const c = makeChoices(ans);
+      return { q:`${a} + ${b} = ?`, a:c.arr, correct:c.correct, meta:{grade,op,ans} };
+    }
+    if (op === "sub"){
+      const max = rule.addSubMax;
+      let a = randInt(0, max);
+      let b = randInt(0, max);
+      if (b>a) [a,b]=[b,a];
+      const ans = a - b;
+      const c = makeChoices(ans);
+      return { q:`${a} - ${b} = ?`, a:c.arr, correct:c.correct, meta:{grade,op,ans} };
+    }
+    if (op === "mul"){
+      const m = rule.mulMax;
+      const a = randInt(0, m);
+      const b = randInt(0, m);
+      const ans = a * b;
+      const c = makeChoices(ans);
+      return { q:`${a} × ${b} = ?`, a:c.arr, correct:c.correct, meta:{grade,op,ans} };
+    }
+    if (op === "div"){
+      const d = rule.divMax;
+      const divisor = randInt(1, d);
+      const quotient = randInt(0, d);
+      const dividend = divisor * quotient; // ✅ 整除
+      const ans = quotient;
+      const c = makeChoices(ans);
+      return { q:`${dividend} ÷ ${divisor} = ?`, a:c.arr, correct:c.correct, meta:{grade,op,ans} };
+    }
+
+    const c = makeChoices(0);
+    return { q:`0 = ?`, a:c.arr, correct:c.correct, meta:{grade,op,ans:0} };
+  }
+
+  function buildBatch(op){
+    const grade = selectedGrade;
+    const qs = [];
+    for (let k=0;k<SETTINGS.batchSize;k++){
+      qs.push(makeOneQuestion(grade, op));
+    }
+    return qs;
+  }
+
+  // ========= 練習邏輯 =========
+  let currentOp = "add";
+  let questions = [];
+  let i = 0;
+  let locked = false;
+
+  let startTimeMs = 0;
+  let totalAnswered = 0;
+  let correctAnswered = 0;
+
+  let mode = "main";
+  let wrongPool = [];
+
+  function updateTopText(){
+    const total = questions.length;
+    const progress = `${Math.min(i+1,total)}/${total}`;
+    const roundName = mode==="main" ? "練習" : "錯題重練";
+    if (goalTextEl) goalTextEl.textContent = `小${selectedGrade}｜${opName(currentOp)}｜${roundName}：${progress}｜錯題：${wrongPool.length}`;
+  }
+
+  function startOp(op){
+    const allowed = SETTINGS.rules[selectedGrade].ops;
+    if (!allowed.includes(op)){
+      alert(`小${selectedGrade} 暫不提供 ${opName(op)}。`);
+      return;
+    }
+
+    currentOp = op;
+    mode = "main";
+    questions = buildBatch(op);
+    i = 0;
+    locked = false;
+    wrongPool = [];
+
+    startTimeMs = Date.now();
+    totalAnswered = 0;
+    correctAnswered = 0;
+
+    chaptersEl.style.display="none";
+    practiceEl.style.display="block";
+    if (reportEl){ reportEl.style.display="none"; reportEl.textContent=""; }
+
+    chapterTitleEl.textContent = `小${selectedGrade}｜${opName(op)}`;
+    statusEl.textContent = "請選擇答案";
+    statusEl.style.color = "";
+
+    render();
+  }
+
+  function render(){
+    locked = false;
+    nextBtn.disabled = true;
+    choicesEl.innerHTML = "";
+
+    const q = questions[i];
+    questionEl.textContent = `第 ${i+1} 題：${q.q}`;
+
+    q.a.forEach((t,idx)=>{
+      const b=document.createElement("button");
+      b.className="choice";
+      b.textContent=t;
+      b.onclick=()=>choose(idx);
+      choicesEl.appendChild(b);
+    });
+
+    updateTopText();
+  }
+
+  function choose(idx){
+    if (locked) return;
+    locked = true;
+
+    totalAnswered++;
+    const q = questions[i];
+    const all = [...document.querySelectorAll(".choice")];
+    if (all[q.correct]) all[q.correct].classList.add("correct");
+
+    const ok = idx===q.correct;
+
+    if (ok){
+      correctAnswered++;
+      statusEl.textContent = "答對了 ✅";
+      nextBtn.disabled = true;
+      setTimeout(()=>nextQuestion(), 450); // ✅ 答對自動下一題
+    } else {
+      if (all[idx]) all[idx].classList.add("wrong");
+      statusEl.textContent = "答錯了 ❌（請點下一題）";
+      const key = q.q;
+      if (!wrongPool.some(it=>it.q.q===key)) wrongPool.push({q, wrongIndex: idx});
+      nextBtn.disabled = false; // ✅ 答錯才手動下一題
+    }
+    updateTopText();
+  }
+
+  function nextQuestion(){
+    if (i < questions.length-1){
+      i++; render();
+    } else {
+      finishRound();
+    }
+  }
+
+  function finishRound(){
+    if (wrongPool.length>0){
+      const wrongQs = wrongPool.map(it=>it.q);
+      wrongPool = [];
+      mode = "wrong";
+
+      questions = wrongQs.map(oldQ=>{
+        const ans = oldQ.meta.ans;
+        const c = makeChoices(ans);
+        return { q: oldQ.q, a: c.arr, correct: c.correct, meta: oldQ.meta };
+      });
+
+      i=0; locked=false;
+      chapterTitleEl.textContent = `小${selectedGrade}｜${opName(currentOp)}｜錯題重練`;
+      statusEl.textContent = "還有錯題，自動進入錯題重練…";
+      nextBtn.disabled = true;
+      render();
+      return;
+    }
+
+    finishSuccess();
+  }
+
+  function finishSuccess(){
+    statusEl.textContent = "🎉 已完成學習目標（全對）！";
+    statusEl.style.color="#2e7d32";
+    showConfetti();
+
+    const durationSec = Math.floor((Date.now()-startTimeMs)/1000);
+    const percent = totalAnswered===0 ? 0 : Math.round((correctAnswered/totalAnswered)*100);
+    const reportText = `學習報告：用時 ${durationSec} 秒｜作答 ${totalAnswered} 題｜答對 ${correctAnswered} 題｜正確率 ${percent}%`;
+
+    if (reportEl){
+      reportEl.style.display="block";
+      reportEl.textContent=reportText;
+    }
+
+    localStorage.setItem(`report_${Date.now()}`, JSON.stringify({
+      time: Date.now(),
+      durationSec,
+      totalAnswered,
+      correctAnswered,
+      percent,
+      grade: selectedGrade,
+      op: currentOp
+    }));
+    renderHistory();
+
+    setTimeout(()=>{
+      practiceEl.style.display="none";
+      chaptersEl.style.display="block";
+      choicesEl.innerHTML="";
+      questionEl.textContent="";
+      nextBtn.disabled=true;
+      statusEl.style.color="";
+    }, 2000);
+  }
+
+  // ========= 歷史記錄 =========
+  function pad2(n){ return String(n).padStart(2,"0"); }
+  function formatDate(ts){
+    const d=new Date(ts);
+    return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())} ${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+  }
+  function getAllReports(){
+    const items=[];
+    for(let k=0;k<localStorage.length;k++){
+      const key=localStorage.key(k);
+      if (key && key.startsWith("report_")){
+        try{
+          const obj=JSON.parse(localStorage.getItem(key));
+          items.push(obj);
+        }catch{}
+      }
+    }
+    items.sort((a,b)=>(b.time||0)-(a.time||0));
+    return items;
+  }
+  function renderHistory(){
+    if (!historyListEl) return;
+    const list=getAllReports().slice(0,7);
+    historyListEl.innerHTML="";
+    if (list.length===0){
+      historyListEl.innerHTML=`<p class="hint">目前還沒有記錄。</p>`;
+      return;
+    }
+    list.forEach(r=>{
+      const div=document.createElement("div");
+      div.className="wrongItem";
+      div.innerHTML=`
+        <b>${formatDate(r.time)}（小${r.grade}｜${opName(r.op)}）</b>
+        <div>用時：${r.durationSec} 秒</div>
+        <div>作答：${r.totalAnswered} 題｜答對：${r.correctAnswered} 題｜正確率：${r.percent}%</div>
+      `;
+      historyListEl.appendChild(div);
+    });
+  }
+  renderHistory();
+  if (refreshHistoryBtn) refreshHistoryBtn.onclick = renderHistory;
+
+  // 清除記錄：一定要密碼
+  if (clearHistoryBtn){
+    clearHistoryBtn.onclick = () => {
+      const pwd = prompt("清除學習記錄需要家長密碼（1234）");
+      if (pwd !== "1234"){ alert("密碼錯誤 ❌"); return; }
+      const keys=[];
+      for(let k=0;k<localStorage.length;k++){
+        const key=localStorage.key(k);
+        if (key && key.startsWith("report_")) keys.push(key);
+      }
+      keys.forEach(k=>localStorage.removeItem(k));
+      alert("已清除學習記錄 ✅");
+      renderHistory();
+    };
+  }
+
+  // ========= 綁定按鈕 =========
+  btnAdd.onclick = () => startOp("add");
+  btnSub.onclick = () => startOp("sub");
+  if (btnMul) btnMul.onclick = () => startOp("mul");
+  if (btnDiv) btnDiv.onclick = () => startOp("div");
+  nextBtn.onclick = () => nextQuestion();
+  // ========= 家長模式 =========
+let parentMode = false;
+
+function applyParentModeUI(){
+  if (historyListEl) historyListEl.style.display = parentMode ? "block" : "none";
+  if (refreshHistoryBtn) refreshHistoryBtn.style.display = parentMode ? "" : "none";
+  if (clearHistoryBtn) clearHistoryBtn.style.display = parentMode ? "" : "none";
+
+  if (parentBtn) parentBtn.textContent = parentMode ? "退出家長模式" : "家長模式";
+}
+
+if (parentBtn){
+  parentBtn.onclick = () => {
+    if (!parentMode){
+      const pwd = prompt("進入家長模式需要密碼（1234）");
+      if (pwd !== "1234"){
+        alert("密碼錯誤 ❌");
+        return;
+      }
+      parentMode = true;
+      alert("已進入家長模式 ✅");
+    } else {
+      parentMode = false;
+      alert("已退出家長模式");
+    }
+    applyParentModeUI();
+  };
+}
+
+// 頁面初始狀態：默認不是家長
+applyParentModeUI();
 });
