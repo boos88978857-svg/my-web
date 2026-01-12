@@ -19,13 +19,11 @@
 
     <div id="chapters" class="card">
       <h2>學習記錄</h2>
-
-      <!-- 家長模式才顯示（預設先隱藏，JS 會依 parentMode 控制） -->
       <div class="row">
-        <button id="refreshHistoryBtn" class="pill2" style="display:none;">重新整理記錄</button>
-        <button id="clearHistoryBtn" class="pill2 danger" style="display:none;">清除學習記錄</button>
+        <button id="refreshHistoryBtn" class="pill2">刷新記錄</button>
+        <button id="clearHistoryBtn" class="pill2 danger">清除記錄</button>
       </div>
-      <div id="historyList" class="history" style="display:none;"></div>
+      <div id="historyList" class="history"></div>
 
       <hr class="sep"/>
 
@@ -75,6 +73,6 @@
 
   <div id="confetti"></div>
 
-  <script src="app.v2.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
