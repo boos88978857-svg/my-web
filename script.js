@@ -35,7 +35,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const historyListEl = document.getElementById("historyList");
   const refreshHistoryBtn = document.getElementById("refreshHistoryBtn");
   const clearHistoryBtn = document.getElementById("clearHistoryBtn");
-
+  const parentBtn = document.getElementById("parentBtn");
+  
   if (!btnAdd || !btnSub || !chaptersEl || !practiceEl || !chapterTitleEl || !questionEl || !choicesEl || !nextBtn || !statusEl) {
     alert("index.html 缺少必要元素（按钮或练习区块）。");
     return;
@@ -428,4 +429,35 @@ document.addEventListener("DOMContentLoaded", () => {
   if (btnMul) btnMul.onclick = () => startOp("mul");
   if (btnDiv) btnDiv.onclick = () => startOp("div");
   nextBtn.onclick = () => nextQuestion();
+  // ========= 家长模式 =========
+let parentMode = false;
+
+function applyParentModeUI(){
+  if (historyListEl) historyListEl.style.display = parentMode ? "block" : "none";
+  if (refreshHistoryBtn) refreshHistoryBtn.style.display = parentMode ? "" : "none";
+  if (clearHistoryBtn) clearHistoryBtn.style.display = parentMode ? "" : "none";
+
+  if (parentBtn) parentBtn.textContent = parentMode ? "退出家长模式" : "家长模式";
+}
+
+if (parentBtn){
+  parentBtn.onclick = () => {
+    if (!parentMode){
+      const pwd = prompt("进入家长模式需要密码（1234）");
+      if (pwd !== "1234"){
+        alert("密码错误 ❌");
+        return;
+      }
+      parentMode = true;
+      alert("已进入家长模式 ✅");
+    } else {
+      parentMode = false;
+      alert("已退出家长模式");
+    }
+    applyParentModeUI();
+  };
+}
+
+// 页面初始状态：默认不是家长
+applyParentModeUI();
 });
