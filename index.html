@@ -1,118 +1,30 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>我的學習機</title>
-
-<style>
-  body{
-    margin:0;
-    background:#f5f6f7;
-    font-family: -apple-system, BlinkMacSystemFont,
-      "PingFang TC","Microsoft JhengHei","Noto Sans TC", sans-serif;
-  }
-
-  .app{
-    max-width: 420px;
-    margin: 0 auto;
-    padding: 16px;
-  }
-
-  .topbar{
-    background: linear-gradient(135deg,#1fb5b8,#119ea0);
-    color:#fff;
-    padding: 16px;
-    border-radius: 16px;
-    font-size: 26px;
-    font-weight: 900;
-    text-align:center;
-  }
-
-  .card{
-    background:#fff;
-    margin-top:16px;
-    padding:16px;
-    border-radius:18px;
-  }
-
-  h2{
-    margin:0 0 12px;
-    font-size:22px;
-  }
-
-  /* 🔥 關鍵：注音在字的右邊 */
-  ruby{
-    ruby-position: inter-character;
-  }
-
-  rt{
-    font-size: 0.55em;
-    color:#666;
-    margin-left:4px;
-  }
-
-  .item{
-    background:#e8f4ff;
-    border-radius:14px;
-    padding:14px;
-    margin-bottom:12px;
-  }
-
-  .title{
-    font-size:22px;
-    font-weight:900;
-    color:#1e88e5;
-    margin-bottom:6px;
-  }
-
-  .desc{
-    font-size:18px;
-    line-height:1.6;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>我的學習機</title>
 </head>
-
 <body>
-<div class="app">
-
-  <div class="topbar">📘 我的學習機</div>
-
-  <div class="card">
-    <h2>小一數學</h2>
-
-    <div class="item">
-      <div class="title">
-        <ruby>數<rt>ㄕㄨˋ</rt></ruby>
-        <ruby>與<rt>ㄩˇ</rt></ruby>
-        <ruby>數<rt>ㄕㄨˋ</rt></ruby>
-        <ruby>量<rt>ㄌㄧㄤˋ</rt></ruby>
-        （0～20）
+  <div class="app">
+    <div class="topbar">
+      <div class="brand">
+        <span class="book">📘</span>
+        <span class="title">我的學習機</span>
       </div>
-
-      <div class="desc">
-        <ruby>認<rt>ㄖㄣˋ</rt></ruby>
-        <ruby>識<rt>ㄕˋ</rt></ruby>
-        <ruby>數<rt>ㄕㄨˋ</rt></ruby>
-        <ruby>字<rt>ㄗˋ</rt></ruby>，
-        <ruby>一<rt>ㄧ</rt></ruby>
-        <ruby>個<rt>ㄍㄜˋ</rt></ruby>
-        <ruby>一<rt>ㄧ</rt></ruby>
-        <ruby>個<rt>ㄍㄜˋ</rt></ruby>
-        <ruby>數<rt>ㄕㄨˋ</rt></ruby>
-        <ruby>出<rt>ㄔㄨ</rt></ruby>
-        <ruby>來<rt>ㄌㄞˊ</rt></ruby>，
-        <ruby>建<rt>ㄐㄧㄢˋ</rt></ruby>
-        <ruby>立<rt>ㄌㄧˋ</rt></ruby>
-        <ruby>數<rt>ㄕㄨˋ</rt></ruby>
-        <ruby>量<rt>ㄌㄧㄤˋ</rt></ruby>
-        <ruby>概<rt>ㄍㄞˋ</rt></ruby>
-        <ruby>念<rt>ㄋㄧㄢˋ</rt></ruby>。
-      </div>
+      <button id="parentBtn" class="pill">家長模式</button>
     </div>
 
-  </div>
+    <div class="card">
+      <h2 id="pageTitle">小一數學</h2>
 
-</div>
+      <div class="hint">
+        ✅ 這一版先把「小一模組 + 注音（在字右邊）」做好。<br/>
+        注音是以「字的右側」呈現（不是上方）。
+      </div>
+
+      <div id="moduleGrid" class="module-grid"></div>
+    </div>
+  </div>
 </body>
 </html>
