@@ -16,43 +16,46 @@
     </div>
   </div>
 
-  <!-- 小一模組選擇 -->
-  <div id="modules" class="card">
+  <!-- 模組選擇 -->
+  <div id="modulePage" class="card">
     <h2>小一數學</h2>
 
-    <div class="module-grid">
-      <button class="module" data-module="count">
-        數與數量
-        <div class="bpmf">ㄕㄨˋ ㄩˇ ㄕㄨˋ ㄌㄧㄤˋ</div>
-      </button>
-
-      <button class="module" data-module="number100">
-        認識100
-        <div class="bpmf">ㄖㄣˋ ㄕˋ ㄧ ㄅㄞˇ</div>
-      </button>
-
-      <button class="module" data-module="place">
-        十與一
-        <div class="bpmf">ㄕˊ ㄩˇ ㄧ</div>
-      </button>
-
-      <button class="module" data-module="make10">
-        湊10
-        <div class="bpmf">ㄘㄡˋ ㄕˊ</div>
-      </button>
-
-      <button class="module" data-module="addsub">
-        20內加減
-        <div class="bpmf">ㄐㄧㄚ ㄐㄧㄢˇ</div>
-      </button>
-    </div>
+    <button class="moduleBtn" data-module="count">
+      數與數量
+      <div class="bpmf">ㄕㄨˋ ㄩˇ ㄕㄨˋ ㄌㄧㄤˋ</div>
+    </button>
   </div>
 
-  <!-- 練習畫面 -->
-  <div id="practice" class="card" style="display:none;">
+  <!-- 小項目選擇 -->
+  <div id="itemPage" class="card" style="display:none;">
+    <h2 id="itemTitle">數與數量</h2>
+
+    <button class="itemBtn" data-item="count_to_number">
+      看數量選數字
+      <div class="bpmf">ㄎㄢˋ ㄕㄨˋ ㄌㄧㄤˋ ㄒㄩㄢˇ ㄕㄨˋ ㄗˋ</div>
+    </button>
+
+    <button class="itemBtn" data-item="number_to_count">
+      看數字選數量
+      <div class="bpmf">ㄎㄢˋ ㄕㄨˋ ㄗˋ ㄒㄩㄢˇ ㄕㄨˋ ㄌㄧㄤˋ</div>
+    </button>
+
+    <button class="itemBtn" data-item="sequence">
+      數的順序
+      <div class="bpmf">ㄕㄨˋ ㄉㄜ˙ ㄕㄨㄣˋ ㄒㄩˋ</div>
+    </button>
+
+    <button id="backToModule" class="pill2">← 返回</button>
+  </div>
+
+  <!-- 練習頁 -->
+  <div id="practicePage" class="card" style="display:none;">
     <div id="question" class="question"></div>
+    <div id="questionBpmf" class="bpmf questionBpmf"></div>
+
     <div id="choices" class="choices"></div>
     <div id="status" class="status"></div>
+
     <button id="next" class="pill2">下一題</button>
   </div>
 </div>
