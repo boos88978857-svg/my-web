@@ -1,28 +1,38 @@
-function toRubyHTML(text, zhuyinArr){
-  const chars = Array.from(text);
-  const zys = Array.isArray(zhuyinArr) ? zhuyinArr : [];
+// ====== 你只要改這兩段內容與注音對照就好 ======
+const content = {
+  title: "數與數量（0～20）",
+  body: "認識數字，一個一個數出來，建立數量概念。"
+};
 
-  // 長度不符就補空，避免壞版
-  const fixed = chars.map((_, i) => zys[i] || "");
+// ✅ 右側注音欄：用「詞/字 → 注音」清單（更穩、不會排版炸）
+const zhuyinItems = [
+  { zh: "數", zy: "ㄕㄨˋ" },
+  { zh: "與", zy: "ㄩˇ" },
+  { zh: "數量", zy: "ㄕㄨˋ ㄌㄧㄤˋ" },
+  { zh: "認識", zy: "ㄖㄣˋ ㄕˋ" },
+  { zh: "數字", zy: "ㄕㄨˋ ㄗˋ" },
+  { zh: "一個", zy: "ㄧ ㄍㄜˋ" },
+  { zh: "數出來", zy: "ㄕㄨˇ ㄔㄨ ㄌㄞˊ" },
+  { zh: "建立", zy: "ㄐㄧㄢˋ ㄌㄧˋ" },
+  { zh: "概念", zy: "ㄍㄞˋ ㄋㄧㄢˋ" }
+];
 
-  // 標點/空白不加注音，直接輸出
-  const isPunct = (ch) => /[，。、！？；：「」『』（）()【】《》…·\s]/.test(ch);
+// 渲染主內容
+document.getElementById("mainTitle").textContent = content.title;
+document.getElementById("mainBody").textContent  = content.body;
 
-  let html = "";
-  for (let i=0; i<chars.length; i++){
-    const ch = chars[i];
-    const zy = fixed[i];
-
-    if (isPunct(ch) || !zy){
-      html += ch;
-      continue;
-    }
-
-    // ✅ 課本式：<ruby>字<rt>注音</rt></ruby>
-    html += `<ruby>${escapeHtml(ch)}<rt>${escapeHtml(zy)}</rt></ruby>`;
-  }
-  return html;
-}
+// 渲染右側注音欄
+const list = document.getElementById("zhuyinList");
+list.innerHTML = "";
+zhuyinItems.forEach(item => {
+  const div = document.createElement("div");
+  div.className = "zy-item";
+  div.innerHTML = `
+    <div class="zy-zh">${escapeHtml(item.zh)}</div>
+    <div class="zy-zy">${escapeHtml(item.zy)}</div>
+  `;
+  list.appendChild(div);
+});
 
 function escapeHtml(s){
   return String(s)
@@ -32,24 +42,3 @@ function escapeHtml(s){
     .replaceAll('"',"&quot;")
     .replaceAll("'","&#039;");
 }
-
-// ====== 範例內容：你之後要加模組，就照這個格式新增 ======
-
-// 標題（你可以自己改）
-const titleText = "數與數量（0～20）";
-const titleZy = [
-  "ㄕㄨˋ","ㄩˇ","ㄕㄨˋ","ㄌㄧㄤˋ",
-  "","","","","",""
-];
-
-// 內文
-const bodyText = "認識數字，一個一個數出來，建立數量概念。";
-const bodyZy = [
-  "ㄖㄣˋ","ㄕˋ","ㄕㄨˋ","ㄗˋ","",
-  "ㄧ","ㄍㄜˋ","ㄧ","ㄍㄜˋ","ㄕㄨˇ","ㄔㄨ","ㄌㄞˊ","",
-  "ㄐㄧㄢˋ","ㄌㄧˋ","ㄕㄨˋ","ㄌㄧㄤˋ","ㄍㄞˋ","ㄋㄧㄢˋ",""
-];
-
-// 渲染
-document.getElementById("tbTitle").innerHTML = toRubyHTML(titleText, titleZy);
-document.getElementById("tbBody").innerHTML  = toRubyHTML(bodyText, bodyZy);
