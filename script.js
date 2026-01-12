@@ -1,103 +1,106 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  const modules = {
-    count: () => {
-      const n = rand(1,10);
-      return makeQ(
-        "● ".repeat(n),
-        [n-1,n,n+1].map(x=>x.toString()),
-        1
-      );
+  let currentGen = null;
+
+  const generators = {
+    count_to_number: () => {
+      const n = rand(1,9);
+      return {
+        q: "請選擇正確的數字",
+        bpmf: "ㄑㄧㄥˇ ㄒㄩㄢˇ ㄗㄜˊ ㄓㄥˋ ㄑㄩㄝˋ ㄉㄜ˙ ㄕㄨˋ ㄗˋ",
+        visual: "● ".repeat(n),
+        choices: [n-1,n,n+1].map(String),
+        correct: 1
+      };
     },
 
-    number100: () => {
-      const a = rand(10,99);
-      const b = a + rand(1,5);
-      return makeQ(
-        "哪一個比較大？",
-        [a,b].map(String),
-        1
-      );
+    number_to_count: () => {
+      const n = rand(1,9);
+      return {
+        q: `數字：${n}`,
+        bpmf: "ㄕㄨˋ ㄗˋ",
+        visual: "",
+        choices: [
+          "● ".repeat(n-1),
+          "● ".repeat(n),
+          "● ".repeat(n+1)
+        ],
+        correct: 1
+      };
     },
 
-    place: () => {
-      const t = rand(1,9);
-      const o = rand(1,9);
-      return makeQ(
-        "🟦".repeat(t) + " " + "●".repeat(o),
-        [`${t}${o}`,`${o}${t}`,`${t+o}`],
-        0
-      );
-    },
-
-    make10: () => {
-      const a = rand(1,9);
-      return makeQ(
-        `${a} 還差多少到 10？`,
-        [10-a-1,10-a,10-a+1].map(String),
-        1
-      );
-    },
-
-    addsub: () => {
-      const a = rand(1,15);
-      const b = rand(1,20-a);
-      return makeQ(
-        `${a} + ${b} = ?`,
-        [a+b-1,a+b,a+b+1].map(String),
-        1
-      );
+    sequence: () => {
+      const a = rand(1,7);
+      return {
+        q: "請選出正確的順序",
+        bpmf: "ㄑㄧㄥˇ ㄒㄩㄢˇ ㄔㄨ ㄓㄥˋ ㄑㄩㄝˋ ㄉㄜ˙ ㄕㄨㄣˋ ㄒㄩˋ",
+        visual: "",
+        choices: [
+          `${a} → ${a+1} → ${a+2}`,
+          `${a} → ${a+2} → ${a+1}`
+        ],
+        correct: 0
+      };
     }
   };
 
-  let currentGen = null;
-
-  document.querySelectorAll(".module").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      currentGen = modules[btn.dataset.module];
-      showPractice();
-      nextQ();
-    });
+  document.querySelectorAll(".moduleBtn").forEach(btn=>{
+    btn.onclick = ()=>{
+      document.getElementById("modulePage").style.display="none";
+      document.getElementById("itemPage").style.display="block";
+    };
   });
 
-  document.getElementById("next").addEventListener("click", nextQ);
+  document.querySelectorAll(".itemBtn").forEach(btn=>{
+    btn.onclick = ()=>{
+      currentGen = generators[btn.dataset.item];
+      showPractice();
+      nextQ();
+    };
+  });
 
-  function makeQ(q, choices, correct){
-    return {q, choices, correct};
-  }
+  document.getElementById("backToModule").onclick = ()=>{
+    document.getElementById("itemPage").style.display="none";
+    document.getElementById("modulePage").style.display="block";
+  };
+
+  document.getElementById("next").onclick = nextQ;
 
   function nextQ(){
-    if (!currentGen) return;
-
+    if(!currentGen) return;
     const q = currentGen();
-    const qEl = document.getElementById("question");
+
+    document.getElementById("question").textContent =
+      q.visual ? q.visual + "\n" + q.q : q.q;
+
+    document.getElementById("questionBpmf").textContent = q.bpmf;
+
     const cEl = document.getElementById("choices");
     const sEl = document.getElementById("status");
 
-    qEl.textContent = q.q;
-    cEl.innerHTML = "";
-    sEl.textContent = "";
+    cEl.innerHTML="";
+    sEl.textContent="";
 
     q.choices.forEach((t,i)=>{
-      const b = document.createElement("button");
-      b.className = "choice";
-      b.textContent = t;
-      b.addEventListener("click", ()=>{
-        if(i === q.correct){
+      const b=document.createElement("button");
+      b.className="choice";
+      b.textContent=t;
+      b.onclick=()=>{
+        if(i===q.correct){
           b.classList.add("correct");
-          sEl.textContent = "答對了 ✅";
+          sEl.textContent="答對了 ✅";
         }else{
           b.classList.add("wrong");
-          sEl.textContent = "再試試看";
+          sEl.textContent="再試試看";
         }
-      });
+      };
       cEl.appendChild(b);
     });
   }
 
   function showPractice(){
-    document.getElementById("modules").style.display = "none";
-    document.getElementById("practice").style.display = "block";
+    document.getElementById("itemPage").style.display="none";
+    document.getElementById("practicePage").style.display="block";
   }
 
   function rand(min,max){
