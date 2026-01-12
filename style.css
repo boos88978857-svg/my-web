@@ -1,158 +1,35 @@
-* { box-sizing: border-box; }
-body{
-  margin:0;
-  font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
-  background:#f5f6f7;
+/* ===== 橫排：字在左、注音在右（不直排）===== */
+.zhuyin-line{
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 10px 12px;      /* 每個字組之間的距離 */
+  line-height: 1.8;
+  align-items: center;
+}
+
+.zi-pair{
+  display: inline-grid;
+  grid-template-columns: auto auto; /* 左：字  右：注音 */
+  column-gap: 6px;
+  align-items: center;
+}
+
+.zi-pair .hz{
+  font-size: 20px;
+  font-weight: 900;
   color:#111;
 }
 
-.app{ max-width: 980px; margin: 0 auto; padding: 16px; }
-
-.topbar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  background:#13a6ad;
-  color:#fff;
-  border-radius: 14px;
-  padding: 14px 16px;
-  margin-bottom: 14px;
-}
-.brand{ display:flex; gap:10px; align-items:center; }
-.brand .title{ font-size: 28px; font-weight: 900; }
-.brand .book{ font-size: 24px; }
-
-.pill{
-  background:#eaf4ff;
-  border: 2px solid rgba(255,255,255,0.7);
-  color:#1e88e5;
-  font-weight: 900;
-  border-radius: 18px;
-  padding: 12px 16px;
-  font-size: 18px;
-}
-
-.card{
-  background:#fff;
-  border-radius: 22px;
-  padding: 18px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-}
-
-h2{
-  margin: 6px 0 14px;
-  font-size: 34px;
-  font-weight: 1000;
-}
-
-.module-card{
-  background:#dff1ff;
-  border-radius: 22px;
-  padding: 16px;
-}
-
-.module-head{ margin-bottom: 12px; }
-.module-title{
-  font-size: 26px;
-  font-weight: 1000;
-  color:#1e88e5;
-}
-.module-sub{
-  margin-top: 4px;
+.zi-pair .zy{
   font-size: 14px;
   font-weight: 900;
   color: rgba(0,0,0,0.55);
+  font-family: "Noto Sans Bopomofo","PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif;
+  white-space: nowrap;
 }
 
-/* ✅ 橫排閱讀：左內容 + 右注音欄 */
-.reading-panel{
-  display: grid;
-  grid-template-columns: 1fr 210px;
-  gap: 12px;
-  align-items: start;
-}
-
-.reading-main{
-  background: rgba(255,255,255,0.65);
-  border-radius: 18px;
-  padding: 14px;
-  min-height: 220px;
-}
-
-.reading-title{
-  font-size: 26px;
-  font-weight: 1000;
-  color:#1e88e5;
-  margin-bottom: 10px;
-}
-
-.reading-body{
-  font-size: 20px;
-  font-weight: 900;
-  line-height: 1.75;
-  color:#111;
-}
-
-.reading-side{
-  background: rgba(255,255,255,0.7);
-  border-radius: 18px;
-  padding: 12px;
-  border: 1px solid rgba(0,0,0,0.06);
-  position: sticky;
-  top: 10px;
-}
-
-.side-title{
-  font-size: 16px;
-  font-weight: 1000;
-  margin-bottom: 8px;
-  color:#0f6e73;
-}
-
-.zhuyin-list{
-  display: grid;
-  gap: 8px;
-}
-
-.zy-item{
-  background: #f7fbff;
-  border-radius: 14px;
-  padding: 10px 10px;
-  border: 1px solid rgba(0,0,0,0.06);
-}
-
-.zy-zh{
-  font-size: 18px;
-  font-weight: 1000;
-}
-.zy-zy{
-  margin-top: 4px;
-  font-size: 15px;
-  font-weight: 900;
-  color: rgba(0,0,0,0.65);
-  font-family: "Noto Sans Bopomofo", "PingFang TC", "Microsoft JhengHei", sans-serif;
-}
-
-.side-hint{
-  margin-top: 10px;
-  font-size: 12px;
-  font-weight: 900;
-  color: rgba(0,0,0,0.45);
-}
-
-/* ✅ 手機：右欄改到下面，避免擠 */
-@media (max-width: 640px){
-  .reading-panel{
-    grid-template-columns: 1fr;
-  }
-  .reading-side{
-    position: static;
-  }
-}
-
-.hint{
-  margin-top: 10px;
-  font-size: 14px;
-  font-weight: 900;
-  color: rgba(0,0,0,0.6);
+/* ✅ 強制橫排：避免你之前那種整個變直排 */
+.zhuyin-line, .zi-pair, .hz, .zy{
+  writing-mode: horizontal-tb !important;
+  text-orientation: mixed !important;
 }
