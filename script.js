@@ -4,9 +4,9 @@ document.addEventListener("DOMContentLoaded", () => {
     batchSize: 20,
     choiceCount: 3,
     rules: {
-      1: { ops: ["add", "sub"], addMaxSum: 20, subMax: 20 },                 // 小1：<=20
-      2: { ops: ["add","sub","mul","div"], addSubMax: 100, mulMax: 9, divMax: 9 },   // 小2
-      3: { ops: ["add","sub","mul","div"], addSubMax: 1000, mulMax: 12, divMax: 12 } // 小3
+      1: { ops: ["add", "sub"], addMaxSum: 20, subMax: 20 },                       // 小一：≤ 20
+      2: { ops: ["add","sub","mul","div"], addSubMax: 100, mulMax: 9, divMax: 9 }, // 小二
+      3: { ops: ["add","sub","mul","div"], addSubMax: 1000, mulMax: 12, divMax: 12 } // 小三
     }
   };
 
@@ -42,7 +42,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ========= 工具 =========
-  function opName(op){ return op==="add"?"加法":op==="sub"?"减法":op==="mul"?"乘法":op==="div"?"除法":op; }
+  function opName(op){
+    return op==="add" ? "加法"
+      : op==="sub" ? "減法"
+      : op==="mul" ? "乘法"
+      : op==="div" ? "除法"
+      : op;
+  }
   function shuffle(arr){
     const a=arr.slice();
     for(let j=a.length-1;j>0;j--){
@@ -59,10 +65,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const allowed = SETTINGS.rules[selectedGrade].ops;
     if (btnMul) btnMul.style.display = allowed.includes("mul") ? "" : "none";
     if (btnDiv) btnDiv.style.display = allowed.includes("div") ? "" : "none";
-    if (pickedGradeText) pickedGradeText.textContent = `已选：小${selectedGrade}`;
+    if (pickedGradeText) pickedGradeText.textContent = `已選：小${selectedGrade}`;
   }
 
-  // 點年級大圖標
+  // 點年級大圖示
   document.querySelectorAll(".grade-card").forEach(btn=>{
     btn.addEventListener("click", ()=>{
       selectedGrade = Number(btn.dataset.grade || 1);
@@ -82,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   applyOpVisibility();
 
-  // ========= 煙花 =========
+  // ========= 煙火 =========
   function showConfetti() {
     const box = document.getElementById("confetti");
     if (!box) return;
@@ -137,11 +143,11 @@ document.addEventListener("DOMContentLoaded", () => {
   function makeOneQuestion(grade, op){
     const rule = SETTINGS.rules[grade];
 
-    // 小1：<=20
+    // 小一：≤ 20
     if (grade === 1){
       if (op === "add"){
         const a = randInt(0, rule.addMaxSum);
-        const b = randInt(0, rule.addMaxSum - a); // ✅ 保證和<=20
+        const b = randInt(0, rule.addMaxSum - a); // ✅ 保證和 ≤ 20
         const ans = a + b;
         const c = makeChoices(ans);
         return { q:`${a} + ${b} = ?`, a:c.arr, correct:c.correct, meta:{grade,op,ans} };
@@ -155,7 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    // 小2/小3
+    // 小二 / 小三
     if (op === "add"){
       const max = rule.addSubMax;
       const a = randInt(0, max);
@@ -364,7 +370,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 2000);
   }
 
-  // ========= 歷史記錄 =========
+  // ========= 歷史紀錄 =========
   function pad2(n){ return String(n).padStart(2,"0"); }
   function formatDate(ts){
     const d=new Date(ts);
@@ -389,7 +395,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const list=getAllReports().slice(0,7);
     historyListEl.innerHTML="";
     if (list.length===0){
-      historyListEl.innerHTML=`<p class="hint">目前还没有记录。</p>`;
+      historyListEl.innerHTML=`<p class="hint">目前還沒有紀錄。</p>`;
       return;
     }
     list.forEach(r=>{
@@ -406,10 +412,10 @@ document.addEventListener("DOMContentLoaded", () => {
   renderHistory();
   if (refreshHistoryBtn) refreshHistoryBtn.onclick = renderHistory;
 
-  // 清除記錄：一定要密碼
+  // 清除紀錄：一定要密碼
   if (clearHistoryBtn){
     clearHistoryBtn.onclick = () => {
-      const pwd = prompt("清除學習記錄需要家長密碼（1234）");
+      const pwd = prompt("清除學習紀錄需要家長密碼（1234）");
       if (pwd !== "1234"){ alert("密碼錯誤 ❌"); return; }
       const keys=[];
       for(let k=0;k<localStorage.length;k++){
@@ -417,7 +423,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (key && key.startsWith("report_")) keys.push(key);
       }
       keys.forEach(k=>localStorage.removeItem(k));
-      alert("已清除學習記錄 ✅");
+      alert("已清除學習紀錄 ✅");
       renderHistory();
     };
   }
