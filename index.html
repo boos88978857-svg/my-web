@@ -13,18 +13,30 @@
         <span class="book">📘</span>
         <span class="title">我的學習機</span>
       </div>
-      <button class="pill">家長模式</button>
+      <button class="pill" type="button">家長模式</button>
     </div>
 
     <div class="card">
       <h2>小一數學</h2>
 
-      <div class="module-box">
-        <div class="anno-paragraph" id="m1Title"></div>
-        <div class="anno-paragraph body" id="m1Body"></div>
+      <!-- 模組卡 -->
+      <div class="module-card">
+        <div class="module-head">
+          <div class="module-title">數與數量（0～20）</div>
+          <div class="module-sub">（課本直排＋注音在右側）</div>
+        </div>
+
+        <!-- 這裡是「課本直排」顯示區 -->
+        <div class="textbook-frame">
+          <div id="tbTitle" class="textbook-line"></div>
+          <div class="textbook-gap"></div>
+          <div id="tbBody" class="textbook-line"></div>
+        </div>
       </div>
 
-      <div class="note">注音：在每個字的右邊（直排），文字整體仍維持橫排閱讀。</div>
+      <div class="hint">
+        ※ 你要的「注音在字右邊」＝直排教材版式，所以本頁採用直排呈現。
+      </div>
     </div>
   </div>
 
