@@ -4,27 +4,112 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>我的學習機</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
   <div class="app">
     <div class="topbar">
       <div class="brand">
         <span class="book">📘</span>
         <span class="title">我的學習機</span>
       </div>
-      <button id="parentBtn" class="pill">家長模式</button>
+      <button class="pill" type="button">家長模式</button>
     </div>
 
     <div class="card">
-      <h2 id="pageTitle">小一數學</h2>
+      <h2>小一數學</h2>
 
-      <div class="hint">
-        ✅ 這一版先把「小一模組 + 注音（在字右邊）」做好。<br/>
-        注音是以「字的右側」呈現（不是上方）。
+      <!-- ✅ 小一模組卡片（示範：標題含注音、內容直排含右側注音） -->
+      <div class="module">
+        <div class="module-head">
+          <div class="module-title">
+            <!-- 標題：你要注音在右邊 → 這裡用「直排小區塊」呈現 -->
+            <div class="vertical-title">
+              <ruby><rb>數</rb><rt>ㄕㄨˋ</rt></ruby>
+              <ruby><rb>與</rb><rt>ㄩˇ</rt></ruby>
+              <ruby><rb>數</rb><rt>ㄕㄨˋ</rt></ruby>
+              <ruby><rb>量</rb><rt>ㄌㄧㄤˋ</rt></ruby>
+              <span class="v-gap"></span>
+              <span class="range">（0～20）</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="module-body">
+          <!-- ✅ 內文直排：注音在字的右邊 -->
+          <div class="vertical-text">
+            <ruby><rb>認</rb><rt>ㄖㄣˋ</rt></ruby>
+            <ruby><rb>識</rb><rt>ㄕˋ</rt></ruby>
+            <span class="punct">，</span>
+
+            <ruby><rb>數</rb><rt>ㄕㄨˋ</rt></ruby>
+            <ruby><rb>字</rb><rt>ㄗˋ</rt></ruby>
+            <span class="punct">，</span>
+
+            <ruby><rb>一</rb><rt>ㄧ</rt></ruby>
+            <ruby><rb>個</rb><rt>ㄍㄜˋ</rt></ruby>
+            <ruby><rb>一</rb><rt>ㄧ</rt></ruby>
+            <ruby><rb>個</rb><rt>ㄍㄜˋ</rt></ruby>
+            <ruby><rb>數</rb><rt>ㄕㄨˋ</rt></ruby>
+            <ruby><rb>出</rb><rt>ㄔㄨ</rt></ruby>
+            <ruby><rb>來</rb><rt>ㄌㄞˊ</rt></ruby>
+            <span class="punct">，</span>
+
+            <ruby><rb>建</rb><rt>ㄐㄧㄢˋ</rt></ruby>
+            <ruby><rb>立</rb><rt>ㄌㄧˋ</rt></ruby>
+
+            <ruby><rb>數</rb><rt>ㄕㄨˋ</rt></ruby>
+            <ruby><rb>量</rb><rt>ㄌㄧㄤˋ</rt></ruby>
+
+            <ruby><rb>概</rb><rt>ㄍㄞˋ</rt></ruby>
+            <ruby><rb>念</rb><rt>ㄋㄧㄢˋ</rt></ruby>
+            <span class="punct">。</span>
+          </div>
+
+          <div class="note">
+            提示：此區塊用「直排＋注音右側」呈現，效果會像課本排版。
+          </div>
+        </div>
       </div>
 
-      <div id="moduleGrid" class="module-grid"></div>
+      <div class="module">
+        <div class="module-head">
+          <div class="module-title">
+            <div class="vertical-title">
+              <ruby><rb>十</rb><rt>ㄕˊ</rt></ruby>
+              <ruby><rb>與</rb><rt>ㄩˇ</rt></ruby>
+              <ruby><rb>一</rb><rt>ㄧ</rt></ruby>
+              <span class="v-gap"></span>
+              <span class="range">（位值概念）</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="module-body">
+          <div class="vertical-text">
+            <ruby><rb>例</rb><rt>ㄌㄧˋ</rt></ruby>
+            <span class="punct">：</span>
+            <ruby><rb>3</rb><rt>ㄙㄢ</rt></ruby>
+            <ruby><rb>4</rb><rt>ㄙˋ</rt></ruby>
+            <span class="punct">＝</span>
+
+            <ruby><rb>3</rb><rt>ㄙㄢ</rt></ruby>
+            <ruby><rb>個</rb><rt>ㄍㄜˋ</rt></ruby>
+            <ruby><rb>十</rb><rt>ㄕˊ</rt></ruby>
+
+            <span class="punct">＋</span>
+
+            <ruby><rb>4</rb><rt>ㄙˋ</rt></ruby>
+            <ruby><rb>個</rb><rt>ㄍㄜˋ</rt></ruby>
+            <ruby><rb>一</rb><rt>ㄧ</rt></ruby>
+            <span class="punct">。</span>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
+
 </body>
 </html>
