@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>我的學習機</title>
+  <title>我的學習機｜小一數學</title>
 
-  <!-- 字型設定（不侵權，系統字） -->
   <style>
+    /* ===== 全域設定 ===== */
     * {
       box-sizing: border-box;
     }
@@ -24,144 +24,120 @@
       color: #111;
     }
 
-    .app {
-      max-width: 820px;
-      margin: 0 auto;
+    /* ===== 頂部 ===== */
+    .topbar {
+      background: linear-gradient(135deg, #2bb3b1, #1aa6a3);
+      color: #fff;
       padding: 16px;
+      border-radius: 0 0 18px 18px;
+      font-size: 22px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
-    /* ===== 上方標題 ===== */
-    .topbar {
-      background: #13a6ad;
-      color: #fff;
-      border-radius: 16px;
-      padding: 18px;
-      font-size: 28px;
-      font-weight: 900;
-      text-align: center;
+    .topbar span {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .parent-btn {
+      background: #fff;
+      color: #1aa6a3;
+      border: none;
+      border-radius: 20px;
+      padding: 8px 16px;
+      font-size: 16px;
+      font-weight: 700;
     }
 
     /* ===== 卡片 ===== */
     .card {
       background: #fff;
-      border-radius: 22px;
+      margin: 16px;
       padding: 20px;
-      margin-top: 18px;
+      border-radius: 22px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
     }
 
-    h2 {
-      margin: 0 0 14px;
-      font-size: 26px;
-      font-weight: 900;
-    }
-
-    /* ===== 模組卡 ===== */
-    .module {
-      background: #e3f2fd;
-      border-radius: 20px;
-      padding: 18px;
-      margin-bottom: 14px;
-    }
-
-    .module-title {
+    .card h2 {
+      margin: 0 0 12px;
       font-size: 24px;
       font-weight: 900;
-      color: #1e88e5;
-      line-height: 1.4;
     }
 
-    .module-desc {
+    /* ===== 小一模組 ===== */
+    .module-title {
+      font-size: 22px;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+
+    /* ===== 課本直排＋注音 ===== */
+    .textbook {
+      writing-mode: vertical-rl;     /* 直排，右→左 */
+      text-orientation: upright;
+      font-size: 28px;
+      line-height: 1.9;
+      letter-spacing: 2px;
       margin-top: 10px;
-      font-size: 18px;
-      line-height: 1.8;
-      color: #333;
+      background: #eef7ff;
+      padding: 20px;
+      border-radius: 16px;
     }
 
-    /* ===== 注音設定（關鍵） ===== */
     ruby {
-      ruby-position: over;
+      ruby-position: inter-character; /* 注音在字旁 */
     }
 
     rt {
       font-size: 0.45em;
-      color: #666;
+      color: #555;
       font-weight: 600;
+    }
+
+    /* ===== 小提示 ===== */
+    .hint {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #666;
     }
   </style>
 </head>
 
 <body>
-  <div class="app">
 
-    <!-- 標題 -->
-    <div class="topbar">
-      📘 我的學習機
+  <!-- 頂部 -->
+  <div class="topbar">
+    <span>📘 我的學習機</span>
+    <button class="parent-btn">家長模式</button>
+  </div>
+
+  <!-- 小一數學模組 -->
+  <div class="card">
+    <div class="module-title">小一數學｜數與數量</div>
+
+    <!-- 課本直排＋注音內容 -->
+    <div class="textbook">
+      <ruby>一<rt>ㄧ</rt></ruby>
+      <ruby>二<rt>ㄦˋ</rt></ruby>
+      <ruby>三<rt>ㄙㄢ</rt></ruby>
+      <ruby>四<rt>ㄙˋ</rt></ruby>
+      <ruby>五<rt>ㄨˇ</rt></ruby>
+
+      <ruby>有<rt>ㄧㄡˇ</rt></ruby>
+      <ruby>五<rt>ㄨˇ</rt></ruby>
+      <ruby>顆<rt>ㄎㄜ</rt></ruby>
+      <ruby>蘋<rt>ㄆㄧㄥˊ</rt></ruby>
+      <ruby>果<rt>ㄍㄨㄛˇ</rt></ruby>
     </div>
 
-    <!-- 小一模組 -->
-    <div class="card">
-      <h2>小一數學</h2>
-
-      <!-- 模組 1 -->
-      <div class="module">
-        <div class="module-title">
-          <ruby>數<rt>ㄕㄨˋ</rt></ruby>
-          <ruby>與<rt>ㄩˇ</rt></ruby>
-          <ruby>數<rt>ㄕㄨˋ</rt></ruby>
-          <ruby>量<rt>ㄌㄧㄤˋ</rt></ruby>
-          （0～20）
-        </div>
-
-        <div class="module-desc">
-          <ruby>認<rt>ㄖㄣˋ</rt></ruby>
-          <ruby>識<rt>ㄕˋ</rt></ruby>
-          <ruby>數<rt>ㄕㄨˋ</rt></ruby>
-          <ruby>字<rt>ㄗˋ</rt></ruby>，
-          <ruby>一<rt>ㄧ</rt></ruby>
-          <ruby>個<rt>ㄍㄜˋ</rt></ruby>
-          <ruby>一<rt>ㄧ</rt></ruby>
-          <ruby>個<rt>ㄍㄜˋ</rt></ruby>
-          <ruby>數<rt>ㄕㄨˋ</rt></ruby>
-          <ruby>出<rt>ㄔㄨ</rt></ruby>
-          <ruby>來<rt>ㄌㄞˊ</rt></ruby>，
-          <ruby>建<rt>ㄐㄧㄢˋ</rt></ruby>
-          <ruby>立<rt>ㄌㄧˋ</rt></ruby>
-          <ruby>數<rt>ㄕㄨˋ</rt></ruby>
-          <ruby>量<rt>ㄌㄧㄤˋ</rt></ruby>
-          <ruby>概<rt>ㄍㄞˋ</rt></ruby>
-          <ruby>念<rt>ㄋㄧㄢˋ</rt></ruby>。
-        </div>
-      </div>
-
-      <!-- 模組 2 -->
-      <div class="module">
-        <div class="module-title">
-          <ruby>十<rt>ㄕˊ</rt></ruby>
-          <ruby>與<rt>ㄩˇ</rt></ruby>
-          <ruby>一<rt>ㄧ</rt></ruby>
-          （<ruby>位<rt>ㄨㄟˋ</rt></ruby><ruby>值<rt>ㄓˊ</rt></ruby>）
-        </div>
-
-        <div class="module-desc">
-          例：
-          34 =
-          3
-          <ruby>個<rt>ㄍㄜˋ</rt></ruby>
-          <ruby>十<rt>ㄕˊ</rt></ruby>
-          +
-          4
-          <ruby>個<rt>ㄍㄜˋ</rt></ruby>
-          <ruby>一<rt>ㄧ</rt></ruby>，
-          <ruby>理<rt>ㄌㄧˇ</rt></ruby>
-          <ruby>解<rt>ㄐㄧㄝˇ</rt></ruby>
-          <ruby>數<rt>ㄕㄨˋ</rt></ruby>
-          <ruby>的<rt>˙ㄉㄜ</rt></ruby>
-          <ruby>組<rt>ㄗㄨˇ</rt></ruby>
-          <ruby>成<rt>ㄔㄥˊ</rt></ruby>。
-        </div>
-      </div>
-
+    <div class="hint">
+      提示：文字直排、注音在旁，符合台灣國小課本閱讀方式。
     </div>
   </div>
+
 </body>
 </html>
