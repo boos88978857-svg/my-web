@@ -4,13 +4,15 @@ document.addEventListener("DOMContentLoaded", () => {
     batchSize: 20,
     choiceCount: 3,
     rules: {
-      1: { ops: ["add", "sub"], addMaxSum: 20, subMax: 20 },                       // 小一：≤ 20
+      1: { ops: ["add", "sub"], addMaxSum: 20, subMax: 20 },                       // 小一：≤20
       2: { ops: ["add","sub","mul","div"], addSubMax: 100, mulMax: 9, divMax: 9 }, // 小二
       3: { ops: ["add","sub","mul","div"], addSubMax: 1000, mulMax: 12, divMax: 12 } // 小三
     }
   };
 
   // ========= DOM =========
+  const parentBtn = document.getElementById("parentBtn");
+
   const btnAdd = document.getElementById("btnAdd");
   const btnSub = document.getElementById("btnSub");
   const btnMul = document.getElementById("btnMul");
@@ -58,6 +60,97 @@ document.addEventListener("DOMContentLoaded", () => {
     return a;
   }
   function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+
+  // ========= 家長密碼（依你需求新增；不影響出題邏輯）=========
+  const PWD_KEY = "parent_password_v1";
+
+  function hasParentPassword(){
+    const p = localStorage.getItem(PWD_KEY);
+    return typeof p === "string" && p.length > 0;
+  }
+  function getParentPassword(){
+    return localStorage.getItem(PWD_KEY) || "";
+  }
+  function setParentPassword(pwd){
+    localStorage.setItem(PWD_KEY, pwd);
+  }
+  function clearAllReportsAndPassword(){
+    // 只清掉本機這個學習機用到的資料：report_* + 密碼
+    const keysToRemove = [];
+    for(let k=0;k<localStorage.length;k++){
+      const key = localStorage.key(k);
+      if (!key) continue;
+      if (key.startsWith("report_") || key === PWD_KEY) keysToRemove.push(key);
+    }
+    keysToRemove.forEach(k => localStorage.removeItem(k));
+  }
+
+  function promptNewPasswordFlow(){
+    const p1 = prompt("請輸入要設定的家長密碼（至少 4 碼）");
+    if (p1 === null) return false;
+    const pwd = String(p1).trim();
+    if (pwd.length < 4){
+      alert("密碼至少 4 碼，請重新設定。");
+      return false;
+    }
+    const p2 = prompt("請再輸入一次確認密碼");
+    if (p2 === null) return false;
+    if (String(p2).trim() !== pwd){
+      alert("兩次輸入不一致，未設定。");
+      return false;
+    }
+    setParentPassword(pwd);
+    alert("已設定家長密碼 ✅");
+    return true;
+  }
+
+  function verifyPasswordFlow(){
+    const input = prompt("請輸入家長密碼");
+    if (input === null) return false;
+    const ok = String(input).trim() === getParentPassword();
+    if (!ok) alert("密碼錯誤 ❌");
+    return ok;
+  }
+
+  function handleParentMode(){
+    // 依你需求：家長模式 = 點擊可設定密碼（已設過則可修改/忘記）
+    if (!hasParentPassword()){
+      const ok = promptNewPasswordFlow();
+      if (ok) return;
+      return;
+    }
+
+    // 已有密碼：給家長選擇
+    const choice = prompt(
+      "家長模式：請選擇功能\n" +
+      "1：修改密碼\n" +
+      "2：忘記密碼（將清除所有學習紀錄與密碼）\n" +
+      "3：取消"
+    );
+    if (choice === null) return;
+
+    const c = String(choice).trim();
+    if (c === "1"){
+      if (!verifyPasswordFlow()) return;
+      promptNewPasswordFlow();
+      return;
+    }
+    if (c === "2"){
+      const confirm1 = confirm("忘記密碼將『清除所有學習紀錄』與『家長密碼』，確定要繼續嗎？");
+      if (!confirm1) return;
+      const confirm2 = confirm("再次確認：真的要重置嗎？（此動作無法復原）");
+      if (!confirm2) return;
+      clearAllReportsAndPassword();
+      alert("已重置 ✅（學習紀錄與密碼已清除）");
+      renderHistory();
+      return;
+    }
+    // 其他視為取消
+  }
+
+  if (parentBtn){
+    parentBtn.onclick = handleParentMode;
+  }
 
   // ========= 年級選擇 =========
   let selectedGrade = 1;
@@ -143,25 +236,25 @@ document.addEventListener("DOMContentLoaded", () => {
   function makeOneQuestion(grade, op){
     const rule = SETTINGS.rules[grade];
 
-    // 小一：≤ 20
+    // 小一：≤20
     if (grade === 1){
       if (op === "add"){
         const a = randInt(0, rule.addMaxSum);
-        const b = randInt(0, rule.addMaxSum - a); // ✅ 保證和 ≤ 20
+        const b = randInt(0, rule.addMaxSum - a);
         const ans = a + b;
         const c = makeChoices(ans);
         return { q:`${a} + ${b} = ?`, a:c.arr, correct:c.correct, meta:{grade,op,ans} };
       }
       if (op === "sub"){
         const a = randInt(0, rule.subMax);
-        const b = randInt(0, a); // ✅ 保證不為負
+        const b = randInt(0, a);
         const ans = a - b;
         const c = makeChoices(ans);
         return { q:`${a} - ${b} = ?`, a:c.arr, correct:c.correct, meta:{grade,op,ans} };
       }
     }
 
-    // 小二 / 小三
+    // 小二/小三
     if (op === "add"){
       const max = rule.addSubMax;
       const a = randInt(0, max);
@@ -191,7 +284,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const d = rule.divMax;
       const divisor = randInt(1, d);
       const quotient = randInt(0, d);
-      const dividend = divisor * quotient; // ✅ 整除
+      const dividend = divisor * quotient;
       const ans = quotient;
       const c = makeChoices(ans);
       return { q:`${dividend} ÷ ${divisor} = ?`, a:c.arr, correct:c.correct, meta:{grade,op,ans} };
@@ -293,13 +386,13 @@ document.addEventListener("DOMContentLoaded", () => {
       correctAnswered++;
       statusEl.textContent = "答對了 ✅";
       nextBtn.disabled = true;
-      setTimeout(()=>nextQuestion(), 450); // ✅ 答對自動下一題
+      setTimeout(()=>nextQuestion(), 450);
     } else {
       if (all[idx]) all[idx].classList.add("wrong");
       statusEl.textContent = "答錯了 ❌（請點下一題）";
       const key = q.q;
       if (!wrongPool.some(it=>it.q.q===key)) wrongPool.push({q, wrongIndex: idx});
-      nextBtn.disabled = false; // ✅ 答錯才手動下一題
+      nextBtn.disabled = false;
     }
     updateTopText();
   }
@@ -412,11 +505,15 @@ document.addEventListener("DOMContentLoaded", () => {
   renderHistory();
   if (refreshHistoryBtn) refreshHistoryBtn.onclick = renderHistory;
 
-  // 清除紀錄：一定要密碼
+  // 清除紀錄：依你需求 → 顯示家長密碼（家長自訂）
   if (clearHistoryBtn){
     clearHistoryBtn.onclick = () => {
-      const pwd = prompt("清除學習紀錄需要家長密碼（1234）");
-      if (pwd !== "1234"){ alert("密碼錯誤 ❌"); return; }
+      if (!hasParentPassword()){
+        alert("尚未設定家長密碼，請先點「家長模式」設定密碼。");
+        return;
+      }
+      if (!verifyPasswordFlow()) return;
+
       const keys=[];
       for(let k=0;k<localStorage.length;k++){
         const key=localStorage.key(k);
