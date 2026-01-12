@@ -1,3 +1,4 @@
+alert("✅ script.js 已載入");
 document.addEventListener("DOMContentLoaded", () => {
   // ===== 難度規則（保留：按年級）=====
   const SETTINGS = {
