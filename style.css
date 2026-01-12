@@ -45,53 +45,45 @@ h2{
   font-weight: 1000;
 }
 
-/* ===== 模組 ===== */
-.module{
-  margin-top: 12px;
-}
-
 .module-box{
   background:#dff1ff;
   border-radius: 22px;
   padding: 16px;
 }
 
-.module-head{
-  margin-bottom: 12px;
+/* ✅ 段落維持橫排、自然換行 */
+.anno-paragraph{
+  line-height: 1.55;
+  white-space: normal;      /* 允許整段自然換行 */
+  word-break: keep-all;     /* 中文不要亂拆 */
+  overflow-wrap: normal;
+  margin-bottom: 14px;
 }
 
-/* ===== ✅ 注音排版（重點） =====
-   需求：橫排中文字，每個字右邊有一列直排注音（像課本）
-*/
-.anno-line{
-  display: flex;
-  flex-wrap: wrap;          /* 可換行 */
-  gap: 6px;                 /* 字格間距 */
-  align-items: flex-start;
-}
-
-/* 每個字格：左主字、右注音 */
+/* 每個「字格」：主字 + 右側注音。關鍵：不要被拆開 */
 .zy-cell{
   display: inline-flex;
-  flex-direction: row;      /* 主字在左，注音在右 */
+  flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
+  vertical-align: baseline;
+  margin-right: 6px;
+  margin-bottom: 6px;
 
-  padding: 2px 2px;
-  border-radius: 10px;
+  /* ✅ 重要：字格整體不要被換行拆掉 */
+  break-inside: avoid;
+  page-break-inside: avoid;
 }
 
-/* 主字 */
+/* 主字：大字 */
 .zy-main{
   font-size: 34px;
   font-weight: 1000;
   color:#1e88e5;
   line-height: 1;
-  width: 1.05em;            /* 固定寬，對齊更整齊 */
-  text-align: center;
+  display:inline-block;
 }
 
-/* 注音：直排、在右邊 */
+/* 注音：在右邊直排 */
 .zy-rt{
   font-family: "Noto Sans Bopomofo", "PingFang TC", "Microsoft JhengHei", sans-serif;
   font-size: 14px;
@@ -100,31 +92,29 @@ h2{
 
   writing-mode: vertical-rl;     /* 直排 */
   text-orientation: upright;
-  line-height: 1.05;
+  line-height: 1;
 
-  width: 0.9em;                  /* 固定注音欄寬 */
-  text-align: center;
-
+  display:inline-block;
   margin-left: 4px;
 }
 
-/* 內文主字變黑、比標題小 */
-.module-body .zy-main{
+/* 內文字小、黑色 */
+.anno-paragraph.body .zy-main{
   font-size: 22px;
   font-weight: 900;
   color:#111;
 }
 
-/* 標點也占一格，但不要注音 */
-.zy-cell.punct .zy-rt{
-  display:none;
-}
+/* 標點：不要注音、不要多留空 */
+.zy-cell.punct{ margin-right: 0; }
+.zy-cell.punct .zy-rt{ display:none; }
 .zy-cell.punct .zy-main{
-  width: 1em;
   color:#111;
+  font-size: 22px;
+  font-weight: 900;
 }
 
-/* 註解 */
+/* 提示 */
 .note{
   margin-top: 10px;
   font-size: 14px;
