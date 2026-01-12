@@ -1,1 +1,139 @@
+* { box-sizing: border-box; }
 
+body{
+  margin:0;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", system-ui, sans-serif;
+  background:#f5f6f7;
+  color:#111;
+}
+
+.app{
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:#13a6ad;
+  color:#fff;
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+
+.brand{ display:flex; gap:10px; align-items:center; }
+.brand .title{ font-size: 28px; font-weight: 900; letter-spacing: 1px; }
+.brand .book{ font-size: 24px; }
+
+.pill{
+  background:#eaf4ff;
+  border: 2px solid rgba(255,255,255,0.7);
+  color:#1e88e5;
+  font-weight: 900;
+  border-radius: 18px;
+  padding: 12px 16px;
+  font-size: 18px;
+}
+
+.card{
+  background:#fff;
+  border-radius: 22px;
+  padding: 18px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+
+h2{
+  margin: 6px 0 12px;
+  font-size: 30px;
+  font-weight: 1000;
+}
+
+.hint{
+  background: #f3f6f7;
+  border-radius: 14px;
+  padding: 12px 14px;
+  color:#333;
+  font-weight: 800;
+  line-height: 1.35;
+  margin-bottom: 14px;
+}
+
+/* 模組卡片 */
+.module-grid{
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 520px){
+  .module-grid{ grid-template-columns: 1fr; }
+}
+
+.module{
+  border: 0;
+  text-align: left;
+  width: 100%;
+  border-radius: 22px;
+  padding: 16px;
+  background:#e9f4ff;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+}
+
+.module .m-title{
+  font-size: 26px;
+  font-weight: 1000;
+  color:#1e88e5;
+  margin-bottom: 8px;
+}
+
+.module .m-desc{
+  font-size: 18px;
+  font-weight: 900;
+  color:#222;
+  line-height: 1.5;
+}
+
+/* =========================
+   ✅ 注音在「字的右邊」
+   每個字一個盒子：字在左，注音直排貼右側
+   ========================= */
+.zh{
+  display: inline-block;
+  vertical-align: baseline;
+  line-height: 1.55;
+}
+
+.hz{
+  position: relative;
+  display: inline-block;
+  padding-right: 1.05em;   /* 右邊留出給注音 */
+  margin-right: 0.05em;
+}
+
+/* 字本體 */
+.hz .ch{
+  font-size: 1em;
+  font-weight: 900;
+}
+
+/* 注音：固定在字右側，直排 */
+.hz .zy{
+  position: absolute;
+  right: 0.1em;
+  top: 0.05em;
+  font-size: 0.56em;
+  font-weight: 800;
+  color: rgba(0,0,0,0.65);
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  letter-spacing: 0;
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* 讓數字/符號不要被注音搞亂 */
+.hz.is-num{ padding-right: 0.2em; }
+.hz.is-num .zy{ display:none; }
