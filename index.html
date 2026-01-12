@@ -70,7 +70,7 @@
           </div>
 
           <div class="muted tip">
-            小一預設只開放加減；小二/小三會開放乘除（可在程式裡調整）
+            小一預設只開放加減；小二/小三會開放乘除（可在 script.js 的設定調整）
           </div>
         </div>
       </section>
@@ -79,11 +79,13 @@
       <section id="screenPractice" class="screen">
         <div class="panel">
           <div class="practiceTop">
-            <button id="backBtn" class="btn ghost" type="button">← 返回</button>
+            <button id="backBtn" class="btn ghost2" type="button">← 返回</button>
+
             <div class="meta">
               <div id="practiceTitle" class="h2">練習</div>
               <div id="practiceMeta" class="muted">—</div>
             </div>
+
             <div class="statBox">
               <div class="stat">
                 <div class="label">時間</div>
@@ -130,19 +132,8 @@
       <section id="screenSettings" class="screen">
         <div class="panel">
           <div class="panelHead">
-            <div class="h2">設定</div>
-            <div class="muted">這裡放「家長密碼 / 顯示注音」等設定</div>
-          </div>
-
-          <div class="settingItem">
-            <div>
-              <div class="settingTitle">顯示注音（介面文字）</div>
-              <div class="muted">先做開關，之後再擴大到內容區</div>
-            </div>
-            <label class="switch">
-              <input id="zhuyinToggle" type="checkbox" />
-              <span class="slider"></span>
-            </label>
+            <div class="h2">家長設定</div>
+            <div class="muted">密碼本機儲存（示範版）</div>
           </div>
 
           <div class="settingItem">
@@ -156,13 +147,21 @@
           <div class="settingItem">
             <div>
               <div class="settingTitle">忘記密碼</div>
-              <div class="muted">用「重設碼」重設（本機儲存）</div>
+              <div class="muted">輸入重設碼即可重設</div>
             </div>
             <button id="resetPwdBtn" class="btn danger" type="button">重設密碼</button>
           </div>
 
+          <div class="settingItem">
+            <div>
+              <div class="settingTitle">清除全部學習紀錄</div>
+              <div class="muted">需要家長密碼驗證</div>
+            </div>
+            <button id="clearAllBtn" class="btn danger" type="button">清除全部</button>
+          </div>
+
           <div class="muted tip">
-            提醒：這是純前端示範，密碼存在本機（localStorage）。
+            提醒：這是純前端示範，密碼與紀錄存於 localStorage。
           </div>
         </div>
       </section>
@@ -174,7 +173,7 @@
       <button class="navBtn active" data-screen="Home" type="button">🏠<span>首頁</span></button>
       <button class="navBtn" data-screen="Practice" type="button">🧠<span>練習</span></button>
       <button class="navBtn" data-screen="Records" type="button">📒<span>紀錄</span></button>
-      <button class="navBtn" data-screen="Settings" type="button">⚙️<span>設定</span></button>
+      <button class="navBtn" data-screen="Settings" type="button">⚙️<span>家長</span></button>
     </nav>
   </div>
 
