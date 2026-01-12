@@ -180,3 +180,26 @@ h2{
   background:#f3f3f3;
   font-weight: 900;
 }
+
+/* ===== 修复 iPhone 上按钮点不到（触控层级/遮挡） ===== */
+
+/* 让彩带层永远不挡点击 */
+#confetti{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* 确保练习区在正常点击层级 */
+#practice, #chapters, .card{
+  position: relative;
+  z-index: 1;
+}
+
+/* iOS 点击优化：减少 300ms 延迟/误触 */
+button, .choice, .grade-card, .btn, .pill, .pill2{
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+}
