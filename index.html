@@ -1,20 +1,78 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>我的学习机</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<h1>📘 我的学习机</h1>
-<p id="question">题目会显示在这里</p>
+  <div class="app">
+    <div class="topbar">
+      <div class="brand">
+        <span class="book">📘</span>
+        <span class="title">我的学习机</span>
+      </div>
+      <button id="parentBtn" class="pill">家长模式</button>
+    </div>
 
-<div id="choices"></div>
+    <div id="chapters" class="card">
+      <h2>学习记录</h2>
+      <div class="row">
+        <button id="refreshHistoryBtn" class="pill2">刷新记录</button>
+        <button id="clearHistoryBtn" class="pill2 danger">清除记录</button>
+      </div>
+      <div id="historyList" class="history"></div>
 
-<button id="next" disabled>下一题</button>
-<p id="status">请选择答案</p>
+      <hr class="sep"/>
 
-<script src="script.js"></script>
+      <h2>选择章节</h2>
+
+      <!-- 第一层：选年级（大图标） -->
+      <div id="gradeSelect" class="grade-grid">
+        <button class="grade-card" data-grade="1">小1</button>
+        <button class="grade-card" data-grade="2">小2</button>
+        <button class="grade-card" data-grade="3">小3</button>
+      </div>
+
+      <!-- 第二层：选章节（先隐藏） -->
+      <div id="chapterSelect" style="display:none;">
+        <div class="subhead">
+          <button id="backToGrade" class="pill2">← 返回选年级</button>
+          <div id="pickedGradeText" class="picked">已选：小1</div>
+        </div>
+
+        <div class="chapter-grid">
+          <button id="btnAdd" class="btn">加法</button>
+          <button id="btnSub" class="btn">减法</button>
+          <button id="btnMul" class="btn">乘法</button>
+          <button id="btnDiv" class="btn">除法</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="practice" class="card" style="display:none;">
+      <div class="practice-head">
+        <div id="chapterTitle" class="h1">练习</div>
+      </div>
+
+      <div id="goalText" class="hint">目标：全对</div>
+
+      <div id="question" class="question">题目</div>
+      <div id="choices" class="choices"></div>
+
+      <div class="row">
+        <button id="next" class="pill2">下一题</button>
+      </div>
+
+      <div id="status" class="status">请选择答案</div>
+      <div id="report" class="report" style="display:none;"></div>
+    </div>
+  </div>
+
+  <div id="confetti"></div>
+
+  <script src="script.js"></script>
 </body>
 </html>
