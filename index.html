@@ -1,80 +1,108 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>我的學習機</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的學習機</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;
+  background:#f5f6f7;
+}
+.app{max-width:900px;margin:auto;padding:16px}
+.topbar{
+  display:flex;justify-content:space-between;align-items:center;
+  background:#13a6ad;color:#fff;
+  padding:14px;border-radius:14px
+}
+.card{
+  background:#fff;margin-top:14px;
+  border-radius:20px;padding:16px
+}
+.grade-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:12px
+}
+.grade-card{
+  height:90px;border:0;border-radius:20px;
+  background:#e3f2fd;color:#1e88e5;
+  font-size:28px;font-weight:900
+}
+.module-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:12px
+}
+.module{
+  border:0;border-radius:20px;
+  background:#f0f0f0;
+  padding:16px;font-size:22px;font-weight:900
+}
+.hidden{display:none}
+</style>
 </head>
+
 <body>
+<div class="app">
+  <div class="topbar">
+    <div>📘 我的學習機</div>
+    <button onclick="alert('家長模式稍後啟用')">家長模式</button>
+  </div>
 
-  <div class="app">
-    <div class="topbar">
-      <div class="brand">
-        <span class="book">📘</span>
-        <span class="title">我的學習機</span>
-      </div>
-      <button id="parentBtn" class="pill">家長模式</button>
-    </div>
-
-    <div id="chapters" class="card">
-      <h2>學習紀錄</h2>
-      <div class="row">
-        <button id="refreshHistoryBtn" class="pill2">更新紀錄</button>
-        <button id="clearHistoryBtn" class="pill2 danger">清除紀錄</button>
-      </div>
-      <div id="historyList" class="history"></div>
-
-      <hr class="sep"/>
-
-      <h2>選擇年級</h2>
-
-      <!-- 第一層：選年級（大圖示） -->
-      <div id="gradeSelect" class="grade-grid">
-        <button class="grade-card" data-grade="1">小一</button>
-        <button class="grade-card" data-grade="2">小二</button>
-        <button class="grade-card" data-grade="3">小三</button>
-      </div>
-
-      <!-- 第二層：選模組（先隱藏） -->
-      <div id="moduleSelect" style="display:none;">
-        <div class="subhead">
-          <button id="backToGrade" class="pill2">← 返回選年級</button>
-          <div id="pickedGradeText" class="picked">已選：小一</div>
-        </div>
-
-        <div id="moduleGrid" class="module-grid"></div>
-        <div class="hint" style="margin-top:10px;">
-          提示：內容以「教材概念順序」設計，使用符號/結構化呈現，避免圖片版權風險。
-        </div>
-      </div>
-    </div>
-
-    <div id="practice" class="card" style="display:none;">
-      <div class="practice-head">
-        <div id="chapterTitle" class="h1">練習</div>
-        <div id="timer" class="timer">⏱ 0 秒</div>
-      </div>
-
-      <div id="goalText" class="hint">目標：全對</div>
-
-      <div id="question" class="question">題目</div>
-      <div id="visual" class="visual" aria-label="題目圖示區"></div>
-
-      <div id="choices" class="choices"></div>
-
-      <div class="row">
-        <button id="next" class="pill2">下一題</button>
-        <button id="backToModules" class="pill2">返回模組</button>
-      </div>
-
-      <div id="status" class="status">請選擇答案</div>
-      <div id="report" class="report" style="display:none;"></div>
+  <div class="card" id="grade">
+    <h2>選擇年級</h2>
+    <div class="grade-grid">
+      <button class="grade-card" onclick="selectGrade(1)">小一</button>
+      <button class="grade-card" onclick="selectGrade(2)">小二</button>
+      <button class="grade-card" onclick="selectGrade(3)">小三</button>
     </div>
   </div>
 
-  <div id="confetti"></div>
+  <div class="card hidden" id="module">
+    <h2 id="gradeText"></h2>
+    <div class="module-grid" id="moduleGrid"></div>
+    <br>
+    <button onclick="back()">← 返回選年級</button>
+  </div>
+</div>
 
-  <script src="script.js"></script>
+<script>
+function selectGrade(g){
+  document.getElementById("grade").classList.add("hidden")
+  document.getElementById("module").classList.remove("hidden")
+  document.getElementById("gradeText").innerText="小"+g+" 可學內容"
+
+  let html=""
+  if(g===1){
+    html+=btn("數的認識（1–10）")
+    html+=btn("數的分解")
+    html+=btn("10以內加法")
+    html+=btn("10以內減法")
+    html+=btn("圖形配對")
+  }
+  if(g===2){
+    html+=btn("100以內加減")
+    html+=btn("乘法概念")
+    html+=btn("簡單除法")
+    html+=btn("單位換算")
+  }
+  if(g===3){
+    html+=btn("三位數加減")
+    html+=btn("九九乘法")
+    html+=btn("整除與餘數")
+    html+=btn("文字題")
+  }
+  document.getElementById("moduleGrid").innerHTML=html
+}
+
+function btn(t){
+  return `<button class="module">${t}</button>`
+}
+
+function back(){
+  document.getElementById("module").classList.add("hidden")
+  document.getElementById("grade").classList.remove("hidden")
+}
+</script>
 </body>
 </html>
