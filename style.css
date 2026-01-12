@@ -8,7 +8,6 @@
   --danger:#d32f2f;
   --muted:rgba(0,0,0,0.55);
   --shadow:0 6px 18px rgba(0,0,0,0.08);
-  --radius:18px;
 }
 
 body{
@@ -35,14 +34,10 @@ body{
   box-shadow:var(--shadow);
 }
 
-.brand{
-  display:flex;
-  gap:10px;
-  align-items:center;
-}
+.brand{ display:flex; gap:10px; align-items:center; }
 .logo{ font-size:26px; }
-.brandText .appName{ font-size:22px; font-weight:1000; letter-spacing:.5px; }
-.brandText .subName{ font-size:13px; opacity:.9; margin-top:2px; }
+.appName{ font-size:22px; font-weight:1000; letter-spacing:.5px; }
+.subName{ font-size:13px; opacity:.9; margin-top:2px; }
 
 .main{ margin-top:14px; }
 
@@ -65,10 +60,7 @@ body{
   margin-bottom:12px;
 }
 
-.h2{
-  font-size:20px;
-  font-weight:1000;
-}
+.h2{ font-size:20px; font-weight:1000; }
 .muted{ color:var(--muted); font-weight:800; font-size:13px; }
 .tip{ margin-top:10px; }
 
@@ -83,18 +75,19 @@ body{
   font-weight:1000;
   font-size:14px;
 }
-.btn.primary{
-  background:var(--primary);
-  color:#fff;
-}
+
+.btn.primary{ background:var(--primary); color:#fff; }
+.btn.danger{ background:#ffecec; color:var(--danger); }
+
 .btn.ghost{
   background:rgba(255,255,255,0.18);
   color:#fff;
   border:1px solid rgba(255,255,255,0.25);
 }
-.btn.danger{
-  background:#ffecec;
-  color:var(--danger);
+.btn.ghost2{
+  background:#eef7ff;
+  color:var(--primary);
+  border:1px solid rgba(30,136,229,0.18);
 }
 
 .pillInfo{
@@ -122,9 +115,7 @@ body{
 }
 .gradeCard .big{ font-size:22px; font-weight:1100; color:var(--primary); }
 .gradeCard .small{ font-size:12px; font-weight:900; color:var(--muted); margin-top:4px; }
-.gradeCard.active{
-  outline:3px solid rgba(30,136,229,0.25);
-}
+.gradeCard.active{ outline:3px solid rgba(30,136,229,0.25); }
 
 /* Chapters */
 .chapterGrid{
@@ -140,14 +131,10 @@ body{
   display:flex;
   align-items:center;
   gap:10px;
-  justify-content:flex-start;
 }
 .chapterCard .icon{ font-size:20px; }
 .chapterCard .name{ font-size:18px; font-weight:1000; color:var(--primary); }
-.chapterCard.disabled{
-  opacity:.4;
-  pointer-events:none;
-}
+.chapterCard.disabled{ opacity:.4; pointer-events:none; }
 
 /* Practice */
 .practiceTop{
@@ -158,10 +145,8 @@ body{
   margin-bottom:10px;
 }
 .meta{ display:flex; flex-direction:column; gap:2px; }
-.statBox{
-  display:flex;
-  gap:10px;
-}
+
+.statBox{ display:flex; gap:10px; }
 .stat{
   background:#f4f7f8;
   border-radius:14px;
@@ -186,17 +171,13 @@ body{
   border-radius:18px;
   padding:14px;
 }
-
 .questionText{
   font-size:22px;
   font-weight:1100;
   margin-bottom:12px;
 }
 
-.choices{
-  display:grid;
-  gap:10px;
-}
+.choices{ display:grid; gap:10px; }
 .choice{
   border:0;
   border-radius:16px;
@@ -210,17 +191,8 @@ body{
 .choice.correct{ outline:3px solid #2e7d32; }
 .choice.wrong{ outline:3px solid var(--danger); }
 
-.actions{
-  margin-top:12px;
-  display:flex;
-  justify-content:flex-end;
-}
-
-.statusText{
-  margin-top:10px;
-  font-size:15px;
-  font-weight:1100;
-}
+.actions{ margin-top:12px; display:flex; justify-content:flex-end; }
+.statusText{ margin-top:10px; font-size:15px; font-weight:1100; }
 
 .reportBox{
   margin-top:10px;
@@ -237,15 +209,8 @@ body{
   padding:12px 12px;
   margin:10px 0;
 }
-.historyList .item .t{
-  font-weight:1100;
-  margin-bottom:6px;
-}
-.historyList .item .s{
-  color:rgba(0,0,0,0.6);
-  font-weight:900;
-  font-size:13px;
-}
+.historyList .item .t{ font-weight:1100; margin-bottom:6px; }
+.historyList .item .s{ color:rgba(0,0,0,0.6); font-weight:900; font-size:13px; }
 
 /* Settings */
 .settingItem{
@@ -257,21 +222,6 @@ body{
   border-bottom:1px solid rgba(0,0,0,0.06);
 }
 .settingTitle{ font-weight:1100; }
-
-/* Switch */
-.switch{ position:relative; display:inline-block; width:48px; height:28px; }
-.switch input{ display:none; }
-.slider{
-  position:absolute; cursor:pointer; inset:0;
-  background:#ccc; border-radius:999px;
-  transition:.2s;
-}
-.slider:before{
-  content:""; position:absolute; height:22px; width:22px; left:3px; top:3px;
-  background:white; border-radius:50%; transition:.2s;
-}
-.switch input:checked + .slider{ background:var(--primary); }
-.switch input:checked + .slider:before{ transform:translateX(20px); }
 
 /* Bottom nav */
 .nav{
@@ -302,10 +252,7 @@ body{
   gap:4px;
 }
 .navBtn span{ font-size:12px; }
-.navBtn.active{
-  background:#eef7ff;
-  color:var(--primary);
-}
+.navBtn.active{ background:#eef7ff; color:var(--primary); }
 
 /* FX */
 #fx{ position:fixed; inset:0; pointer-events:none; }
