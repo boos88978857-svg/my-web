@@ -1,108 +1,195 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>我的學習機</title>
 
 <style>
 *{box-sizing:border-box}
 body{
   margin:0;
-  font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif;
   background:#f5f6f7;
 }
 .app{max-width:900px;margin:auto;padding:16px}
 .topbar{
-  display:flex;justify-content:space-between;align-items:center;
-  background:#13a6ad;color:#fff;
-  padding:14px;border-radius:14px
+  background:#16a6ad;color:#fff;
+  border-radius:16px;
+  padding:14px 16px;
+  display:flex;justify-content:space-between;align-items:center
 }
+.brand{font-size:26px;font-weight:900}
 .card{
-  background:#fff;margin-top:14px;
-  border-radius:20px;padding:16px
+  background:#fff;
+  border-radius:22px;
+  padding:18px;
+  margin-top:14px;
+  box-shadow:0 2px 10px rgba(0,0,0,.06)
 }
-.grade-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:12px
+h2{margin:0 0 12px;font-size:26px}
+.grid{
+  display:grid;
+  gap:16px;
 }
-.grade-card{
-  height:90px;border:0;border-radius:20px;
-  background:#e3f2fd;color:#1e88e5;
-  font-size:28px;font-weight:900
+.grade-grid{grid-template-columns:repeat(3,1fr)}
+.chapter-grid{grid-template-columns:repeat(2,1fr)}
+.btn{
+  height:100px;
+  border-radius:24px;
+  border:0;
+  background:#e9f2ff;
+  color:#1e88e5;
+  font-size:32px;
+  font-weight:900;
 }
-.module-grid{
-  display:grid;grid-template-columns:repeat(2,1fr);gap:12px
+.back{
+  background:#eee;
+  border-radius:14px;
+  padding:10px 14px;
+  border:0;
+  font-weight:700;
 }
-.module{
-  border:0;border-radius:20px;
-  background:#f0f0f0;
-  padding:16px;font-size:22px;font-weight:900
+.question{
+  font-size:28px;
+  font-weight:900;
+  margin:16px 0;
 }
-.hidden{display:none}
+.choices{
+  display:grid;
+  gap:10px;
+}
+.choice{
+  padding:14px;
+  font-size:22px;
+  font-weight:900;
+  border-radius:16px;
+  border:0;
+  background:#f1f1f1;
+}
+.choice.correct{outline:3px solid #2e7d32}
+.choice.wrong{outline:3px solid #d32f2f}
+.status{
+  margin-top:12px;
+  font-size:20px;
+  font-weight:900;
+}
 </style>
 </head>
 
 <body>
 <div class="app">
-  <div class="topbar">
-    <div>📘 我的學習機</div>
-    <button onclick="alert('家長模式稍後啟用')">家長模式</button>
-  </div>
 
-  <div class="card" id="grade">
-    <h2>選擇年級</h2>
-    <div class="grade-grid">
-      <button class="grade-card" onclick="selectGrade(1)">小一</button>
-      <button class="grade-card" onclick="selectGrade(2)">小二</button>
-      <button class="grade-card" onclick="selectGrade(3)">小三</button>
-    </div>
-  </div>
+<div class="topbar">
+  <div class="brand">📘 我的學習機</div>
+  <button class="back" onclick="alert('家長模式（下一步會加入）')">家長模式</button>
+</div>
 
-  <div class="card hidden" id="module">
-    <h2 id="gradeText"></h2>
-    <div class="module-grid" id="moduleGrid"></div>
-    <br>
-    <button onclick="back()">← 返回選年級</button>
+<!-- 年級選擇 -->
+<div id="gradePage" class="card">
+  <h2>選擇年級</h2>
+  <div class="grid grade-grid">
+    <button class="btn" onclick="selectGrade(1)">小一</button>
+    <button class="btn" onclick="selectGrade(2)">小二</button>
+    <button class="btn" onclick="selectGrade(3)">小三</button>
   </div>
 </div>
 
+<!-- 章節選擇 -->
+<div id="chapterPage" class="card" style="display:none">
+  <button class="back" onclick="backToGrade()">← 返回年級</button>
+  <h2 id="chapterTitle">選擇章節</h2>
+  <div class="grid chapter-grid">
+    <button class="btn" onclick="startQuiz('add')">加法</button>
+    <button class="btn" onclick="startQuiz('sub')">減法</button>
+    <button class="btn" onclick="startQuiz('mul')">乘法</button>
+    <button class="btn" onclick="startQuiz('div')">除法</button>
+  </div>
+</div>
+
+<!-- 練習 -->
+<div id="quizPage" class="card" style="display:none">
+  <button class="back" onclick="backToChapter()">← 返回章節</button>
+  <div id="quizInfo" style="margin-top:10px;font-weight:900"></div>
+  <div id="question" class="question"></div>
+  <div id="choices" class="choices"></div>
+  <div id="status" class="status"></div>
+</div>
+
+</div>
+
 <script>
+let grade=1,op="",answer=0,locked=false;
+
 function selectGrade(g){
-  document.getElementById("grade").classList.add("hidden")
-  document.getElementById("module").classList.remove("hidden")
-  document.getElementById("gradeText").innerText="小"+g+" 可學內容"
-
-  let html=""
-  if(g===1){
-    html+=btn("數的認識（1–10）")
-    html+=btn("數的分解")
-    html+=btn("10以內加法")
-    html+=btn("10以內減法")
-    html+=btn("圖形配對")
-  }
-  if(g===2){
-    html+=btn("100以內加減")
-    html+=btn("乘法概念")
-    html+=btn("簡單除法")
-    html+=btn("單位換算")
-  }
-  if(g===3){
-    html+=btn("三位數加減")
-    html+=btn("九九乘法")
-    html+=btn("整除與餘數")
-    html+=btn("文字題")
-  }
-  document.getElementById("moduleGrid").innerHTML=html
+  grade=g;
+  document.getElementById("gradePage").style.display="none";
+  document.getElementById("chapterPage").style.display="block";
+  document.getElementById("chapterTitle").innerText=`小${grade} 選擇章節`;
 }
 
-function btn(t){
-  return `<button class="module">${t}</button>`
+function backToGrade(){
+  document.getElementById("chapterPage").style.display="none";
+  document.getElementById("gradePage").style.display="block";
 }
 
-function back(){
-  document.getElementById("module").classList.add("hidden")
-  document.getElementById("grade").classList.remove("hidden")
+function backToChapter(){
+  document.getElementById("quizPage").style.display="none";
+  document.getElementById("chapterPage").style.display="block";
+}
+
+function startQuiz(o){
+  op=o;
+  document.getElementById("chapterPage").style.display="none";
+  document.getElementById("quizPage").style.display="block";
+  nextQuestion();
+}
+
+function rand(max){return Math.floor(Math.random()*max)}
+function nextQuestion(){
+  locked=false;
+  const q=document.getElementById("question");
+  const c=document.getElementById("choices");
+  const s=document.getElementById("status");
+  c.innerHTML="";s.innerText="";
+
+  let a,b;
+  if(grade===1){
+    a=rand(20);b=rand(20-a);
+  }else if(grade===2){
+    a=rand(100);b=rand(10);
+  }else{
+    a=rand(1000);b=rand(12);
+  }
+
+  if(op==="add"){answer=a+b;q.innerText=`${a} + ${b} = ?`}
+  if(op==="sub"){if(b>a)[a,b]=[b,a];answer=a-b;q.innerText=`${a} - ${b} = ?`}
+  if(op==="mul"){answer=a*b;q.innerText=`${a} × ${b} = ?`}
+  if(op==="div"){b=b||1;answer=Math.floor(a/b);a=answer*b;q.innerText=`${a} ÷ ${b} = ?`}
+
+  const options=[answer,answer+1,answer-1].sort(()=>Math.random()-0.5);
+  options.forEach(v=>{
+    const btn=document.createElement("button");
+    btn.className="choice";
+    btn.innerText=v;
+    btn.onclick=()=>choose(v,btn);
+    c.appendChild(btn);
+  });
+}
+
+function choose(v,btn){
+  if(locked)return;
+  locked=true;
+  if(v===answer){
+    btn.classList.add("correct");
+    document.getElementById("status").innerText="答對了 ✅";
+    setTimeout(nextQuestion,500);
+  }else{
+    btn.classList.add("wrong");
+    document.getElementById("status").innerText="答錯了 ❌";
+  }
 }
 </script>
+
 </body>
 </html>
