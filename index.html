@@ -4,75 +4,164 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>我的學習機</title>
-  <link rel="stylesheet" href="style.css" />
+
+  <!-- 字型設定（不侵權，系統字） -->
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #f5f6f7;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "PingFang TC",
+        "Microsoft JhengHei",
+        "Noto Sans TC",
+        sans-serif;
+      color: #111;
+    }
+
+    .app {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    /* ===== 上方標題 ===== */
+    .topbar {
+      background: #13a6ad;
+      color: #fff;
+      border-radius: 16px;
+      padding: 18px;
+      font-size: 28px;
+      font-weight: 900;
+      text-align: center;
+    }
+
+    /* ===== 卡片 ===== */
+    .card {
+      background: #fff;
+      border-radius: 22px;
+      padding: 20px;
+      margin-top: 18px;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 26px;
+      font-weight: 900;
+    }
+
+    /* ===== 模組卡 ===== */
+    .module {
+      background: #e3f2fd;
+      border-radius: 20px;
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+
+    .module-title {
+      font-size: 24px;
+      font-weight: 900;
+      color: #1e88e5;
+      line-height: 1.4;
+    }
+
+    .module-desc {
+      margin-top: 10px;
+      font-size: 18px;
+      line-height: 1.8;
+      color: #333;
+    }
+
+    /* ===== 注音設定（關鍵） ===== */
+    ruby {
+      ruby-position: over;
+    }
+
+    rt {
+      font-size: 0.45em;
+      color: #666;
+      font-weight: 600;
+    }
+  </style>
 </head>
+
 <body>
-
   <div class="app">
+
+    <!-- 標題 -->
     <div class="topbar">
-      <div class="brand">
-        <span class="book">📘</span>
-        <span class="title">我的學習機</span>
-      </div>
-      <button id="parentBtn" class="pill">家長模式</button>
+      📘 我的學習機
     </div>
 
-    <div id="chapters" class="card">
-      <h2>學習紀錄</h2>
-      <div class="row">
-        <button id="refreshHistoryBtn" class="pill2">更新紀錄</button>
-        <button id="clearHistoryBtn" class="pill2 danger">清除紀錄</button>
-      </div>
-      <div id="historyList" class="history"></div>
+    <!-- 小一模組 -->
+    <div class="card">
+      <h2>小一數學</h2>
 
-      <hr class="sep"/>
-
-      <h2>選擇年級</h2>
-
-      <div id="gradeSelect" class="grade-grid">
-        <button class="grade-card" data-grade="1">小一</button>
-        <button class="grade-card" data-grade="2">小二</button>
-        <button class="grade-card" data-grade="3">小三</button>
-      </div>
-
-      <div id="chapterSelect" style="display:none;">
-        <div class="subhead">
-          <button id="backToGrade" class="pill2">← 返回選年級</button>
-          <div id="pickedGradeText" class="picked">已選：小一</div>
+      <!-- 模組 1 -->
+      <div class="module">
+        <div class="module-title">
+          <ruby>數<rt>ㄕㄨˋ</rt></ruby>
+          <ruby>與<rt>ㄩˇ</rt></ruby>
+          <ruby>數<rt>ㄕㄨˋ</rt></ruby>
+          <ruby>量<rt>ㄌㄧㄤˋ</rt></ruby>
+          （0～20）
         </div>
 
-        <div class="chapter-grid">
-          <button id="btnAdd" class="btn">加法</button>
-          <button id="btnSub" class="btn">減法</button>
-          <button id="btnMul" class="btn">乘法</button>
-          <button id="btnDiv" class="btn">除法</button>
+        <div class="module-desc">
+          <ruby>認<rt>ㄖㄣˋ</rt></ruby>
+          <ruby>識<rt>ㄕˋ</rt></ruby>
+          <ruby>數<rt>ㄕㄨˋ</rt></ruby>
+          <ruby>字<rt>ㄗˋ</rt></ruby>，
+          <ruby>一<rt>ㄧ</rt></ruby>
+          <ruby>個<rt>ㄍㄜˋ</rt></ruby>
+          <ruby>一<rt>ㄧ</rt></ruby>
+          <ruby>個<rt>ㄍㄜˋ</rt></ruby>
+          <ruby>數<rt>ㄕㄨˋ</rt></ruby>
+          <ruby>出<rt>ㄔㄨ</rt></ruby>
+          <ruby>來<rt>ㄌㄞˊ</rt></ruby>，
+          <ruby>建<rt>ㄐㄧㄢˋ</rt></ruby>
+          <ruby>立<rt>ㄌㄧˋ</rt></ruby>
+          <ruby>數<rt>ㄕㄨˋ</rt></ruby>
+          <ruby>量<rt>ㄌㄧㄤˋ</rt></ruby>
+          <ruby>概<rt>ㄍㄞˋ</rt></ruby>
+          <ruby>念<rt>ㄋㄧㄢˋ</rt></ruby>。
+        </div>
+      </div>
+
+      <!-- 模組 2 -->
+      <div class="module">
+        <div class="module-title">
+          <ruby>十<rt>ㄕˊ</rt></ruby>
+          <ruby>與<rt>ㄩˇ</rt></ruby>
+          <ruby>一<rt>ㄧ</rt></ruby>
+          （<ruby>位<rt>ㄨㄟˋ</rt></ruby><ruby>值<rt>ㄓˊ</rt></ruby>）
         </div>
 
-        <p class="hint">※ 小一暫不開放乘除，小二／小三會自動解鎖</p>
+        <div class="module-desc">
+          例：
+          34 =
+          3
+          <ruby>個<rt>ㄍㄜˋ</rt></ruby>
+          <ruby>十<rt>ㄕˊ</rt></ruby>
+          +
+          4
+          <ruby>個<rt>ㄍㄜˋ</rt></ruby>
+          <ruby>一<rt>ㄧ</rt></ruby>，
+          <ruby>理<rt>ㄌㄧˇ</rt></ruby>
+          <ruby>解<rt>ㄐㄧㄝˇ</rt></ruby>
+          <ruby>數<rt>ㄕㄨˋ</rt></ruby>
+          <ruby>的<rt>˙ㄉㄜ</rt></ruby>
+          <ruby>組<rt>ㄗㄨˇ</rt></ruby>
+          <ruby>成<rt>ㄔㄥˊ</rt></ruby>。
+        </div>
       </div>
-    </div>
 
-    <div id="practice" class="card" style="display:none;">
-      <div class="practice-head">
-        <div id="chapterTitle" class="h1">練習</div>
-      </div>
-
-      <div id="goalText" class="hint">目標：全對</div>
-
-      <div id="question" class="question">題目</div>
-      <div id="choices" class="choices"></div>
-
-      <div class="row">
-        <button id="next" class="pill2">下一題</button>
-      </div>
-
-      <div id="status" class="status">請選擇答案</div>
-      <div id="report" class="report" style="display:none;"></div>
     </div>
   </div>
-
-  <div id="confetti"></div>
-
-  <script src="script.js"></script>
 </body>
 </html>
