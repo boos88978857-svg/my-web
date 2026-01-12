@@ -8,82 +8,55 @@
 </head>
 <body>
 
-  <div class="app">
-    <div class="topbar">
-      <div class="brand">
-        <span class="book">📘</span>
-        <span class="title">我的學習機</span>
-      </div>
-      <button id="parentBtn" class="pill">家長模式</button>
-    </div>
-
-    <div id="chapters" class="card">
-      <h2>學習紀錄</h2>
-      <div class="row">
-        <button id="refreshHistoryBtn" class="pill2">更新紀錄</button>
-        <button id="clearHistoryBtn" class="pill2 danger">清除紀錄</button>
-      </div>
-      <div id="historyList" class="history"></div>
-
-      <hr class="sep"/>
-
-      <h2>選擇章節</h2>
-
-      <!-- 第一層：選年級（大圖標） -->
-      <div id="gradeSelect" class="grade-grid">
-        <button class="grade-card" data-grade="1">小1</button>
-        <button class="grade-card" data-grade="2">小2</button>
-        <button class="grade-card" data-grade="3">小3</button>
-      </div>
-
-      <!-- 第二層：選章節（先隱藏） -->
-      <div id="chapterSelect" style="display:none;">
-        <div class="subhead">
-          <button id="backToGrade" class="pill2">← 返回選年級</button>
-          <div id="pickedGradeText" class="picked">已選：小1</div>
-        </div>
-
-        <div class="chapter-grid">
-          <button id="btnAdd" class="btn">加法</button>
-          <button id="btnSub" class="btn">減法</button>
-          <button id="btnMul" class="btn">乘法</button>
-          <button id="btnDiv" class="btn">除法</button>
-        </div>
-
-        <div class="hint" style="margin-top:10px;">
-          小1 乘除先鎖定（灰色不可按），小2/小3 會自動開放。
-        </div>
-      </div>
-    </div>
-
-    <div id="practice" class="card" style="display:none;">
-      <div class="practice-head">
-        <div id="chapterTitle" class="h1">練習</div>
-      </div>
-
-      <div class="stats">
-        <div class="stat"><span class="icon">⏱️</span><span id="timerText">0s</span></div>
-        <div class="stat"><span class="icon">📌</span><span id="progressText">0/0</span></div>
-        <div class="stat"><span class="icon">✅</span><span id="correctText">0</span></div>
-        <div class="stat"><span class="icon">❌</span><span id="wrongText">0</span></div>
-      </div>
-
-      <div id="goalText" class="hint">目標：全對</div>
-
-      <div id="question" class="question">題目</div>
-      <div id="choices" class="choices"></div>
-
-      <div class="row">
-        <button id="next" class="pill2">下一題</button>
-      </div>
-
-      <div id="status" class="status">請選擇答案</div>
-      <div id="report" class="report" style="display:none;"></div>
+<div class="app">
+  <div class="topbar">
+    <div class="brand">
+      <span class="book">📘</span>
+      <span class="title">我的學習機</span>
     </div>
   </div>
 
-  <div id="confetti"></div>
+  <!-- 小一模組選擇 -->
+  <div id="modules" class="card">
+    <h2>小一數學</h2>
 
-  <script src="script.js"></script>
+    <div class="module-grid">
+      <button class="module" data-module="count">
+        數與數量
+        <div class="bpmf">ㄕㄨˋ ㄩˇ ㄕㄨˋ ㄌㄧㄤˋ</div>
+      </button>
+
+      <button class="module" data-module="number100">
+        認識100
+        <div class="bpmf">ㄖㄣˋ ㄕˋ ㄧ ㄅㄞˇ</div>
+      </button>
+
+      <button class="module" data-module="place">
+        十與一
+        <div class="bpmf">ㄕˊ ㄩˇ ㄧ</div>
+      </button>
+
+      <button class="module" data-module="make10">
+        湊10
+        <div class="bpmf">ㄘㄡˋ ㄕˊ</div>
+      </button>
+
+      <button class="module" data-module="addsub">
+        20內加減
+        <div class="bpmf">ㄐㄧㄚ ㄐㄧㄢˇ</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- 練習畫面 -->
+  <div id="practice" class="card" style="display:none;">
+    <div id="question" class="question"></div>
+    <div id="choices" class="choices"></div>
+    <div id="status" class="status"></div>
+    <button id="next" class="pill2">下一題</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
