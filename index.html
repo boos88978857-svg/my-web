@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-Hant-TW">
+<html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -18,10 +18,10 @@
     </div>
 
     <div id="chapters" class="card">
-      <h2>學習記錄</h2>
+      <h2>學習紀錄</h2>
       <div class="row">
-        <button id="refreshHistoryBtn" class="pill2">更新記錄</button>
-        <button id="clearHistoryBtn" class="pill2 danger">清除記錄</button>
+        <button id="refreshHistoryBtn" class="pill2">更新紀錄</button>
+        <button id="clearHistoryBtn" class="pill2 danger">清除紀錄</button>
       </div>
       <div id="historyList" class="history"></div>
 
@@ -29,18 +29,18 @@
 
       <h2>選擇章節</h2>
 
-      <!-- 第一層：選年級（大圖標） -->
+      <!-- 第一層：選年級（大圖示） -->
       <div id="gradeSelect" class="grade-grid">
-        <button class="grade-card" data-grade="1">小1</button>
-        <button class="grade-card" data-grade="2">小2</button>
-        <button class="grade-card" data-grade="3">小3</button>
+        <button class="grade-card" data-grade="1">小一</button>
+        <button class="grade-card" data-grade="2">小二</button>
+        <button class="grade-card" data-grade="3">小三</button>
       </div>
 
       <!-- 第二層：選章節（先隱藏） -->
       <div id="chapterSelect" style="display:none;">
         <div class="subhead">
           <button id="backToGrade" class="pill2">← 返回選年級</button>
-          <div id="pickedGradeText" class="picked">已選：小1</div>
+          <div id="pickedGradeText" class="picked">已選：小一</div>
         </div>
 
         <div class="chapter-grid">
