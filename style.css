@@ -60,83 +60,107 @@ h2{
   border: 1px solid rgba(0,0,0,0.06);
 }
 
-.module-head{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap: 12px;
-}
-
-.module-title{
-  width: 100%;
+.module-title,
+.module-body{
   background:#dff1ff;
   border-radius: 18px;
   padding: 14px;
 }
 
-/* ===== 直排＋注音在右側（關鍵） ===== */
+.module-body{ margin-top: 12px; }
+
+/* ===== 直排區塊（課本感）===== */
 .vertical-title,
 .vertical-text{
-  writing-mode: vertical-rl;       /* 直排：像課本 */
-  text-orientation: upright;       /* 數字/字保持直立 */
-  line-height: 1.15;
-  letter-spacing: 0.02em;
+  writing-mode: vertical-rl;
+  text-orientation: upright;
 }
 
-/* 注音 ruby 在直排時放在「字的右邊」 */
-ruby{
-  ruby-position: inter-character;  /* 直排：注音出現在右側 */
-  ruby-align: center;
+/* ===== ✅ 關鍵：把每個字做成「固定格」讓整體對稱 ===== */
+/* 每個 ruby 變成固定尺寸的格子 */
+.vertical-title ruby,
+.vertical-text ruby{
+  display: inline-flex;
+  flex-direction: row;         /* 直排時 ruby 的主字仍是直立 */
+  align-items: center;
+  justify-content: center;
+
+  /* 固定格子大小（可依你喜好微調） */
+  width: 1.25em;               /* 主字格寬 */
+  height: 1.25em;              /* 主字格高 */
 }
 
-/* 注音字體大小 */
-rt{
+/* 主字固定尺寸 */
+.vertical-title rb,
+.vertical-text rb{
+  display:inline-block;
+  width: 1em;
+  text-align: center;
+}
+
+/* ✅ 注音固定寬度，避免左右忽大忽小 */
+.vertical-title rt,
+.vertical-text rt{
+  display:inline-block;
+  width: 0.95em;               /* 注音欄寬度固定 */
+  text-align: center;
   font-size: 0.55em;
   opacity: 0.85;
 }
 
-/* 讓標題更醒目 */
+/* iPhone Safari：直排注音右側 */
+ruby{
+  ruby-position: inter-character;
+  ruby-align: center;
+}
+
+/* 標題樣式 */
 .vertical-title{
   font-size: 30px;
   font-weight: 1000;
   color:#1e88e5;
+  letter-spacing: 0.02em;
 }
 
-/* 標題中的（0～20）改成比較細 */
+/* 標題中的（0～20） */
 .vertical-title .range{
-  color:#1e88e5;
-  font-weight: 900;
+  display:inline-block;
   font-size: 0.75em;
+  font-weight: 900;
+  color:#1e88e5;
 }
 
-/* 直排時的空白間隔 */
+/* 直排空白 */
 .v-gap{
   display:inline-block;
   height: 10px;
 }
 
-/* 內文 */
-.module-body{
-  margin-top: 12px;
-  background:#dff1ff;
-  border-radius: 18px;
-  padding: 14px;
-}
-
+/* 內文字體 */
 .vertical-text{
   font-size: 20px;
   font-weight: 900;
   color:#111;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+
+  /* ✅ 加一點內距讓排版更舒服 */
+  padding: 4px 2px;
   min-height: 140px;
 }
 
-/* 直排標點符號用小一點避免擠壓 */
+/* ✅ 標點也做固定格（不然標點會讓整段歪） */
 .punct{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width: 1.25em;
+  height: 1.25em;
   font-size: 0.9em;
   opacity: 0.9;
 }
 
-/* 註解提示 */
+/* 註解 */
 .note{
   margin-top: 10px;
   font-size: 14px;
