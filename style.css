@@ -2,7 +2,7 @@
 
 body{
   margin:0;
-  font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", system-ui, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
   background:#f5f6f7;
   color:#111;
 }
@@ -19,13 +19,13 @@ body{
   justify-content:space-between;
   background:#13a6ad;
   color:#fff;
-  border-radius: 16px;
+  border-radius: 14px;
   padding: 14px 16px;
   margin-bottom: 14px;
 }
 
 .brand{ display:flex; gap:10px; align-items:center; }
-.brand .title{ font-size: 28px; font-weight: 900; letter-spacing: 1px; }
+.brand .title{ font-size: 28px; font-weight: 900; }
 .brand .book{ font-size: 24px; }
 
 .pill{
@@ -46,94 +46,101 @@ body{
 }
 
 h2{
-  margin: 6px 0 12px;
+  margin: 6px 0 14px;
+  font-size: 32px;
+  font-weight: 1000;
+}
+
+/* ===== 模組卡片 ===== */
+.module{
+  background:#ffffff;
+  border-radius: 20px;
+  padding: 14px;
+  margin: 14px 0;
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+.module-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap: 12px;
+}
+
+.module-title{
+  width: 100%;
+  background:#dff1ff;
+  border-radius: 18px;
+  padding: 14px;
+}
+
+/* ===== 直排＋注音在右側（關鍵） ===== */
+.vertical-title,
+.vertical-text{
+  writing-mode: vertical-rl;       /* 直排：像課本 */
+  text-orientation: upright;       /* 數字/字保持直立 */
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+}
+
+/* 注音 ruby 在直排時放在「字的右邊」 */
+ruby{
+  ruby-position: inter-character;  /* 直排：注音出現在右側 */
+  ruby-align: center;
+}
+
+/* 注音字體大小 */
+rt{
+  font-size: 0.55em;
+  opacity: 0.85;
+}
+
+/* 讓標題更醒目 */
+.vertical-title{
   font-size: 30px;
   font-weight: 1000;
-}
-
-.hint{
-  background: #f3f6f7;
-  border-radius: 14px;
-  padding: 12px 14px;
-  color:#333;
-  font-weight: 800;
-  line-height: 1.35;
-  margin-bottom: 14px;
-}
-
-/* 模組卡片 */
-.module-grid{
-  display:grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
-}
-
-@media (max-width: 520px){
-  .module-grid{ grid-template-columns: 1fr; }
-}
-
-.module{
-  border: 0;
-  text-align: left;
-  width: 100%;
-  border-radius: 22px;
-  padding: 16px;
-  background:#e9f4ff;
-  box-shadow: 0 1px 0 rgba(0,0,0,0.02);
-}
-
-.module .m-title{
-  font-size: 26px;
-  font-weight: 1000;
   color:#1e88e5;
-  margin-bottom: 8px;
 }
 
-.module .m-desc{
-  font-size: 18px;
+/* 標題中的（0～20）改成比較細 */
+.vertical-title .range{
+  color:#1e88e5;
   font-weight: 900;
-  color:#222;
-  line-height: 1.5;
+  font-size: 0.75em;
 }
 
-/* =========================
-   ✅ 注音在「字的右邊」
-   每個字一個盒子：字在左，注音直排貼右側
-   ========================= */
-.zh{
-  display: inline-block;
-  vertical-align: baseline;
-  line-height: 1.55;
+/* 直排時的空白間隔 */
+.v-gap{
+  display:inline-block;
+  height: 10px;
 }
 
-.hz{
-  position: relative;
-  display: inline-block;
-  padding-right: 1.05em;   /* 右邊留出給注音 */
-  margin-right: 0.05em;
+/* 內文 */
+.module-body{
+  margin-top: 12px;
+  background:#dff1ff;
+  border-radius: 18px;
+  padding: 14px;
 }
 
-/* 字本體 */
-.hz .ch{
-  font-size: 1em;
+.vertical-text{
+  font-size: 20px;
   font-weight: 900;
+  color:#111;
+  min-height: 140px;
 }
 
-/* 注音：固定在字右側，直排 */
-.hz .zy{
-  position: absolute;
-  right: 0.1em;
-  top: 0.05em;
-  font-size: 0.56em;
+/* 直排標點符號用小一點避免擠壓 */
+.punct{
+  font-size: 0.9em;
+  opacity: 0.9;
+}
+
+/* 註解提示 */
+.note{
+  margin-top: 10px;
+  font-size: 14px;
   font-weight: 800;
-  color: rgba(0,0,0,0.65);
-  writing-mode: vertical-rl;
-  text-orientation: upright;
-  letter-spacing: 0;
-  line-height: 1;
-  pointer-events: none;
+  color:#3a3a3a;
+  opacity: 0.9;
 }
-
-/* 讓數字/符號不要被注音搞亂 */
-.hz.is-num{ padding-right: 0.2em; }
-.hz.is-num .zy{ display:none; }
