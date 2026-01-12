@@ -19,80 +19,15 @@
     <div class="card">
       <h2>小一數學</h2>
 
-      <!-- 模組卡片 -->
-      <div class="module">
-        <div class="module-box">
-          <div class="module-head">
-            <div class="anno-line" id="m1Title"></div>
-          </div>
-
-          <div class="module-body">
-            <div class="anno-line" id="m1Body"></div>
-          </div>
-        </div>
-
-        <div class="note">提示：注音是「在字的右邊」直排（課本排版）。</div>
+      <div class="module-box">
+        <div class="anno-paragraph" id="m1Title"></div>
+        <div class="anno-paragraph body" id="m1Body"></div>
       </div>
+
+      <div class="note">注音：在每個字的右邊（直排），文字整體仍維持橫排閱讀。</div>
     </div>
   </div>
 
-  <script>
-    /**
-     * 生成「主字 + 右側直排注音」的排版
-     * text: 文字字串（建議：不要太長）
-     * zys:  注音陣列（長度要等於 text 的字數；沒注音用 ""）
-     */
-    function renderZhuyinLine(el, text, zys) {
-      if (!el) return;
-      el.innerHTML = "";
-
-      const chars = Array.from(text);
-      if (!Array.isArray(zys) || zys.length !== chars.length) {
-        // 長度不對就先全部不顯示注音（避免壞版）
-        zys = chars.map(() => "");
-      }
-
-      chars.forEach((ch, i) => {
-        // 標點符號當作「無注音字格」
-        const isPunct = /[，。、！？；：「」『』（）()【】《》…·\s]/.test(ch);
-
-        const cell = document.createElement("span");
-        cell.className = "zy-cell" + (isPunct ? " punct" : "");
-
-        const main = document.createElement("span");
-        main.className = "zy-main";
-        main.textContent = ch;
-
-        const zy = document.createElement("span");
-        zy.className = "zy-rt";
-        zy.textContent = zys[i] || "";
-
-        cell.appendChild(main);
-        cell.appendChild(zy);
-        el.appendChild(cell);
-      });
-    }
-
-    // ======= 範例：你可以照這種格式一直加模組 =======
-
-    // 標題：數與數量（0～20）
-    const titleText = "數與數量（0～20）";
-    // 對應每個字的注音（沒注音填 ""）
-    const titleZy = [
-      "ㄕㄨˋ","ㄩˇ","ㄕㄨˋ","ㄌㄧㄤˋ",
-      "","","","","",""  // （ 0 ～ 2 0 ） 這些不需要注音
-    ];
-
-    // 內文：認識數字，一個一個數出來，建立數量概念。
-    const bodyText = "認識數字，一個一個數出來，建立數量概念。";
-    const bodyZy = [
-      "ㄖㄣˋ","ㄕˋ","ㄕㄨˋ","ㄗˋ","",
-      "ㄧ","ㄍㄜˋ","ㄧ","ㄍㄜˋ","ㄕㄨˇ","ㄔㄨ","ㄌㄞˊ","",
-      "ㄐㄧㄢˋ","ㄌㄧˋ","ㄕㄨˋ","ㄌㄧㄤˋ","ㄍㄞˋ","ㄋㄧㄢˋ",""
-    ];
-
-    renderZhuyinLine(document.getElementById("m1Title"), titleText, titleZy);
-    renderZhuyinLine(document.getElementById("m1Body"), bodyText, bodyZy);
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
