@@ -13,29 +13,37 @@
         <span class="book">📘</span>
         <span class="title">我的學習機</span>
       </div>
-      <button class="pill" type="button">家長模式</button>
+      <button id="parentBtn" class="pill" type="button">家長模式</button>
     </div>
 
     <div class="card">
       <h2>小一數學</h2>
 
-      <!-- 模組卡 -->
+      <!-- ✅ 橫排卡片 + 右側注音欄（選項欄） -->
       <div class="module-card">
         <div class="module-head">
           <div class="module-title">數與數量（0～20）</div>
-          <div class="module-sub">（課本直排＋注音在右側）</div>
+          <div class="module-sub">橫排顯示｜右側注音欄（不使用直排）</div>
         </div>
 
-        <!-- 這裡是「課本直排」顯示區 -->
-        <div class="textbook-frame">
-          <div id="tbTitle" class="textbook-line"></div>
-          <div class="textbook-gap"></div>
-          <div id="tbBody" class="textbook-line"></div>
+        <div class="reading-panel">
+          <!-- 左：中文內容 -->
+          <div class="reading-main">
+            <div id="mainTitle" class="reading-title"></div>
+            <div id="mainBody" class="reading-body"></div>
+          </div>
+
+          <!-- 右：注音欄（選項欄） -->
+          <aside class="reading-side" aria-label="注音欄">
+            <div class="side-title">注音提示</div>
+            <div id="zhuyinList" class="zhuyin-list"></div>
+            <div class="side-hint">可改成「顯示/隱藏」按鈕（之後加）</div>
+          </aside>
         </div>
       </div>
 
       <div class="hint">
-        ※ 你要的「注音在字右邊」＝直排教材版式，所以本頁採用直排呈現。
+        ※ 這版不做「注音在字右邊（直排）」；改成「右側注音欄」，手機版面最穩。
       </div>
     </div>
   </div>
