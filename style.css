@@ -1,5 +1,4 @@
 * { box-sizing: border-box; }
-
 body{
   margin:0;
   font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
@@ -7,11 +6,7 @@ body{
   color:#111;
 }
 
-.app{
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 16px;
-}
+.app{ max-width: 980px; margin: 0 auto; padding: 16px; }
 
 .topbar{
   display:flex;
@@ -23,7 +18,6 @@ body{
   padding: 14px 16px;
   margin-bottom: 14px;
 }
-
 .brand{ display:flex; gap:10px; align-items:center; }
 .brand .title{ font-size: 28px; font-weight: 900; }
 .brand .book{ font-size: 24px; }
@@ -47,124 +41,93 @@ body{
 
 h2{
   margin: 6px 0 14px;
-  font-size: 32px;
+  font-size: 34px;
   font-weight: 1000;
 }
 
-/* ===== 模組卡片 ===== */
+/* ===== 模組 ===== */
 .module{
-  background:#ffffff;
-  border-radius: 20px;
-  padding: 14px;
-  margin: 14px 0;
-  border: 1px solid rgba(0,0,0,0.06);
+  margin-top: 12px;
 }
 
-.module-title,
-.module-body{
+.module-box{
   background:#dff1ff;
-  border-radius: 18px;
-  padding: 14px;
+  border-radius: 22px;
+  padding: 16px;
 }
 
-.module-body{ margin-top: 12px; }
-
-/* ===== 直排區塊（課本感）===== */
-.vertical-title,
-.vertical-text{
-  writing-mode: vertical-rl;
-  text-orientation: upright;
+.module-head{
+  margin-bottom: 12px;
 }
 
-/* ===== ✅ 關鍵：把每個字做成「固定格」讓整體對稱 ===== */
-/* 每個 ruby 變成固定尺寸的格子 */
-.vertical-title ruby,
-.vertical-text ruby{
+/* ===== ✅ 注音排版（重點） =====
+   需求：橫排中文字，每個字右邊有一列直排注音（像課本）
+*/
+.anno-line{
+  display: flex;
+  flex-wrap: wrap;          /* 可換行 */
+  gap: 6px;                 /* 字格間距 */
+  align-items: flex-start;
+}
+
+/* 每個字格：左主字、右注音 */
+.zy-cell{
   display: inline-flex;
-  flex-direction: row;         /* 直排時 ruby 的主字仍是直立 */
+  flex-direction: row;      /* 主字在左，注音在右 */
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 
-  /* 固定格子大小（可依你喜好微調） */
-  width: 1.25em;               /* 主字格寬 */
-  height: 1.25em;              /* 主字格高 */
+  padding: 2px 2px;
+  border-radius: 10px;
 }
 
-/* 主字固定尺寸 */
-.vertical-title rb,
-.vertical-text rb{
-  display:inline-block;
-  width: 1em;
-  text-align: center;
-}
-
-/* ✅ 注音固定寬度，避免左右忽大忽小 */
-.vertical-title rt,
-.vertical-text rt{
-  display:inline-block;
-  width: 0.95em;               /* 注音欄寬度固定 */
-  text-align: center;
-  font-size: 0.55em;
-  opacity: 0.85;
-}
-
-/* iPhone Safari：直排注音右側 */
-ruby{
-  ruby-position: inter-character;
-  ruby-align: center;
-}
-
-/* 標題樣式 */
-.vertical-title{
-  font-size: 30px;
+/* 主字 */
+.zy-main{
+  font-size: 34px;
   font-weight: 1000;
   color:#1e88e5;
-  letter-spacing: 0.02em;
+  line-height: 1;
+  width: 1.05em;            /* 固定寬，對齊更整齊 */
+  text-align: center;
 }
 
-/* 標題中的（0～20） */
-.vertical-title .range{
-  display:inline-block;
-  font-size: 0.75em;
+/* 注音：直排、在右邊 */
+.zy-rt{
+  font-family: "Noto Sans Bopomofo", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  font-size: 14px;
   font-weight: 900;
-  color:#1e88e5;
+  color: rgba(0,0,0,0.7);
+
+  writing-mode: vertical-rl;     /* 直排 */
+  text-orientation: upright;
+  line-height: 1.05;
+
+  width: 0.9em;                  /* 固定注音欄寬 */
+  text-align: center;
+
+  margin-left: 4px;
 }
 
-/* 直排空白 */
-.v-gap{
-  display:inline-block;
-  height: 10px;
-}
-
-/* 內文字體 */
-.vertical-text{
-  font-size: 20px;
+/* 內文主字變黑、比標題小 */
+.module-body .zy-main{
+  font-size: 22px;
   font-weight: 900;
   color:#111;
-  letter-spacing: 0.02em;
-  line-height: 1.15;
-
-  /* ✅ 加一點內距讓排版更舒服 */
-  padding: 4px 2px;
-  min-height: 140px;
 }
 
-/* ✅ 標點也做固定格（不然標點會讓整段歪） */
-.punct{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  width: 1.25em;
-  height: 1.25em;
-  font-size: 0.9em;
-  opacity: 0.9;
+/* 標點也占一格，但不要注音 */
+.zy-cell.punct .zy-rt{
+  display:none;
+}
+.zy-cell.punct .zy-main{
+  width: 1em;
+  color:#111;
 }
 
 /* 註解 */
 .note{
   margin-top: 10px;
   font-size: 14px;
-  font-weight: 800;
-  color:#3a3a3a;
-  opacity: 0.9;
+  font-weight: 900;
+  color: rgba(0,0,0,0.6);
 }
