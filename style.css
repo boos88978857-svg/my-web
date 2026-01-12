@@ -203,3 +203,35 @@ button, .choice, .grade-card, .btn, .pill, .pill2{
   -webkit-tap-highlight-color: transparent;
   cursor: pointer;
 }
+
+/* ===== 移动端自适应：避免只挤在左上角、比例怪 ===== */
+.app{
+  width: 100%;
+  max-width: 720px;   /* 你原来 980 对手机太大 */
+}
+
+/* iPhone 宽度下自动缩小字号和按钮高度 */
+@media (max-width: 480px){
+  .app{ padding: 12px; }
+
+  .brand .title{ font-size: 22px; }
+  h2{ font-size: 22px; }
+
+  .grade-card{
+    height: 86px;
+    font-size: 26px;
+    border-radius: 22px;
+  }
+
+  .btn{
+    height: 72px;
+    font-size: 26px;
+    border-radius: 22px;
+  }
+
+  .question{ font-size: 20px; }
+  .choice{ font-size: 18px; padding: 12px; }
+
+  .pill, .pill2{ font-size: 16px; padding: 10px 12px; }
+  .h1{ font-size: 22px; }
+}
