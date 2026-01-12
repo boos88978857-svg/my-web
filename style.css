@@ -1,35 +1,146 @@
-/* ===== 橫排：字在左、注音在右（不直排）===== */
-.zhuyin-line{
-  display: inline-flex;
-  flex-wrap: wrap;
-  gap: 10px 12px;      /* 每個字組之間的距離 */
-  line-height: 1.8;
-  align-items: center;
-}
+* { box-sizing: border-box; }
 
-.zi-pair{
-  display: inline-grid;
-  grid-template-columns: auto auto; /* 左：字  右：注音 */
-  column-gap: 6px;
-  align-items: center;
-}
-
-.zi-pair .hz{
-  font-size: 20px;
-  font-weight: 900;
+body{
+  margin:0;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+  background:#f5f6f7;
   color:#111;
 }
 
-.zi-pair .zy{
-  font-size: 14px;
-  font-weight: 900;
-  color: rgba(0,0,0,0.55);
-  font-family: "Noto Sans Bopomofo","PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif;
-  white-space: nowrap;
+.app{
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 16px;
 }
 
-/* ✅ 強制橫排：避免你之前那種整個變直排 */
-.zhuyin-line, .zi-pair, .hz, .zy{
-  writing-mode: horizontal-tb !important;
-  text-orientation: mixed !important;
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:#13a6ad;
+  color:#fff;
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+
+.brand{ display:flex; gap:10px; align-items:center; }
+.brand .title{ font-size: 28px; font-weight: 900; }
+.brand .book{ font-size: 24px; }
+
+.pill{
+  background:#eaf4ff;
+  border: 2px solid rgba(255,255,255,0.7);
+  color:#1e88e5;
+  font-weight: 900;
+  border-radius: 18px;
+  padding: 12px 16px;
+  font-size: 18px;
+}
+
+.card{
+  background:#fff;
+  border-radius: 22px;
+  padding: 18px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+
+h2{
+  margin: 6px 0 14px;
+  font-size: 32px;
+  font-weight: 1000;
+}
+
+/* ===== 模組卡片 ===== */
+.module{
+  background:#ffffff;
+  border-radius: 20px;
+  padding: 14px;
+  margin: 14px 0;
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+.module-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap: 12px;
+}
+
+.module-title{
+  width: 100%;
+  background:#dff1ff;
+  border-radius: 18px;
+  padding: 14px;
+}
+
+/* ===== 直排＋注音在右側（關鍵） ===== */
+.vertical-title,
+.vertical-text{
+  writing-mode: vertical-rl;       /* 直排：像課本 */
+  text-orientation: upright;       /* 數字/字保持直立 */
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+}
+
+/* 注音 ruby 在直排時放在「字的右邊」 */
+ruby{
+  ruby-position: inter-character;  /* 直排：注音出現在右側 */
+  ruby-align: center;
+}
+
+/* 注音字體大小 */
+rt{
+  font-size: 0.55em;
+  opacity: 0.85;
+}
+
+/* 讓標題更醒目 */
+.vertical-title{
+  font-size: 30px;
+  font-weight: 1000;
+  color:#1e88e5;
+}
+
+/* 標題中的（0～20）改成比較細 */
+.vertical-title .range{
+  color:#1e88e5;
+  font-weight: 900;
+  font-size: 0.75em;
+}
+
+/* 直排時的空白間隔 */
+.v-gap{
+  display:inline-block;
+  height: 10px;
+}
+
+/* 內文 */
+.module-body{
+  margin-top: 12px;
+  background:#dff1ff;
+  border-radius: 18px;
+  padding: 14px;
+}
+
+.vertical-text{
+  font-size: 20px;
+  font-weight: 900;
+  color:#111;
+  min-height: 140px;
+}
+
+/* 直排標點符號用小一點避免擠壓 */
+.punct{
+  font-size: 0.9em;
+  opacity: 0.9;
+}
+
+/* 註解提示 */
+.note{
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 800;
+  color:#3a3a3a;
+  opacity: 0.9;
 }
