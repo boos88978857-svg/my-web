@@ -45,77 +45,78 @@ h2{
   font-weight: 1000;
 }
 
-.module-box{
+.module-card{
   background:#dff1ff;
   border-radius: 22px;
   padding: 16px;
 }
 
-/* ✅ 段落維持橫排、自然換行 */
-.anno-paragraph{
-  line-height: 1.55;
-  white-space: normal;      /* 允許整段自然換行 */
-  word-break: keep-all;     /* 中文不要亂拆 */
-  overflow-wrap: normal;
-  margin-bottom: 14px;
+.module-head{
+  margin-bottom: 12px;
 }
-
-/* 每個「字格」：主字 + 右側注音。關鍵：不要被拆開 */
-.zy-cell{
-  display: inline-flex;
-  flex-direction: row;
-  align-items: center;
-  vertical-align: baseline;
-  margin-right: 6px;
-  margin-bottom: 6px;
-
-  /* ✅ 重要：字格整體不要被換行拆掉 */
-  break-inside: avoid;
-  page-break-inside: avoid;
-}
-
-/* 主字：大字 */
-.zy-main{
-  font-size: 34px;
+.module-title{
+  font-size: 26px;
   font-weight: 1000;
   color:#1e88e5;
-  line-height: 1;
-  display:inline-block;
 }
-
-/* 注音：在右邊直排 */
-.zy-rt{
-  font-family: "Noto Sans Bopomofo", "PingFang TC", "Microsoft JhengHei", sans-serif;
+.module-sub{
+  margin-top: 4px;
   font-size: 14px;
   font-weight: 900;
-  color: rgba(0,0,0,0.7);
-
-  writing-mode: vertical-rl;     /* 直排 */
-  text-orientation: upright;
-  line-height: 1;
-
-  display:inline-block;
-  margin-left: 4px;
+  color: rgba(0,0,0,0.55);
 }
 
-/* 內文字小、黑色 */
-.anno-paragraph.body .zy-main{
+/* ✅ 課本直排顯示框 */
+.textbook-frame{
+  background: rgba(255,255,255,0.65);
+  border-radius: 18px;
+  padding: 14px;
+  overflow: auto;
+
+  /* 高度你可調，手機看比較像課本 */
+  height: 360px;
+
+  /* ✅ 關鍵：直排（右到左欄） */
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+/* 直排段落 */
+.textbook-line{
   font-size: 22px;
   font-weight: 900;
   color:#111;
+  line-height: 1.55;
 }
 
-/* 標點：不要注音、不要多留空 */
-.zy-cell.punct{ margin-right: 0; }
-.zy-cell.punct .zy-rt{ display:none; }
-.zy-cell.punct .zy-main{
-  color:#111;
+/* 直排段落間距 */
+.textbook-gap{ height: 18px; }
+
+/* ✅ ruby 注音：直排時 ruby-position: over 會出現在「右側」 */
+ruby{ ruby-position: over; }
+
+/* 主字 */
+ruby{
   font-size: 22px;
   font-weight: 900;
 }
 
-/* 提示 */
-.note{
+/* 注音（右側直排） */
+rt{
+  font-family: "Noto Sans Bopomofo", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  font-size: 13px;
+  font-weight: 900;
+  color: rgba(0,0,0,0.65);
+
+  /* 讓注音更像課本：稍微緊一點 */
+  letter-spacing: 0;
+}
+
+/* 標題那行稍大字 */
+#tbTitle ruby{ font-size: 26px; }
+#tbTitle rt{ font-size: 14px; }
+
+.hint{
   margin-top: 10px;
   font-size: 14px;
   font-weight: 900;
