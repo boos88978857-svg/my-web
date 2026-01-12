@@ -429,35 +429,34 @@ document.addEventListener("DOMContentLoaded", () => {
   if (btnMul) btnMul.onclick = () => startOp("mul");
   if (btnDiv) btnDiv.onclick = () => startOp("div");
   nextBtn.onclick = () => nextQuestion();
-  // ========= 家長模式 =========
-let parentMode = false;
+    // ========= 家長模式 =========
+  let parentMode = false;
 
-function applyParentModeUI(){
-  if (historyListEl) historyListEl.style.display = parentMode ? "block" : "none";
-  if (refreshHistoryBtn) refreshHistoryBtn.style.display = parentMode ? "" : "none";
-  if (clearHistoryBtn) clearHistoryBtn.style.display = parentMode ? "" : "none";
+  function applyParentModeUI(){
+    if (historyListEl) historyListEl.style.display = parentMode ? "block" : "none";
+    if (refreshHistoryBtn) refreshHistoryBtn.style.display = parentMode ? "" : "none";
+    if (clearHistoryBtn) clearHistoryBtn.style.display = parentMode ? "" : "none";
 
-  if (parentBtn) parentBtn.textContent = parentMode ? "退出家長模式" : "家長模式";
-}
+    if (parentBtn) parentBtn.textContent = parentMode ? "退出家長模式" : "家長模式";
+  }
 
-if (parentBtn){
-  parentBtn.onclick = () => {
-    if (!parentMode){
-      const pwd = prompt("進入家長模式需要密碼（1234）");
-      if (pwd !== "1234"){
-        alert("密碼錯誤 ❌");
-        return;
+  if (parentBtn){
+    parentBtn.onclick = () => {
+      if (!parentMode){
+        const pwd = prompt("進入家長模式需要密碼（1234）");
+        if (pwd !== "1234"){
+          alert("密碼錯誤 ❌");
+          return;
+        }
+        parentMode = true;
+        alert("已進入家長模式 ✅");
+      } else {
+        parentMode = false;
+        alert("已退出家長模式");
       }
-      parentMode = true;
-      alert("已進入家長模式 ✅");
-    } else {
-      parentMode = false;
-      alert("已退出家長模式");
-    }
-    applyParentModeUI();
-  };
-}
+      applyParentModeUI();
+    };
+  }
 
-// 頁面初始狀態：默認不是家長
-applyParentModeUI();
-});
+  // 頁面初始狀態：預設不是家長
+  applyParentModeUI();
