@@ -27,7 +27,7 @@
 
       <hr class="sep"/>
 
-      <h2>選擇章節</h2>
+      <h2>選擇年級</h2>
 
       <!-- 第一層：選年級（大圖示） -->
       <div id="gradeSelect" class="grade-grid">
@@ -36,18 +36,16 @@
         <button class="grade-card" data-grade="3">小三</button>
       </div>
 
-      <!-- 第二層：選章節（先隱藏） -->
-      <div id="chapterSelect" style="display:none;">
+      <!-- 第二層：選模組（先隱藏） -->
+      <div id="moduleSelect" style="display:none;">
         <div class="subhead">
           <button id="backToGrade" class="pill2">← 返回選年級</button>
           <div id="pickedGradeText" class="picked">已選：小一</div>
         </div>
 
-        <div class="chapter-grid">
-          <button id="btnAdd" class="btn">加法</button>
-          <button id="btnSub" class="btn">減法</button>
-          <button id="btnMul" class="btn">乘法</button>
-          <button id="btnDiv" class="btn">除法</button>
+        <div id="moduleGrid" class="module-grid"></div>
+        <div class="hint" style="margin-top:10px;">
+          提示：內容以「教材概念順序」設計，使用符號/結構化呈現，避免圖片版權風險。
         </div>
       </div>
     </div>
@@ -55,15 +53,19 @@
     <div id="practice" class="card" style="display:none;">
       <div class="practice-head">
         <div id="chapterTitle" class="h1">練習</div>
+        <div id="timer" class="timer">⏱ 0 秒</div>
       </div>
 
       <div id="goalText" class="hint">目標：全對</div>
 
       <div id="question" class="question">題目</div>
+      <div id="visual" class="visual" aria-label="題目圖示區"></div>
+
       <div id="choices" class="choices"></div>
 
       <div class="row">
         <button id="next" class="pill2">下一題</button>
+        <button id="backToModules" class="pill2">返回模組</button>
       </div>
 
       <div id="status" class="status">請選擇答案</div>
