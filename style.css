@@ -101,7 +101,7 @@ h2{
   color:#333;
 }
 
-/* ✅ 年级大图标：3格 */
+/* ✅ 年級大圖示：3 格 */
 .grade-grid{
   display:grid;
   grid-template-columns: repeat(3, 1fr);
@@ -118,7 +118,7 @@ h2{
   border: 0;
 }
 
-/* ✅ 章节 2x2 网格 */
+/* ✅ 章節 2x2 網格 */
 .chapter-grid{
   display:grid;
   grid-template-columns: repeat(2, 1fr);
@@ -137,7 +137,7 @@ h2{
   font-weight: 1000;
 }
 
-/* 练习区 */
+/* 練習區 */
 .practice-head{
   display:flex;
   align-items:center;
@@ -179,59 +179,4 @@ h2{
   border-radius: 14px;
   background:#f3f3f3;
   font-weight: 900;
-}
-
-/* ===== 修复 iPhone 上按钮点不到（触控层级/遮挡） ===== */
-
-/* 让彩带层永远不挡点击 */
-#confetti{
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 9999;
-}
-
-/* 确保练习区在正常点击层级 */
-#practice, #chapters, .card{
-  position: relative;
-  z-index: 1;
-}
-
-/* iOS 点击优化：减少 300ms 延迟/误触 */
-button, .choice, .grade-card, .btn, .pill, .pill2{
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-  cursor: pointer;
-}
-
-/* ===== 移动端自适应：避免只挤在左上角、比例怪 ===== */
-.app{
-  width: 100%;
-  max-width: 720px;   /* 你原来 980 对手机太大 */
-}
-
-/* iPhone 宽度下自动缩小字号和按钮高度 */
-@media (max-width: 480px){
-  .app{ padding: 12px; }
-
-  .brand .title{ font-size: 22px; }
-  h2{ font-size: 22px; }
-
-  .grade-card{
-    height: 86px;
-    font-size: 26px;
-    border-radius: 22px;
-  }
-
-  .btn{
-    height: 72px;
-    font-size: 26px;
-    border-radius: 22px;
-  }
-
-  .question{ font-size: 20px; }
-  .choice{ font-size: 18px; padding: 12px; }
-
-  .pill, .pill2{ font-size: 16px; padding: 10px 12px; }
-  .h1{ font-size: 22px; }
 }
