@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
   <div class="app">
 
     <!-- 頂部 -->
@@ -15,22 +14,20 @@
       <div class="brand">
         <span class="book">📘</span>
         <div class="brandText">
-          <div class="brandTitle">我的學習機</div>
-          <div class="brandSub" id="brandSub">請先選擇年級</div>
+          <div class="title">我的學習機</div>
+          <div class="sub">先選年級，再選模組開始練習</div>
         </div>
       </div>
-
-      <button id="parentBtn" class="pill" type="button">家長</button>
+      <button id="btnParent" class="pill" type="button">家長</button>
     </header>
 
-    <!-- 主內容 -->
-    <main class="main">
-
-      <!-- A. 年級選擇 -->
+    <!-- 首頁 -->
+    <main id="pageHome" class="page">
+      <!-- 年級 -->
       <section class="card">
         <div class="cardHead">
           <h2>選擇年級</h2>
-          <div class="badge" id="gradeBadge">未選年級</div>
+          <div class="tag" id="gradeTag">未選年級</div>
         </div>
 
         <div class="gradeRow">
@@ -47,8 +44,110 @@
             <div class="gSub">位值與乘除</div>
           </button>
         </div>
-
-        <div class="hintLine">先選年級，再選章節／模組開始學習。</div>
       </section>
 
-      <!-- B. 章節（先保留：加減乘
+      <!-- 五大模組 -->
+      <section class="card">
+        <div class="cardHead">
+          <h2>五大模組</h2>
+          <div class="tag" id="moduleTag">請先選年級</div>
+        </div>
+
+        <div class="moduleGrid">
+          <button class="moduleBtn" data-module="numSense">
+            <div class="mIcon">🔢</div>
+            <div class="mText">
+              <div class="mTitle">數與數量</div>
+              <div class="mSub">數數、對應數量</div>
+            </div>
+          </button>
+
+          <button class="moduleBtn" data-module="compare100">
+            <div class="mIcon">📏</div>
+            <div class="mText">
+              <div class="mTitle">認識 100</div>
+              <div class="mSub">比大小、找數字</div>
+            </div>
+          </button>
+
+          <button class="moduleBtn" data-module="placeValue">
+            <div class="mIcon">🧩</div>
+            <div class="mText">
+              <div class="mTitle">十與一（位值）</div>
+              <div class="mSub">十個一＝一個十</div>
+            </div>
+          </button>
+
+          <button class="moduleBtn" data-module="make10">
+            <div class="mIcon">🧮</div>
+            <div class="mText">
+              <div class="mTitle">湊 10</div>
+              <div class="mSub">補到 10 的概念</div>
+            </div>
+          </button>
+
+          <button class="moduleBtn" data-module="addSub20">
+            <div class="mIcon">➕</div>
+            <div class="mText">
+              <div class="mTitle">20 以內加減</div>
+              <div class="mSub">不進位退位（先理解）</div>
+            </div>
+          </button>
+        </div>
+
+        <div class="hintLine" id="lockHint">
+          小一先做「理解型」五大模組；乘除會在小二/小三開放。
+        </div>
+      </section>
+
+      <!-- 學習紀錄 -->
+      <section class="card">
+        <div class="cardHead">
+          <h2>學習紀錄</h2>
+          <div class="row">
+            <button id="btnRefreshHistory" class="pill2" type="button">更新紀錄</button>
+            <button id="btnClearHistory" class="pill2 danger" type="button">清除紀錄</button>
+          </div>
+        </div>
+        <div id="historyList" class="history"></div>
+      </section>
+    </main>
+
+    <!-- 練習頁 -->
+    <main id="pagePractice" class="page" style="display:none;">
+      <section class="card">
+        <div class="practiceTop">
+          <button id="btnBackHome" class="pill2" type="button">← 返回</button>
+          <div class="tag" id="practiceTag">小1</div>
+        </div>
+
+        <h2 id="practiceTitle">練習</h2>
+        <div class="hintLine" id="practiceHint">請作答</div>
+
+        <div class="qBox">
+          <div id="question" class="question">題目</div>
+          <div id="choices" class="choices"></div>
+        </div>
+
+        <div class="row">
+          <button id="btnNext" class="pill2" type="button" disabled>下一題</button>
+        </div>
+
+        <div id="status" class="status">請選擇答案</div>
+        <div id="report" class="report" style="display:none;"></div>
+      </section>
+    </main>
+
+    <!-- 底部導覽 -->
+    <nav class="bottomNav">
+      <button class="navBtn active" data-nav="home">🏠<span>首頁</span></button>
+      <button class="navBtn" data-nav="practice">🧠<span>練習</span></button>
+      <button class="navBtn" data-nav="history">📒<span>紀錄</span></button>
+      <button class="navBtn" data-nav="settings">⚙️<span>設定</span></button>
+    </nav>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
