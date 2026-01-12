@@ -1,4 +1,9 @@
+// ====== 第 0 層：確認 JS 檔是否真的被載入 ======
+console.log("✅ app.v2.js 已載入（檔案層）");
+
 document.addEventListener("DOMContentLoaded", () => {
+  console.log("✅ DOMContentLoaded 已觸發");
+
   // ========= 難度規則 =========
   const SETTINGS = {
     batchSize: 20,
@@ -37,19 +42,40 @@ document.addEventListener("DOMContentLoaded", () => {
   const clearHistoryBtn = document.getElementById("clearHistoryBtn");
   const parentBtn = document.getElementById("parentBtn");
 
-  if (
-    !btnAdd ||
-    !btnSub ||
-    !chaptersEl ||
-    !practiceEl ||
-    !chapterTitleEl ||
-    !questionEl ||
-    !choicesEl ||
-    !nextBtn ||
-    !statusEl
-  ) {
-    alert("index.html 缺少必要元素（按鈕或練習區塊）。");
-    return;
+  // ========= 第 1 層：DOM 檢查（不再直接 return，會明確告訴你缺什麼） =========
+  const required = {
+    btnAdd,
+    btnSub,
+    chaptersEl,
+    practiceEl,
+    chapterTitleEl,
+    questionEl,
+    choicesEl,
+    nextBtn,
+    statusEl,
+    gradeSelect,
+    chapterSelect,
+    backToGrade,
+    pickedGradeText
+  };
+
+  const missing = Object.entries(required)
+    .filter(([, el]) => !el)
+    .map(([name]) => name);
+
+  console.group("🔍 DOM 檢查");
+  Object.entries(required).forEach(([name, el]) => {
+    if (!el) console.error("❌ 缺少：", name);
+    else console.log("✅ OK：", name);
+  });
+  console.groupEnd();
+
+  const gradeCards = document.querySelectorAll(".grade-card");
+  console.log("🎓 .grade-card 數量：", gradeCards.length);
+
+  if (missing.length > 0) {
+    alert("⚠️ 找不到必要元素（請檢查 index.html 的 id/class 是否正確）：\n" + missing.join(", "));
+    // 不 return：讓你至少能看到其他 log
   }
 
   // ========= 工具 =========
@@ -64,6 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ? "除法"
             : op;
   }
+
   function shuffle(arr) {
     const a = arr.slice();
     for (let j = a.length - 1; j > 0; j--) {
@@ -72,14 +99,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     return a;
   }
+
   function randInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   // ========= 年級選擇 =========
   let selectedGrade = 1;
+
   function applyOpVisibility() {
-    const allowed = SETTINGS.rules[selectedGrade].ops;
+    const allowed = SETTINGS.rules[selectedGrade]?.ops || ["add", "sub"];
     if (btnMul) btnMul.style.display = allowed.includes("mul") ? "" : "none";
     if (btnDiv) btnDiv.style.display = allowed.includes("div") ? "" : "none";
     if (pickedGradeText) pickedGradeText.textContent = `已選：小${selectedGrade}`;
@@ -88,6 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 點年級大圖示
   document.querySelectorAll(".grade-card").forEach((btn) => {
     btn.addEventListener("click", () => {
+      console.log("🟢 點擊年級：", btn.dataset.grade);
       selectedGrade = Number(btn.dataset.grade || 1);
       applyOpVisibility();
       if (gradeSelect) gradeSelect.style.display = "none";
@@ -98,6 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 返回選年級
   if (backToGrade) {
     backToGrade.addEventListener("click", () => {
+      console.log("🟢 點擊返回選年級");
       if (chapterSelect) chapterSelect.style.display = "none";
       if (gradeSelect) gradeSelect.style.display = "grid";
     });
@@ -244,12 +275,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const total = questions.length;
     const progress = `${Math.min(i + 1, total)}/${total}`;
     const roundName = mode === "main" ? "練習" : "錯題重練";
-    if (goalTextEl)
+    if (goalTextEl) {
       goalTextEl.textContent = `小${selectedGrade}｜${opName(currentOp)}｜${roundName}：${progress}｜錯題：${wrongPool.length}`;
+    }
   }
 
   function startOp(op) {
-    const allowed = SETTINGS.rules[selectedGrade].ops;
+    console.log("🟢 startOp：", op);
+
+    const allowed = SETTINGS.rules[selectedGrade]?.ops || ["add", "sub"];
     if (!allowed.includes(op)) {
       alert(`小${selectedGrade} 暫不提供 ${opName(op)}。`);
       return;
@@ -266,35 +300,39 @@ document.addEventListener("DOMContentLoaded", () => {
     totalAnswered = 0;
     correctAnswered = 0;
 
-    chaptersEl.style.display = "none";
-    practiceEl.style.display = "block";
+    if (chaptersEl) chaptersEl.style.display = "none";
+    if (practiceEl) practiceEl.style.display = "block";
     if (reportEl) {
       reportEl.style.display = "none";
       reportEl.textContent = "";
     }
 
-    chapterTitleEl.textContent = `小${selectedGrade}｜${opName(op)}`;
-    statusEl.textContent = "請選擇答案";
-    statusEl.style.color = "";
+    if (chapterTitleEl) chapterTitleEl.textContent = `小${selectedGrade}｜${opName(op)}`;
+    if (statusEl) {
+      statusEl.textContent = "請選擇答案";
+      statusEl.style.color = "";
+    }
 
     render();
   }
 
   function render() {
     locked = false;
-    nextBtn.disabled = true;
-    choicesEl.innerHTML = "";
+    if (nextBtn) nextBtn.disabled = true;
+    if (choicesEl) choicesEl.innerHTML = "";
 
     const q = questions[i];
-    questionEl.textContent = `第 ${i + 1} 題：${q.q}`;
+    if (questionEl) questionEl.textContent = `第 ${i + 1} 題：${q.q}`;
 
-    q.a.forEach((t, idx) => {
-      const b = document.createElement("button");
-      b.className = "choice";
-      b.textContent = t;
-      b.onclick = () => choose(idx);
-      choicesEl.appendChild(b);
-    });
+    if (choicesEl) {
+      q.a.forEach((t, idx) => {
+        const b = document.createElement("button");
+        b.className = "choice";
+        b.textContent = t;
+        b.onclick = () => choose(idx);
+        choicesEl.appendChild(b);
+      });
+    }
 
     updateTopText();
   }
@@ -312,15 +350,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (ok) {
       correctAnswered++;
-      statusEl.textContent = "答對了 ✅";
-      nextBtn.disabled = true;
+      if (statusEl) statusEl.textContent = "答對了 ✅";
+      if (nextBtn) nextBtn.disabled = true;
       setTimeout(() => nextQuestion(), 450); // ✅ 答對自動下一題
     } else {
       if (all[idx]) all[idx].classList.add("wrong");
-      statusEl.textContent = "答錯了 ❌（請點下一題）";
+      if (statusEl) statusEl.textContent = "答錯了 ❌（請點下一題）";
       const key = q.q;
       if (!wrongPool.some((it) => it.q.q === key)) wrongPool.push({ q, wrongIndex: idx });
-      nextBtn.disabled = false; // ✅ 答錯才手動下一題
+      if (nextBtn) nextBtn.disabled = false; // ✅ 答錯才手動下一題
     }
     updateTopText();
   }
@@ -348,9 +386,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       i = 0;
       locked = false;
-      chapterTitleEl.textContent = `小${selectedGrade}｜${opName(currentOp)}｜錯題重練`;
-      statusEl.textContent = "還有錯題，自動進入錯題重練…";
-      nextBtn.disabled = true;
+      if (chapterTitleEl) chapterTitleEl.textContent = `小${selectedGrade}｜${opName(currentOp)}｜錯題重練`;
+      if (statusEl) statusEl.textContent = "還有錯題，自動進入錯題重練…";
+      if (nextBtn) nextBtn.disabled = true;
       render();
       return;
     }
@@ -359,8 +397,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function finishSuccess() {
-    statusEl.textContent = "🎉 已完成學習目標（全對）！";
-    statusEl.style.color = "#2e7d32";
+    if (statusEl) {
+      statusEl.textContent = "🎉 已完成學習目標（全對）！";
+      statusEl.style.color = "#2e7d32";
+    }
     showConfetti();
 
     const durationSec = Math.floor((Date.now() - startTimeMs) / 1000);
@@ -384,15 +424,16 @@ document.addEventListener("DOMContentLoaded", () => {
         op: currentOp
       })
     );
+
     renderHistory();
 
     setTimeout(() => {
-      practiceEl.style.display = "none";
-      chaptersEl.style.display = "block";
-      choicesEl.innerHTML = "";
-      questionEl.textContent = "";
-      nextBtn.disabled = true;
-      statusEl.style.color = "";
+      if (practiceEl) practiceEl.style.display = "none";
+      if (chaptersEl) chaptersEl.style.display = "block";
+      if (choicesEl) choicesEl.innerHTML = "";
+      if (questionEl) questionEl.textContent = "";
+      if (nextBtn) nextBtn.disabled = true;
+      if (statusEl) statusEl.style.color = "";
     }, 2000);
   }
 
@@ -437,6 +478,7 @@ document.addEventListener("DOMContentLoaded", () => {
       historyListEl.appendChild(div);
     });
   }
+
   renderHistory();
   if (refreshHistoryBtn) refreshHistoryBtn.onclick = renderHistory;
 
@@ -460,11 +502,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ========= 綁定按鈕 =========
-  btnAdd.onclick = () => startOp("add");
-  btnSub.onclick = () => startOp("sub");
+  if (btnAdd) btnAdd.onclick = () => startOp("add");
+  if (btnSub) btnSub.onclick = () => startOp("sub");
   if (btnMul) btnMul.onclick = () => startOp("mul");
   if (btnDiv) btnDiv.onclick = () => startOp("div");
-  nextBtn.onclick = () => nextQuestion();
+  if (nextBtn) nextBtn.onclick = () => nextQuestion();
 
   // ========= 家長模式 =========
   let parentMode = false;
@@ -479,6 +521,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (parentBtn) {
     parentBtn.onclick = () => {
+      console.log("🟢 點擊家長模式按鈕");
       if (!parentMode) {
         const pwd = prompt("進入家長模式需要密碼（1234）");
         if (pwd !== "1234") {
@@ -497,4 +540,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 頁面初始狀態：預設不是家長
   applyParentModeUI();
+
+  console.log("✅ 初始化流程結束（如果點擊仍無反應，通常是 CSS 擋住或 JS 未載入）");
 });
