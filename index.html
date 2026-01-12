@@ -9,107 +9,176 @@
 <body>
 
   <div class="app">
-    <div class="topbar">
+    <!-- Header -->
+    <header class="header">
       <div class="brand">
-        <span class="book">📘</span>
-        <span class="title">我的學習機</span>
+        <div class="logo">📘</div>
+        <div class="brandText">
+          <div class="appName">我的學習機</div>
+          <div id="subTitle" class="subName">請先選擇年級</div>
+        </div>
       </div>
-      <button class="pill" type="button">家長模式</button>
-    </div>
+      <button id="parentBtn" class="btn ghost" type="button">家長</button>
+    </header>
 
-    <div class="card">
-      <h2>小一數學</h2>
+    <!-- Main -->
+    <main class="main">
 
-      <!-- ✅ 小一模組卡片（示範：標題含注音、內容直排含右側注音） -->
-      <div class="module">
-        <div class="module-head">
-          <div class="module-title">
-            <!-- 標題：你要注音在右邊 → 這裡用「直排小區塊」呈現 -->
-            <div class="vertical-title">
-              <ruby><rb>數</rb><rt>ㄕㄨˋ</rt></ruby>
-              <ruby><rb>與</rb><rt>ㄩˇ</rt></ruby>
-              <ruby><rb>數</rb><rt>ㄕㄨˋ</rt></ruby>
-              <ruby><rb>量</rb><rt>ㄌㄧㄤˋ</rt></ruby>
-              <span class="v-gap"></span>
-              <span class="range">（0～20）</span>
+      <!-- Screen: Home -->
+      <section id="screenHome" class="screen active">
+        <div class="panel">
+          <div class="panelHead">
+            <div class="h2">選擇年級</div>
+            <div class="muted">先選年級，再選章節開始練習</div>
+          </div>
+
+          <div class="gradeRow">
+            <button class="gradeCard" data-grade="1" type="button">
+              <div class="big">小一</div>
+              <div class="small">基礎數感</div>
+            </button>
+            <button class="gradeCard" data-grade="2" type="button">
+              <div class="big">小二</div>
+              <div class="small">加減乘除</div>
+            </button>
+            <button class="gradeCard" data-grade="3" type="button">
+              <div class="big">小三</div>
+              <div class="small">位值與乘除</div>
+            </button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panelHead">
+            <div class="h2">章節</div>
+            <div id="pickedGrade" class="pillInfo">未選年級</div>
+          </div>
+
+          <div id="chapterGrid" class="chapterGrid">
+            <button class="chapterCard" data-op="add" type="button">
+              <div class="icon">➕</div><div class="name">加法</div>
+            </button>
+            <button class="chapterCard" data-op="sub" type="button">
+              <div class="icon">➖</div><div class="name">減法</div>
+            </button>
+            <button class="chapterCard" data-op="mul" type="button">
+              <div class="icon">✖️</div><div class="name">乘法</div>
+            </button>
+            <button class="chapterCard" data-op="div" type="button">
+              <div class="icon">➗</div><div class="name">除法</div>
+            </button>
+          </div>
+
+          <div class="muted tip">
+            小一預設只開放加減；小二/小三會開放乘除（可在程式裡調整）
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen: Practice -->
+      <section id="screenPractice" class="screen">
+        <div class="panel">
+          <div class="practiceTop">
+            <button id="backBtn" class="btn ghost" type="button">← 返回</button>
+            <div class="meta">
+              <div id="practiceTitle" class="h2">練習</div>
+              <div id="practiceMeta" class="muted">—</div>
+            </div>
+            <div class="statBox">
+              <div class="stat">
+                <div class="label">時間</div>
+                <div id="timerText" class="value">0s</div>
+              </div>
+              <div class="stat">
+                <div class="label">進度</div>
+                <div id="progressText" class="value">0/0</div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="module-body">
-          <!-- ✅ 內文直排：注音在字的右邊 -->
-          <div class="vertical-text">
-            <ruby><rb>認</rb><rt>ㄖㄣˋ</rt></ruby>
-            <ruby><rb>識</rb><rt>ㄕˋ</rt></ruby>
-            <span class="punct">，</span>
+          <div id="goalLine" class="goalLine">目標：全對（錯題會自動重練）</div>
 
-            <ruby><rb>數</rb><rt>ㄕㄨˋ</rt></ruby>
-            <ruby><rb>字</rb><rt>ㄗˋ</rt></ruby>
-            <span class="punct">，</span>
-
-            <ruby><rb>一</rb><rt>ㄧ</rt></ruby>
-            <ruby><rb>個</rb><rt>ㄍㄜˋ</rt></ruby>
-            <ruby><rb>一</rb><rt>ㄧ</rt></ruby>
-            <ruby><rb>個</rb><rt>ㄍㄜˋ</rt></ruby>
-            <ruby><rb>數</rb><rt>ㄕㄨˋ</rt></ruby>
-            <ruby><rb>出</rb><rt>ㄔㄨ</rt></ruby>
-            <ruby><rb>來</rb><rt>ㄌㄞˊ</rt></ruby>
-            <span class="punct">，</span>
-
-            <ruby><rb>建</rb><rt>ㄐㄧㄢˋ</rt></ruby>
-            <ruby><rb>立</rb><rt>ㄌㄧˋ</rt></ruby>
-
-            <ruby><rb>數</rb><rt>ㄕㄨˋ</rt></ruby>
-            <ruby><rb>量</rb><rt>ㄌㄧㄤˋ</rt></ruby>
-
-            <ruby><rb>概</rb><rt>ㄍㄞˋ</rt></ruby>
-            <ruby><rb>念</rb><rt>ㄋㄧㄢˋ</rt></ruby>
-            <span class="punct">。</span>
+          <div class="questionBox">
+            <div id="questionText" class="questionText">題目</div>
+            <div id="choices" class="choices"></div>
           </div>
 
-          <div class="note">
-            提示：此區塊用「直排＋注音右側」呈現，效果會像課本排版。
+          <div class="actions">
+            <button id="nextBtn" class="btn primary" type="button" disabled>下一題</button>
           </div>
-        </div>
-      </div>
 
-      <div class="module">
-        <div class="module-head">
-          <div class="module-title">
-            <div class="vertical-title">
-              <ruby><rb>十</rb><rt>ㄕˊ</rt></ruby>
-              <ruby><rb>與</rb><rt>ㄩˇ</rt></ruby>
-              <ruby><rb>一</rb><rt>ㄧ</rt></ruby>
-              <span class="v-gap"></span>
-              <span class="range">（位值概念）</span>
+          <div id="statusText" class="statusText">請選擇答案</div>
+          <div id="reportBox" class="reportBox" style="display:none;"></div>
+        </div>
+      </section>
+
+      <!-- Screen: Records -->
+      <section id="screenRecords" class="screen">
+        <div class="panel">
+          <div class="panelHead">
+            <div class="h2">學習紀錄</div>
+            <div class="row">
+              <button id="refreshHistoryBtn" class="btn" type="button">刷新</button>
+              <button id="clearHistoryBtn" class="btn danger" type="button">清除</button>
             </div>
           </div>
+          <div id="historyList" class="historyList"></div>
         </div>
+      </section>
 
-        <div class="module-body">
-          <div class="vertical-text">
-            <ruby><rb>例</rb><rt>ㄌㄧˋ</rt></ruby>
-            <span class="punct">：</span>
-            <ruby><rb>3</rb><rt>ㄙㄢ</rt></ruby>
-            <ruby><rb>4</rb><rt>ㄙˋ</rt></ruby>
-            <span class="punct">＝</span>
+      <!-- Screen: Settings -->
+      <section id="screenSettings" class="screen">
+        <div class="panel">
+          <div class="panelHead">
+            <div class="h2">設定</div>
+            <div class="muted">這裡放「家長密碼 / 顯示注音」等設定</div>
+          </div>
 
-            <ruby><rb>3</rb><rt>ㄙㄢ</rt></ruby>
-            <ruby><rb>個</rb><rt>ㄍㄜˋ</rt></ruby>
-            <ruby><rb>十</rb><rt>ㄕˊ</rt></ruby>
+          <div class="settingItem">
+            <div>
+              <div class="settingTitle">顯示注音（介面文字）</div>
+              <div class="muted">先做開關，之後再擴大到內容區</div>
+            </div>
+            <label class="switch">
+              <input id="zhuyinToggle" type="checkbox" />
+              <span class="slider"></span>
+            </label>
+          </div>
 
-            <span class="punct">＋</span>
+          <div class="settingItem">
+            <div>
+              <div class="settingTitle">家長密碼</div>
+              <div id="pwdHint" class="muted">尚未設定</div>
+            </div>
+            <button id="setPwdBtn" class="btn" type="button">設定/修改</button>
+          </div>
 
-            <ruby><rb>4</rb><rt>ㄙˋ</rt></ruby>
-            <ruby><rb>個</rb><rt>ㄍㄜˋ</rt></ruby>
-            <ruby><rb>一</rb><rt>ㄧ</rt></ruby>
-            <span class="punct">。</span>
+          <div class="settingItem">
+            <div>
+              <div class="settingTitle">忘記密碼</div>
+              <div class="muted">用「重設碼」重設（本機儲存）</div>
+            </div>
+            <button id="resetPwdBtn" class="btn danger" type="button">重設密碼</button>
+          </div>
+
+          <div class="muted tip">
+            提醒：這是純前端示範，密碼存在本機（localStorage）。
           </div>
         </div>
-      </div>
+      </section>
 
-    </div>
+    </main>
+
+    <!-- Bottom Nav -->
+    <nav class="nav">
+      <button class="navBtn active" data-screen="Home" type="button">🏠<span>首頁</span></button>
+      <button class="navBtn" data-screen="Practice" type="button">🧠<span>練習</span></button>
+      <button class="navBtn" data-screen="Records" type="button">📒<span>紀錄</span></button>
+      <button class="navBtn" data-screen="Settings" type="button">⚙️<span>設定</span></button>
+    </nav>
   </div>
 
+  <div id="fx"></div>
+  <script src="script.js"></script>
 </body>
 </html>
