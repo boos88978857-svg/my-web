@@ -51,9 +51,7 @@ h2{
   padding: 16px;
 }
 
-.module-head{
-  margin-bottom: 12px;
-}
+.module-head{ margin-bottom: 12px; }
 .module-title{
   font-size: 26px;
   font-weight: 1000;
@@ -66,55 +64,91 @@ h2{
   color: rgba(0,0,0,0.55);
 }
 
-/* ✅ 課本直排顯示框 */
-.textbook-frame{
+/* ✅ 橫排閱讀：左內容 + 右注音欄 */
+.reading-panel{
+  display: grid;
+  grid-template-columns: 1fr 210px;
+  gap: 12px;
+  align-items: start;
+}
+
+.reading-main{
   background: rgba(255,255,255,0.65);
   border-radius: 18px;
   padding: 14px;
-  overflow: auto;
-
-  /* 高度你可調，手機看比較像課本 */
-  height: 360px;
-
-  /* ✅ 關鍵：直排（右到左欄） */
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
+  min-height: 220px;
 }
 
-/* 直排段落 */
-.textbook-line{
-  font-size: 22px;
+.reading-title{
+  font-size: 26px;
+  font-weight: 1000;
+  color:#1e88e5;
+  margin-bottom: 10px;
+}
+
+.reading-body{
+  font-size: 20px;
   font-weight: 900;
+  line-height: 1.75;
   color:#111;
-  line-height: 1.55;
 }
 
-/* 直排段落間距 */
-.textbook-gap{ height: 18px; }
-
-/* ✅ ruby 注音：直排時 ruby-position: over 會出現在「右側」 */
-ruby{ ruby-position: over; }
-
-/* 主字 */
-ruby{
-  font-size: 22px;
-  font-weight: 900;
+.reading-side{
+  background: rgba(255,255,255,0.7);
+  border-radius: 18px;
+  padding: 12px;
+  border: 1px solid rgba(0,0,0,0.06);
+  position: sticky;
+  top: 10px;
 }
 
-/* 注音（右側直排） */
-rt{
-  font-family: "Noto Sans Bopomofo", "PingFang TC", "Microsoft JhengHei", sans-serif;
-  font-size: 13px;
+.side-title{
+  font-size: 16px;
+  font-weight: 1000;
+  margin-bottom: 8px;
+  color:#0f6e73;
+}
+
+.zhuyin-list{
+  display: grid;
+  gap: 8px;
+}
+
+.zy-item{
+  background: #f7fbff;
+  border-radius: 14px;
+  padding: 10px 10px;
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+.zy-zh{
+  font-size: 18px;
+  font-weight: 1000;
+}
+.zy-zy{
+  margin-top: 4px;
+  font-size: 15px;
   font-weight: 900;
   color: rgba(0,0,0,0.65);
-
-  /* 讓注音更像課本：稍微緊一點 */
-  letter-spacing: 0;
+  font-family: "Noto Sans Bopomofo", "PingFang TC", "Microsoft JhengHei", sans-serif;
 }
 
-/* 標題那行稍大字 */
-#tbTitle ruby{ font-size: 26px; }
-#tbTitle rt{ font-size: 14px; }
+.side-hint{
+  margin-top: 10px;
+  font-size: 12px;
+  font-weight: 900;
+  color: rgba(0,0,0,0.45);
+}
+
+/* ✅ 手機：右欄改到下面，避免擠 */
+@media (max-width: 640px){
+  .reading-panel{
+    grid-template-columns: 1fr;
+  }
+  .reading-side{
+    position: static;
+  }
+}
 
 .hint{
   margin-top: 10px;
