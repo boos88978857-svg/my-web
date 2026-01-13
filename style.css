@@ -1,189 +1,174 @@
-/* ================= 基本设定 ================= */
-*{
-  box-sizing: border-box;
-}
+/* ===== 全域 ===== */
+*{ box-sizing:border-box; }
 
 body{
   margin:0;
-  font-family: -apple-system, BlinkMacSystemFont,
-  "PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif;
-  background:#f4f6f8;
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif;
+  background:#f5f6f7;
   color:#111;
 }
 
-/* ================= App 外框 ================= */
+/* ===== 主容器 ===== */
 .app{
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 16px;
+  max-width:980px;
+  margin:0 auto;
+  padding:16px;
 }
 
-/* ================= 顶部栏 ================= */
+/* ===== 顶部 ===== */
 .topbar{
   display:flex;
-  align-items:center;
   justify-content:space-between;
-  background:linear-gradient(135deg,#14b1b6,#119aa1);
+  align-items:center;
+  background:linear-gradient(135deg,#17b6b6,#0ea5a4);
   color:#fff;
-  border-radius: 18px;
-  padding: 16px 18px;
-  margin-bottom: 16px;
+  border-radius:18px;
+  padding:16px;
+  margin-bottom:14px;
 }
 
 .brand{
   display:flex;
-  gap:10px;
   align-items:center;
+  gap:10px;
 }
 
 .brand .title{
-  font-size: 28px;
-  font-weight: 900;
+  font-size:26px;
+  font-weight:900;
 }
 
 .pill{
-  background:#eaf6ff;
+  background:#eaf4ff;
   border:none;
-  color:#1786e6;
-  font-weight: 900;
-  border-radius: 18px;
-  padding: 10px 16px;
-  font-size: 16px;
+  color:#1e88e5;
+  font-weight:900;
+  border-radius:18px;
+  padding:10px 16px;
 }
 
-/* ================= 卡片容器 ================= */
+/* ===== 卡片 ===== */
 .card{
   background:#fff;
-  border-radius: 22px;
-  padding: 18px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  border-radius:22px;
+  padding:18px;
+  box-shadow:0 2px 10px rgba(0,0,0,.06);
   margin-bottom:16px;
 }
 
 h2{
-  margin: 6px 0 14px;
-  font-size: 30px;
-  font-weight: 1000;
+  margin:0 0 12px;
+  font-size:30px;
+  font-weight:1000;
 }
 
-/* ================= 年级选择 ================= */
+/* ===== 年级 ===== */
 .gradeGrid{
   display:grid;
-  grid-template-columns: repeat(3,1fr);
+  grid-template-columns:repeat(3,1fr);
   gap:12px;
 }
 
 .gradeBtn{
   background:#eaf4ff;
   border-radius:18px;
-  padding:14px;
+  padding:14px 10px;
   text-align:center;
   font-weight:900;
   color:#1e88e5;
 }
 
-.gradeBtn small{
-  display:block;
-  margin-top:4px;
-  font-size:14px;
-  color:#555;
-}
-
-/* ================= 五大模组 ================= */
+/* ===== 五大模组 ===== */
 .moduleGrid{
   display:grid;
-  grid-template-columns: repeat(2,1fr);
+  grid-template-columns:repeat(2,1fr);
   gap:14px;
   margin-top:10px;
 }
 
-/* 模组卡 */
 .moduleCard{
   background:#f3f3f3;
   border-radius:20px;
   padding:14px;
   display:flex;
   gap:12px;
-  align-items:center;
+  align-items:flex-start;
   min-height:96px;
 }
 
-/* 图示圆圈 */
+/* 图标 */
 .iconBubble{
-  width:48px;
-  height:48px;
-  border-radius:50%;
-  background:#e3f1ff;
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  background:#eaf4ff;
   display:flex;
   align-items:center;
   justify-content:center;
   font-size:22px;
-  flex-shrink:0;
+  flex:0 0 auto;
 }
 
-/* ================= 文字区（重点） ================= */
+/* ===== 文字容器（重点） ===== */
 .moduleText{
-  min-width:0; /* ⭐ 非常重要，避免被挤爆 */
+  min-width:0;
+  display:flex;
+  flex-direction:column;
 }
 
-/* 🔵 蓝色标题（你圈起来的问题就在这里） */
+/* ===== 蓝色标题（重点修正） ===== */
 .moduleTitle{
-  display:block;
   font-size:22px;
   font-weight:1000;
   color:#1e88e5;
   line-height:1.15;
 
-  /* ✅ 强制同一行 */
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  /* 🔒 强制同一行 */
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
-/* （0～20）（补到10）这种 */
+/* 括号 / 范围（自动变小到下一行） */
 .moduleRange{
-  display:block;
-  margin-top:2px;
-  font-size:15px;
+  font-size:14px;
   font-weight:900;
   color:#1e88e5;
-  opacity:0.9;
+  opacity:.9;
+  margin-top:4px;
 }
 
-/* 黑色说明文字 */
+/* 说明文字 */
 .moduleDesc{
-  margin-top:4px;
+  margin-top:6px;
   font-size:15px;
-  font-weight:800;
+  font-weight:900;
   color:#444;
 }
 
-/* ================= 底部导航 ================= */
+/* ===== 底部栏 ===== */
 .bottomNav{
   position:sticky;
   bottom:0;
   background:#fff;
   border-radius:18px;
-  padding:10px 6px;
+  margin-top:16px;
+  padding:8px 6px;
   display:flex;
   justify-content:space-around;
-  box-shadow:0 -2px 10px rgba(0,0,0,0.06);
+  box-shadow:0 -2px 8px rgba(0,0,0,.05);
 }
 
 .navItem{
   text-align:center;
-  font-size:13px;
+  font-size:14px;
   font-weight:900;
   color:#777;
 }
 
 .navItem.active{
+  background:#eaf4ff;
   color:#1e88e5;
-}
-
-/* ================= 手机适配 ================= */
-@media (max-width:520px){
-  .moduleGrid{
-    grid-template-columns:1fr;
-  }
+  border-radius:14px;
+  padding:6px 12px;
 }
