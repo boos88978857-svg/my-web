@@ -1,81 +1,71 @@
-/* ===== Reset ===== */
+/* ===== 全域 ===== */
 * {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  background: #f5f6f7;
   font-family: -apple-system, BlinkMacSystemFont, "PingFang TC",
     "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+  background: #f5f6f7;
   color: #111;
 }
 
-/* ===== App ===== */
 .app {
   max-width: 980px;
   margin: 0 auto;
-  padding: 16px 16px 96px;
+  padding: 16px;
 }
 
-/* ===== Topbar ===== */
+/* ===== 顶栏 ===== */
 .topbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(135deg, #1bb3b8, #139fa5);
+  background: linear-gradient(135deg, #1fb5b8, #0fa4a9);
+  color: #fff;
   border-radius: 18px;
   padding: 16px;
-  color: #fff;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .brand {
   display: flex;
-  gap: 10px;
   align-items: center;
+  gap: 10px;
 }
 
 .brand .title {
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 900;
 }
 
 .pill {
+  background: rgba(255, 255, 255, 0.85);
+  color: #0b7fa4;
   border: none;
-  border-radius: 18px;
-  padding: 10px 16px;
+  border-radius: 20px;
+  padding: 10px 14px;
   font-size: 16px;
   font-weight: 800;
-  color: #1e88e5;
-  background: #eaf4ff;
 }
 
-/* ===== Page control（关键） ===== */
-.page {
-  display: none;
-}
-
-.page.active {
-  display: block;
-}
-
-/* ===== Card ===== */
+/* ===== 主卡片 ===== */
 .card {
   background: #fff;
   border-radius: 22px;
   padding: 18px;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  margin-bottom: 18px;
 }
 
 h2 {
-  margin: 0 0 12px;
-  font-size: 28px;
+  margin: 6px 0 14px;
+  font-size: 30px;
   font-weight: 900;
 }
 
-/* ===== Grade buttons ===== */
+/* ===== 年级选择 ===== */
 .gradeRow {
   display: flex;
   gap: 12px;
@@ -83,9 +73,9 @@ h2 {
 
 .gradeBtn {
   flex: 1;
-  background: #e6f3ff;
+  background: #e8f4ff;
   border-radius: 18px;
-  padding: 14px;
+  padding: 16px 10px;
   text-align: center;
   font-weight: 900;
   color: #1e88e5;
@@ -95,102 +85,102 @@ h2 {
   display: block;
   font-size: 14px;
   color: #555;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
-/* ===== Module grid ===== */
+/* ===== 五大模组 ===== */
+.moduleHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .moduleGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 14px;
+  margin-top: 12px;
 }
 
+/* ===== 模组卡片 ===== */
 .moduleCard {
   background: #f3f3f3;
   border-radius: 20px;
   padding: 14px;
   display: flex;
-  align-items: center;
   gap: 12px;
-  min-height: 88px;
+  align-items: center;
+  min-height: 96px;
 }
 
-/* icon */
+/* 图示 */
 .iconBubble {
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
-  background: #e6f3ff;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #e6f2ff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
+  font-size: 22px;
   flex-shrink: 0;
 }
 
-/* ===== Module text（重点：不乱换行） ===== */
+/* ===== 文字区（重点修正） ===== */
 .moduleText {
   min-width: 0;
 }
 
+/* 🔧 蓝色标题：强制同一行 */
 .moduleTitle {
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 900;
   color: #1e88e5;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1.2;
+
+  white-space: nowrap;        /* 不换行 */
+  overflow: hidden;           /* 超出隐藏 */
+  text-overflow: ellipsis;    /* 太长用 … */
 }
 
+/* 副标题（括号、小字） */
 .moduleRange {
   display: block;
-  font-size: 14px;
-  font-weight: 800;
-  color: #1e88e5;
-  opacity: 0.9;
-  margin-top: 2px;
-}
-
-.moduleDesc {
   font-size: 15px;
   font-weight: 800;
-  color: #333;
+  color: #1e88e5;
   margin-top: 4px;
 }
 
-/* ===== Bottom nav ===== */
+/* 说明文字 */
+.moduleDesc {
+  margin-top: 6px;
+  font-size: 15px;
+  font-weight: 800;
+  color: #333;
+  line-height: 1.35;
+}
+
+/* ===== 底部导航 ===== */
 .bottomNav {
-  position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 12px;
-  width: calc(100% - 32px);
-  max-width: 980px;
+  position: sticky;
+  bottom: 0;
   background: #fff;
   border-radius: 22px;
-  padding: 8px;
+  padding: 10px 8px;
   display: flex;
   justify-content: space-around;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
+  margin-top: 20px;
 }
 
 .navItem {
-  flex: 1;
   text-align: center;
-  border: none;
-  background: none;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 800;
-  color: #666;
+  color: #777;
 }
 
 .navItem.active {
-  background: #e6f3ff;
-  border-radius: 16px;
   color: #1e88e5;
-}
-
-/* ===== Utility ===== */
-button {
-  cursor: pointer;
 }
