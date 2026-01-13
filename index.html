@@ -2,127 +2,165 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>我的學習機</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
 
+<body>
   <div class="app">
 
-    <!-- Header -->
-    <header class="hero">
-      <div class="hero-left">
-        <div class="hero-icon">📘</div>
-        <div class="hero-text">
-          <div class="hero-title">我的學習機</div>
-          <div class="hero-sub">先選年級，再選模組開始練習</div>
+    <!-- Top Header -->
+    <header class="topbar">
+      <div class="brand">
+        <span class="book">📘</span>
+        <div class="brand-text">
+          <div class="brand-title">我的學習機</div>
+          <div class="brand-sub">先選年級，再選模組開始練習</div>
         </div>
       </div>
-
-      <button class="hero-parent" type="button" data-action="open-parent">
-        家長
-      </button>
+      <button id="parentBtn" class="pill" type="button">家長</button>
     </header>
 
-    <!-- Pages -->
-    <main class="pages">
+    <!-- Main Content -->
+    <main class="main">
 
-      <!-- Home -->
-      <section id="page-home" class="page is-active" aria-label="首頁">
+      <!-- 首頁 -->
+      <section id="pageHome" class="page active">
         <div class="panel">
           <div class="panel-head">
-            <div class="panel-title">選擇年級</div>
-            <div id="gradeBadge" class="badge">未選年級</div>
+            <h2>選擇年級</h2>
+            <span id="gradeBadge" class="badge">未選年級</span>
           </div>
 
-          <div class="grade-row" id="gradeRow">
-            <button class="grade-chip" type="button" data-action="pick-grade" data-grade="1">
-              <div class="grade-big">小一</div>
-              <div class="grade-small">基礎數感</div>
+          <div class="grade-row">
+            <button class="grade-card" data-grade="1" type="button">
+              <div class="grade-title">小一</div>
+              <div class="grade-desc">基礎數感</div>
             </button>
-            <button class="grade-chip" type="button" data-action="pick-grade" data-grade="2">
-              <div class="grade-big">小二</div>
-              <div class="grade-small">加減乘除</div>
+            <button class="grade-card" data-grade="2" type="button">
+              <div class="grade-title">小二</div>
+              <div class="grade-desc">加減乘除</div>
             </button>
-            <button class="grade-chip" type="button" data-action="pick-grade" data-grade="3">
-              <div class="grade-big">小三</div>
-              <div class="grade-small">位值與應用</div>
+            <button class="grade-card" data-grade="3" type="button">
+              <div class="grade-title">小三</div>
+              <div class="grade-desc">位值與應用</div>
             </button>
           </div>
         </div>
 
         <div class="panel">
           <div class="panel-head">
-            <div class="panel-title">五大模組</div>
-            <div id="moduleBadge" class="badge">請先選年級</div>
+            <h2>五大模組</h2>
+            <span id="moduleBadge" class="badge">請先選年級</span>
           </div>
 
           <div id="moduleGrid" class="module-grid"></div>
 
-          <div class="panel-note" id="moduleNote">
-            小一先做「理解型」五大模組；乘除在小二/小三開放（可在程式調整）。
+          <div class="hint">
+            提示：模組內容採「概念順序」設計，題目為自建資料，不使用教材圖片，避免版權風險。
           </div>
         </div>
       </section>
 
-      <!-- Practice -->
-      <section id="page-practice" class="page" aria-label="練習">
+      <!-- 練習 -->
+      <section id="pagePractice" class="page">
         <div class="panel">
           <div class="panel-head">
-            <div class="panel-title">練習</div>
-            <div id="practiceBadge" class="badge">尚未開始</div>
+            <h2 id="practiceTitle">練習</h2>
+            <span id="practiceBadge" class="badge">尚未選擇模組</span>
           </div>
 
-          <div class="practice-card">
-            <div id="practiceTitle" class="practice-title">請從「首頁」選擇模組開始</div>
+          <div id="practiceIntro" class="practice-intro">
+            請先到「首頁」選擇年級與模組，或直接點下方「首頁」分頁。
+          </div>
 
-            <div class="practice-meta">
-              <div id="practiceProgress" class="meta-pill">0/0</div>
-              <div id="practiceScore" class="meta-pill">✅ 0　❌ 0</div>
-              <div id="practiceTimer" class="meta-pill">⏱ 0s</div>
+          <div id="practiceArea" class="practice" style="display:none;">
+            <div class="progress-row">
+              <div id="progressText" class="progress-text">第 1 題 / 20 題</div>
+              <div id="scoreText" class="score-text">正確 0 / 作答 0</div>
             </div>
 
-            <div id="question" class="question">—</div>
+            <div id="question" class="question">題目</div>
             <div id="choices" class="choices"></div>
 
-            <div class="practice-actions">
-              <button id="btnNext" class="btn" type="button" data-action="next-q" disabled>下一題</button>
-              <button class="btn btn-ghost" type="button" data-action="end-practice">結束練習</button>
+            <div class="row">
+              <button id="nextBtn" class="pill2" type="button" disabled>下一題</button>
+              <button id="exitBtn" class="pill2 danger" type="button">退出練習</button>
             </div>
 
-            <div id="status" class="status">提示：答對會自動下一題，答錯再按「下一題」</div>
-
-            <div id="report" class="report is-hidden"></div>
+            <div id="status" class="status">請選擇答案</div>
+            <div id="report" class="report" style="display:none;"></div>
           </div>
         </div>
       </section>
 
-      <!-- Records -->
-      <section id="page-records" class="page" aria-label="紀錄">
+      <!-- 紀錄 -->
+      <section id="pageRecords" class="page">
         <div class="panel">
           <div class="panel-head">
-            <div class="panel-title">學習紀錄</div>
-            <div class="panel-actions">
-              <button class="btn btn-ghost" type="button" data-action="refresh-records">更新紀錄</button>
-              <button class="btn btn-danger" type="button" data-action="clear-records">清除紀錄</button>
-            </div>
+            <h2>學習紀錄</h2>
+            <span class="badge">最近 20 筆</span>
           </div>
 
-          <div id="recordsList" class="records"></div>
+          <div class="row">
+            <button id="refreshHistoryBtn" class="pill2" type="button">更新紀錄</button>
+            <button id="clearHistoryBtn" class="pill2 danger" type="button">清除紀錄</button>
+          </div>
+
+          <div id="historyList" class="history"></div>
         </div>
       </section>
 
-      <!-- Settings -->
-      <section id="page-settings" class="page" aria-label="設定">
+      <!-- 設定 -->
+      <section id="pageSettings" class="page">
         <div class="panel">
           <div class="panel-head">
-            <div class="panel-title">設定</div>
-            <div class="badge">家長功能</div>
+            <h2>設定</h2>
+            <span id="parentStatusBadge" class="badge">家長：未設定密碼</span>
           </div>
 
-          <div class="settings">
-            <div class="setting-item">
-              <div class="setting-left">
-                <div class="setting-title">家長密碼</div>
-                <div class="setting
+          <div class="setting-card">
+            <div class="setting-title">家長模式</div>
+            <div class="setting-desc">可設定密碼、變更密碼、忘記密碼（透過安全問題重設）。</div>
+            <div class="row">
+              <button id="openParentFromSettingsBtn" class="pill2" type="button">開啟家長模式</button>
+            </div>
+          </div>
+
+          <div class="setting-card">
+            <div class="setting-title">資料說明</div>
+            <div class="setting-desc">
+              本站的題目與文字均為自建內容，避免教材圖片與版權爭議。學習紀錄僅儲存在本機瀏覽器（localStorage）。
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Bottom Tabs -->
+    <nav class="tabs">
+      <button class="tab active" data-page="Home" type="button">🏠<span>首頁</span></button>
+      <button class="tab" data-page="Practice" type="button">🧠<span>練習</span></button>
+      <button class="tab" data-page="Records" type="button">🗂️<span>紀錄</span></button>
+      <button class="tab" data-page="Settings" type="button">⚙️<span>設定</span></button>
+    </nav>
+
+  </div>
+
+  <!-- Modal：家長模式 -->
+  <div id="modalMask" class="modal-mask" style="display:none;"></div>
+
+  <div id="parentModal" class="modal" style="display:none;" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <div class="modal-title">家長模式</div>
+      <button id="closeParentModalBtn" class="modal-close" type="button">✕</button>
+    </div>
+
+    <div id="parentModalBody" class="modal-body"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
