@@ -2,207 +2,164 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>我的學習機</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
   <div class="app">
-
-    <!-- 頂部 -->
-    <header class="topbar">
+    <!-- Topbar -->
+    <div class="topbar">
       <div class="brand">
         <span class="book">📘</span>
-        <div class="brand-text">
-          <div class="brand-title">我的學習機</div>
-          <div class="brand-sub">先選年級，再選模組開始練習</div>
+        <div class="brandText">
+          <div class="brandTitle">我的學習機</div>
+          <div class="brandSub">先選年級，再選模組開始練習</div>
         </div>
       </div>
-      <button id="parentBtn" class="pill" type="button">家長</button>
-    </header>
 
-    <!-- 主內容 -->
-    <main class="main">
+      <button id="parentBtn" class="pill" type="button">家長</button>
+    </div>
+
+    <!-- Pages -->
+    <main class="pages">
 
       <!-- ===== 首頁 ===== -->
-      <section id="pageHome" class="page page-active">
+      <section id="pageHome" class="page active">
 
-        <!-- 選年級 -->
-        <section class="card">
-          <div class="card-head">
+        <div class="card">
+          <div class="sectionHead">
             <h2>選擇年級</h2>
-            <span id="gradeBadge" class="badge">未選年級</span>
+            <div id="gradeBadge" class="badge">未選年級</div>
           </div>
 
-          <div class="grade-row">
-            <button class="grade-card" data-grade="1" type="button">
-              <div class="g-title">小一</div>
-              <div class="g-sub">基礎數感</div>
+          <div class="gradeRow">
+            <button class="gradeBtn" data-grade="1" type="button">
+              <div class="gTitle">小一</div>
+              <div class="gSub">基礎數感</div>
             </button>
-            <button class="grade-card" data-grade="2" type="button">
-              <div class="g-title">小二</div>
-              <div class="g-sub">加減乘除</div>
+            <button class="gradeBtn" data-grade="2" type="button">
+              <div class="gTitle">小二</div>
+              <div class="gSub">加減乘除</div>
             </button>
-            <button class="grade-card" data-grade="3" type="button">
-              <div class="g-title">小三</div>
-              <div class="g-sub">位值與應用</div>
+            <button class="gradeBtn" data-grade="3" type="button">
+              <div class="gTitle">小三</div>
+              <div class="gSub">位值與應用</div>
             </button>
           </div>
+        </div>
 
-          <div class="hint-line">先選年級，五大模組會依年級切換內容。</div>
-        </section>
-
-        <!-- 五大模組 -->
-        <section class="card">
-          <div class="card-head">
+        <div class="card">
+          <div class="sectionHead">
             <h2>五大模組</h2>
-            <span id="moduleBadge" class="badge">請先選年級</span>
+            <div id="moduleBadge" class="badge">請先選年級</div>
           </div>
 
-          <div id="moduleGrid" class="module-grid">
-            <!-- JS 動態塞入 -->
+          <div id="moduleGrid" class="moduleGrid">
+            <!-- JS 產生 -->
           </div>
 
-          <div class="hint-line" id="homeHint">
-            小一先做「理解型」五大模組；乘除在小二/小三會開放（可在程式調整）。
+          <div class="hintText">
+            小一先做「理解型」五大模組；乘除會在小二 / 小三開放（可在程式調整）。
           </div>
-        </section>
+        </div>
 
       </section>
 
       <!-- ===== 練習 ===== -->
       <section id="pagePractice" class="page">
-        <section class="card">
-          <div class="practice-top">
-            <div class="pt-left">
-              <div id="practiceTitle" class="pt-title">練習</div>
-              <div id="practiceMeta" class="pt-meta">請從首頁選擇模組開始</div>
+
+        <div class="card">
+          <div class="practiceTop">
+            <div>
+              <div id="practiceTitle" class="pTitle">練習</div>
+              <div id="practiceMeta" class="pMeta">請選擇模組開始</div>
             </div>
-            <button id="exitPracticeBtn" class="pill2 danger" type="button">退出練習</button>
+            <div class="rightMeta">
+              <div id="progressText" class="pMeta"></div>
+              <div id="scoreText" class="pMeta"></div>
+            </div>
           </div>
 
-          <div class="sep"></div>
+          <div id="promptText" class="prompt">題目</div>
 
-          <div id="questionBox" class="question-box">
-            <div id="questionText" class="question-text">題目會顯示在這裡</div>
-
-            <!-- ✅ 給「數對應數量」用：顯示可數的圖示 -->
-            <div id="iconField" class="icon-field" aria-label="數量圖示區"></div>
-          </div>
+          <!-- 顯示區：數量 / 圖示 / 文字 -->
+          <div id="visualArea" class="visualArea"></div>
 
           <div id="choices" class="choices"></div>
 
           <div class="row">
-            <button id="nextBtn" class="pill2" type="button">下一題</button>
-            <button id="backHomeBtn" class="pill2" type="button">回首頁</button>
+            <button id="nextBtn" class="pill2" type="button" disabled>下一題</button>
+            <button id="exitBtn" class="pill2 danger" type="button">退出練習</button>
           </div>
 
           <div id="status" class="status">請選擇答案</div>
-          <div id="report" class="report" style="display:none;"></div>
-        </section>
+        </div>
+
       </section>
 
       <!-- ===== 紀錄 ===== -->
       <section id="pageRecords" class="page">
-        <section class="card">
-          <div class="card-head">
+        <div class="card">
+          <div class="sectionHead">
             <h2>學習紀錄</h2>
-            <span class="badge">最近 7 筆</span>
-          </div>
-
-          <div class="row">
-            <button id="refreshHistoryBtn" class="pill2" type="button">更新紀錄</button>
-            <button id="clearHistoryBtn" class="pill2 danger" type="button">清除紀錄</button>
+            <div class="row">
+              <button id="refreshHistoryBtn" class="pill2" type="button">更新紀錄</button>
+              <button id="clearHistoryBtn" class="pill2 danger" type="button">清除紀錄</button>
+            </div>
           </div>
 
           <div id="historyList" class="history"></div>
-        </section>
+        </div>
       </section>
 
       <!-- ===== 設定 ===== -->
       <section id="pageSettings" class="page">
-        <section class="card">
-          <div class="card-head">
-            <h2>設定</h2>
-            <span class="badge">本機儲存</span>
-          </div>
+        <div class="card">
+          <h2>設定</h2>
 
-          <div class="setting-item">
-            <div class="setting-title">家長密碼</div>
-            <div class="setting-sub">用於清除紀錄與家長設定</div>
+          <div class="settingBlock">
+            <div class="settingTitle">家長密碼</div>
+            <div class="settingDesc">用於「清除紀錄」與家長操作</div>
+
             <div class="row">
-              <button id="openParentFromSettings" class="pill2" type="button">設定 / 修改密碼</button>
-              <button id="forgetPwdBtn" class="pill2 danger" type="button">忘記密碼</button>
+              <button id="setPwdBtn" class="pill2" type="button">設定 / 變更密碼</button>
+              <button id="forgotPwdBtn" class="pill2" type="button">忘記密碼</button>
+            </div>
+
+            <div class="smallNote">
+              ※ 為離線網頁，忘記密碼採「提示答案」重設（更安全也可自行更改規則）。
             </div>
           </div>
 
-          <div class="setting-item">
-            <div class="setting-title">顯示用符號</div>
-            <div class="setting-sub">「數對應數量」會用 emoji 顯示，避免版權問題。</div>
+          <hr class="sep" />
+
+          <div class="settingBlock">
+            <div class="settingTitle">練習批次題數</div>
+            <div class="settingDesc">每次進入模組的題數（預設 20）</div>
+
+            <div class="row">
+              <button class="pill2 batchBtn" data-batch="10" type="button">10</button>
+              <button class="pill2 batchBtn" data-batch="20" type="button">20</button>
+              <button class="pill2 batchBtn" data-batch="30" type="button">30</button>
+            </div>
+            <div id="batchHint" class="smallNote"></div>
           </div>
-        </section>
+
+        </div>
       </section>
 
     </main>
 
-    <!-- 底部分頁 -->
-    <nav class="tabbar" aria-label="底部分頁">
-      <button class="tab tab-active" data-tab="home" type="button">🏠<span>首頁</span></button>
-      <button class="tab" data-tab="practice" type="button">🧠<span>練習</span></button>
-      <button class="tab" data-tab="records" type="button">📒<span>紀錄</span></button>
-      <button class="tab" data-tab="settings" type="button">⚙️<span>設定</span></button>
+    <!-- Bottom Nav -->
+    <nav class="bottomNav">
+      <button class="navBtn active" data-page="Home" type="button">🏠<div>首頁</div></button>
+      <button class="navBtn" data-page="Practice" type="button">🧠<div>練習</div></button>
+      <button class="navBtn" data-page="Records" type="button">📒<div>紀錄</div></button>
+      <button class="navBtn" data-page="Settings" type="button">⚙️<div>設定</div></button>
     </nav>
 
-  </div>
-
-  <!-- ===== 家長視窗（Modal） ===== -->
-  <div id="modalMask" class="modal-mask" style="display:none;">
-    <div class="modal">
-      <div class="modal-head">
-        <div class="modal-title">家長設定</div>
-        <button id="closeModalBtn" class="icon-btn" type="button">✕</button>
-      </div>
-
-      <div class="modal-body">
-
-        <div class="form-block">
-          <div class="form-title">設定 / 修改密碼</div>
-          <div class="form-row">
-            <label class="label">新密碼</label>
-            <input id="newPwd" class="input" type="password" placeholder="請輸入新密碼" />
-          </div>
-          <div class="form-row">
-            <label class="label">再輸入一次</label>
-            <input id="newPwd2" class="input" type="password" placeholder="再輸入一次" />
-          </div>
-
-          <div class="form-row">
-            <label class="label">提示問題</label>
-            <input id="hintQ" class="input" type="text" placeholder="例：媽媽名字？" />
-          </div>
-          <div class="form-row">
-            <label class="label">提示答案</label>
-            <input id="hintA" class="input" type="text" placeholder="用於忘記密碼" />
-          </div>
-
-          <div class="row">
-            <button id="savePwdBtn" class="pill2" type="button">儲存</button>
-          </div>
-
-          <div class="tiny">※ 密碼與提示會儲存在此裝置的 localStorage。</div>
-        </div>
-
-        <div class="form-block">
-          <div class="form-title">需要驗證密碼的功能</div>
-          <ul class="ul">
-            <li>清除學習紀錄</li>
-            <li>忘記密碼後重設</li>
-          </ul>
-        </div>
-
-      </div>
-    </div>
   </div>
 
   <script src="script.js"></script>
