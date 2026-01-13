@@ -442,5 +442,34 @@ document.querySelectorAll('.gradeCard').forEach(btn=>{
     // 这里先用 console 确认有抓到
     console.log('选到年级:', grade);
   });
+  
+  document.addEventListener('click', (e) => {
+  // 年级按钮
+  const g = e.target.closest('.gradeCard');
+  if (g) {
+    const grade = g.dataset.grade;
+    console.log('选到年级:', grade);
+    // 这里写你的选择年级逻辑（例如 setGrade(grade); renderModules();）
+    return;
+  }
+
+  // 五大模组按钮（你如果模组卡片 class 是 moduleCard 就用这个）
+  const m = e.target.closest('.moduleCard');
+  if (m) {
+    const moduleId = m.dataset.module;
+    console.log('点到模组:', moduleId);
+    // 这里写进入练习逻辑（例如 startModule(moduleId)）
+    return;
+  }
+
+  // 底部导航（如果你的导航按钮是 navBtn）
+  const n = e.target.closest('[data-page]');
+  if (n) {
+    const page = n.dataset.page;
+    console.log('切换页面:', page);
+    // showPage(page);
+    return;
+  }
+});
 });
 });
