@@ -417,3 +417,40 @@ h2{
   -webkit-line-clamp: 2;
   overflow: hidden;
 }
+
+/* ===============================
+   Responsive: 手機 / 平板
+   =============================== */
+
+/* 手机（iPhone 直向） */
+@media (max-width: 480px){
+  .moduleTitle{
+    font-size:20px;
+    line-height:1.2;
+    text-align:left;
+  }
+
+  .moduleRange{
+    font-size:14px;
+  }
+
+  .moduleCard{
+    min-height:140px;   /* 固定高度，避免歪 */
+  }
+}
+
+/* 平板（iPad 直向） */
+@media (min-width: 481px) and (max-width: 900px){
+  .moduleTitle{
+    font-size:22px;
+    line-height:1.25;
+  }
+
+  .moduleRange{
+    font-size:15px;
+  }
+
+  .moduleCard{
+    min-height:150px;
+  }
+}
