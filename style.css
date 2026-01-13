@@ -1,317 +1,189 @@
-*{ box-sizing:border-box; }
+/* ================= 基本设定 ================= */
+*{
+  box-sizing: border-box;
+}
+
 body{
   margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif;
-  background:#f5f6f7;
+  font-family: -apple-system, BlinkMacSystemFont,
+  "PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif;
+  background:#f4f6f8;
   color:#111;
 }
 
+/* ================= App 外框 ================= */
 .app{
   max-width: 980px;
   margin: 0 auto;
-  padding: 16px 16px 92px; /* 留底部導覽高度 */
+  padding: 16px;
 }
 
+/* ================= 顶部栏 ================= */
 .topbar{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap: 12px;
-  background: linear-gradient(135deg,#14a6ad,#0e8ea1);
+  background:linear-gradient(135deg,#14b1b6,#119aa1);
   color:#fff;
   border-radius: 18px;
-  padding: 14px 16px;
-  margin-bottom: 14px;
+  padding: 16px 18px;
+  margin-bottom: 16px;
 }
 
-.brand{ display:flex; gap:12px; align-items:center; }
-.book{ font-size: 26px; }
-.brandText{ line-height:1.1; }
-.brandTitle{ font-size: 26px; font-weight: 1000; }
-.brandSub{ font-size: 13px; opacity:0.92; font-weight: 800; margin-top: 4px; }
+.brand{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+.brand .title{
+  font-size: 28px;
+  font-weight: 900;
+}
 
 .pill{
-  background: rgba(255,255,255,0.92);
-  border: 2px solid rgba(255,255,255,0.6);
-  color:#117fb0;
-  font-weight: 1000;
-  border-radius: 16px;
-  padding: 10px 14px;
-  font-size: 18px;
+  background:#eaf6ff;
+  border:none;
+  color:#1786e6;
+  font-weight: 900;
+  border-radius: 18px;
+  padding: 10px 16px;
+  font-size: 16px;
 }
 
+/* ================= 卡片容器 ================= */
 .card{
   background:#fff;
   border-radius: 22px;
   padding: 18px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-  margin-bottom: 14px;
+  margin-bottom:16px;
 }
 
 h2{
-  margin: 2px 0 10px;
+  margin: 6px 0 14px;
   font-size: 30px;
   font-weight: 1000;
 }
 
-.sep{
-  border:none;
-  height:1px;
-  background:#eee;
-  margin: 16px 0;
-}
-
-.row{
-  display:flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  align-items:center;
-}
-
-.pill2{
-  background:#f0f0f0;
-  border:0;
-  color:#1e88e5;
-  font-weight: 1000;
-  border-radius: 16px;
-  padding: 12px 16px;
-  font-size: 18px;
-}
-.pill2.danger{ color:#d32f2f; }
-
-.pages .page{ display:none; }
-.pages .page.active{ display:block; }
-
-.sectionHead{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.badge{
-  background:#eaf4ff;
-  color:#1e88e5;
-  font-weight: 1000;
-  border-radius: 999px;
-  padding: 10px 14px;
-  font-size: 16px;
-  white-space: nowrap;
-}
-
-.gradeRow{
+/* ================= 年级选择 ================= */
+.gradeGrid{
   display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(3,1fr);
+  gap:12px;
 }
 
 .gradeBtn{
-  border:0;
-  border-radius: 18px;
-  background:#e9f4ff;
-  padding: 14px 12px;
-  text-align:left;
+  background:#eaf4ff;
+  border-radius:18px;
+  padding:14px;
+  text-align:center;
+  font-weight:900;
+  color:#1e88e5;
 }
-.gradeBtn.active{
-  outline: 3px solid rgba(30,136,229,0.25);
-  background:#dff1ff;
-}
-.gTitle{ font-size: 26px; font-weight: 1000; color:#1e88e5; }
-.gSub{ font-size: 16px; font-weight: 900; color:#333; margin-top: 6px; opacity:0.9; }
 
+.gradeBtn small{
+  display:block;
+  margin-top:4px;
+  font-size:14px;
+  color:#555;
+}
+
+/* ================= 五大模组 ================= */
 .moduleGrid{
   display:grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
-  margin-top: 10px;
+  grid-template-columns: repeat(2,1fr);
+  gap:14px;
+  margin-top:10px;
 }
+
+/* 模组卡 */
 .moduleCard{
-  border:0;
-  border-radius: 20px;
   background:#f3f3f3;
-  padding: 14px;
+  border-radius:20px;
+  padding:14px;
   display:flex;
-  gap: 12px;
+  gap:12px;
   align-items:center;
-  text-align:left;
-  min-height: 86px;
+  min-height:96px;
 }
-.moduleCard[disabled]{
-  opacity: 0.45;
-}
+
+/* 图示圆圈 */
 .iconBubble{
-  width: 54px;
-  height: 54px;
-  border-radius: 16px;
-  background:#e8f2ff;
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  background:#e3f1ff;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size: 26px;
-  flex: 0 0 auto;
+  font-size:22px;
+  flex-shrink:0;
 }
-.moduleText{ min-width: 0; }
-.moduleTitle{
-  font-size: 22px;
-  font-weight: 1000;
-  color:#1e88e5;
-  line-height: 1.1;
 
+/* ================= 文字区（重点） ================= */
+.moduleText{
+  min-width:0; /* ⭐ 非常重要，避免被挤爆 */
+}
+
+/* 🔵 蓝色标题（你圈起来的问题就在这里） */
+.moduleTitle{
+  display:block;
+  font-size:22px;
+  font-weight:1000;
+  color:#1e88e5;
+  line-height:1.15;
+
+  /* ✅ 强制同一行 */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-}
+
+/* （0～20）（补到10）这种 */
 .moduleRange{
-  font-size: 15px;
-  font-weight: 1000;
+  display:block;
+  margin-top:2px;
+  font-size:15px;
+  font-weight:900;
   color:#1e88e5;
-  opacity: 0.9;
-  margin-top: 4px;
+  opacity:0.9;
 }
+
+/* 黑色说明文字 */
 .moduleDesc{
-  margin-top: 6px;
-  font-size: 16px;
-  font-weight: 900;
-  color:#333;
-  opacity: 0.9;
+  margin-top:4px;
+  font-size:15px;
+  font-weight:800;
+  color:#444;
 }
 
-.hintText{
-  margin-top: 12px;
-  color:#555;
-  font-weight: 900;
-  font-size: 16px;
-}
-
+/* ================= 底部导航 ================= */
 .bottomNav{
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(255,255,255,0.98);
-  border-top: 1px solid #eee;
+  position:sticky;
+  bottom:0;
+  background:#fff;
+  border-radius:18px;
+  padding:10px 6px;
   display:flex;
   justify-content:space-around;
-  padding: 10px 10px env(safe-area-inset-bottom);
-  z-index: 999;
+  box-shadow:0 -2px 10px rgba(0,0,0,0.06);
 }
-.navBtn{
-  border:0;
-  background:transparent;
-  font-weight: 1000;
-  color:#666;
-  border-radius: 18px;
-  padding: 10px 16px;
-  min-width: 84px;
+
+.navItem{
+  text-align:center;
+  font-size:13px;
+  font-weight:900;
+  color:#777;
 }
-.navBtn.active{
-  background:#eaf4ff;
+
+.navItem.active{
   color:#1e88e5;
-  outline: 2px solid rgba(30,136,229,0.15);
-}
-.navBtn div{ font-size: 14px; margin-top: 6px; }
-
-/* Practice */
-.practiceTop{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap: 10px;
-}
-.pTitle{
-  font-size: 30px;
-  font-weight: 1000;
-}
-.pMeta{
-  font-size: 16px;
-  font-weight: 1000;
-  color:#444;
-  margin-top: 6px;
-}
-.rightMeta{ text-align:right; }
-
-.prompt{
-  margin-top: 14px;
-  font-size: 24px;
-  font-weight: 1000;
-}
-.visualArea{
-  margin-top: 12px;
-  background:#f3f3f3;
-  border-radius: 18px;
-  padding: 14px;
-  min-height: 76px;
 }
 
-.dots{
-  display:flex;
-  flex-wrap: wrap;
-  gap: 10px 12px;
-}
-.dot{
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background:#111;
-  opacity: 0.9;
-}
-
-.choices{
-  margin-top: 12px;
-  display:grid;
-  gap: 10px;
-}
-.choice{
-  border:0;
-  border-radius: 18px;
-  background:#f1f1f1;
-  padding: 14px 12px;
-  font-size: 22px;
-  font-weight: 1000;
-  text-align:left;
-}
-.choice.correct{ outline: 3px solid #2e7d32; }
-.choice.wrong{ outline: 3px solid #d32f2f; }
-
-.status{
-  margin-top: 12px;
-  font-size: 18px;
-  font-weight: 1000;
-  color:#333;
-}
-
-/* Records */
-.history .item{
-  background:#f3f3f3;
-  border-radius: 14px;
-  padding: 12px 14px;
-  margin: 10px 0;
-}
-.history .item b{
-  display:block;
-  margin-bottom: 8px;
-}
-
-.settingBlock{
-  background:#f7f7f7;
-  border-radius: 18px;
-  padding: 14px;
-}
-.settingTitle{
-  font-size: 20px;
-  font-weight: 1000;
-}
-.settingDesc{
-  margin-top: 6px;
-  font-size: 15px;
-  font-weight: 900;
-  opacity: 0.9;
-}
-.smallNote{
-  margin-top: 10px;
-  font-size: 14px;
-  font-weight: 900;
-  color:#555;
+/* ================= 手机适配 ================= */
+@media (max-width:520px){
+  .moduleGrid{
+    grid-template-columns:1fr;
+  }
 }
