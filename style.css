@@ -197,3 +197,18 @@ button.moduleCard{
     font-size: 20px;
   }
 }
+
+/* ===== 五大模组强制等高（安全补丁） ===== */
+.moduleGrid{
+  align-items: stretch;
+}
+
+.moduleCard{
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+}
+
+button.moduleCard{
+  height: 100%;
+}
