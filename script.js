@@ -1,475 +1,387 @@
-alert("JS 有執行");
 (() => {
-  // ====== Basic helpers ======
-  const $ = (q) => document.querySelector(q);
-  const $$ = (q) => Array.from(document.querySelectorAll(q));
-
-  const LS = {
-    grade: "ml_grade",
-    qcount: "ml_qcount",
-    records: "ml_records",
-    pwd: "ml_pwd",
-  };
-
+  // ====== State ======
   const state = {
-    grade: localStorage.getItem(LS.grade) || "",
-    qCount: Number(localStorage.getItem(LS.qcount) || 20),
-    activeModule: null,
-    session: null,
+    page: 'home',
+    grade: null,          // P1 / P2 / P3
+    moduleId: null,
+    qCount: 20,
+    // practice runtime
+    idx: 0,
+    correct: 0,
+    answered: 0,
+    currentAnswer: null,
+    locked: false,
   };
 
-  // ====== UI: pages / nav ======
-  function showPage(name){
-    $$(".page").forEach(p => p.classList.toggle("is-active", p.dataset.page === name));
-    $$(".navItem").forEach(b => b.classList.toggle("is-active", b.dataset.nav === name));
+  // ====== DOM helpers ======
+  const $ = (sel) => document.querySelector(sel);
+  const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+
+  function showPage(page) {
+    state.page = page;
+    $$('.page').forEach(p => p.classList.remove('active'));
+    $(`#page-${page}`).classList.add('active');
+
+    $$('.navBtn').forEach(b => b.classList.toggle('active', b.dataset.page === page));
+
+    // 每次进页面刷新需要的东西
+    if (page === 'records') renderRecords();
+    if (page === 'settings') renderQCount();
   }
 
-  $$(".navItem").forEach(btn => {
-    btn.addEventListener("click", () => showPage(btn.dataset.nav));
-  });
-
-  // ====== Toast ======
-  const toast = $("#toast");
-  const toastText = $("#toastText");
-  $("#toastClose").addEventListener("click", () => { toast.hidden = true; });
-  function alertBox(msg){
-    toastText.textContent = msg;
-    toast.hidden = false;
-  }
-
-  // ====== Data: modules by grade ======
-  // icon uses emoji to keep it simple/fast.
+  // ====== Data ======
+  // 模组标题规则：主标题 + (范围/说明) 要显示在下一行更小
   const MODULES = {
-    g1: [
-      { id:"g1_count", title:"數對應數量", range:"(0～20)", desc:"數數、對應數量", icon:"🔢" },
-      { id:"g1_100",   title:"認識 100",   range:"(不要求計算)", desc:"比大小、找數字", icon:"🧭" },
-      { id:"g1_place", title:"十與一",     range:"(位值)", desc:"十個＝一個十", icon:"🧩" },
-      { id:"g1_make10",title:"湊 10",      range:"(補到10)", desc:"為進位做準備", icon:"🧮" },
-      { id:"g1_addsub",title:"20 以內加減", range:"(先理解)", desc:"不比快、先正確", icon:"➕" },
+    P1: [
+      { id:'p1-qty', icon:'🔢', title:'數對應數量', range:'(0～20)', desc:'數數、對應數量', enabled:true },
+      { id:'p1-100', icon:'🧭', title:'認識 100', range:'(不要求計算)', desc:'比大小、找數字', enabled:true },
+      { id:'p1-place', icon:'🧩', title:'十與一', range:'(位值)', desc:'十個＝一個十', enabled:true },
+      { id:'p1-ten', icon:'🧮', title:'湊 10', range:'(補到 10)', desc:'為進位做準備', enabled:true },
+      { id:'p1-add', icon:'➕', title:'20 以內加減', range:'(先理解)', desc:'不比快、先正確', enabled:true },
     ],
-    g2: [
-      { id:"g2_addsub", title:"加減", range:"(100 內)", desc:"含進退位", icon:"➕" },
-      { id:"g2_mul", title:"乘法", range:"(九九)", desc:"0～9", icon:"✖️" },
-      { id:"g2_div", title:"除法", range:"(整除)", desc:"配合乘法", icon:"➗" },
-      { id:"g2_place", title:"位值", range:"(千百十個)", desc:"讀寫數", icon:"🏷️" },
-      { id:"g2_word", title:"應用題", range:"(基礎)", desc:"關鍵字理解", icon:"📝" },
+    P2: [
+      { id:'p2-add', icon:'➕', title:'加減', range:'(100 內)', desc:'含進退位', enabled:true },
+      { id:'p2-mul', icon:'✖️', title:'乘法', range:'(九九)', desc:'0～9', enabled:true },
+      { id:'p2-div', icon:'➗', title:'除法', range:'(整除)', desc:'配合乘法', enabled:true },
+      { id:'p2-place', icon:'🏷️', title:'位值', range:'(千百十個)', desc:'讀寫數', enabled:true },
+      { id:'p2-app', icon:'📝', title:'應用題', range:'(基礎)', desc:'關鍵字理解', enabled:true },
     ],
-    g3: [
-      { id:"g3_mul", title:"乘除", range:"(12 內)", desc:"更熟練", icon:"🧠" },
-      { id:"g3_big", title:"位值與大數", range:"(到萬位)", desc:"讀寫比較", icon:"📌" },
-      { id:"g3_frac", title:"分數初步", range:"(等分)", desc:"概念建立", icon:"🍰" },
-      { id:"g3_measure", title:"量與測量", range:"(時間長度重量)", desc:"單位認識", icon:"⏱️" },
-      { id:"g3_word", title:"應用題", range:"(進階)", desc:"步驟與檢查", icon:"🧾" },
-    ],
+    P3: [
+      { id:'p3-mul', icon:'🧠', title:'乘除', range:'(12 內)', desc:'更熟練', enabled:true },
+      { id:'p3-big', icon:'📌', title:'位值與大數', range:'(到萬位)', desc:'讀寫比較', enabled:true },
+      { id:'p3-frac', icon:'🍰', title:'分數初步', range:'(等分)', desc:'概念建立', enabled:true },
+      { id:'p3-measure', icon:'⏱️', title:'量與測量', range:'(時間長度重量)', desc:'單位認識', enabled:true },
+      { id:'p3-app', icon:'🧾', title:'應用題', range:'(進階)', desc:'步驟與檢查', enabled:true },
+    ]
   };
 
-  // ====== Grade selection ======
-  const gradeRow = $("#gradeRow");
-  const gradeChip = $("#gradeChip");
-  const moduleChip = $("#moduleChip");
-  const moduleGrid = $("#moduleGrid");
-
-  function renderGrade(){
-    $$(".gradeCard").forEach(b => b.classList.toggle("is-active", b.dataset.grade === state.grade));
-    if(!state.grade){
-      gradeChip.textContent = "未選年級";
-      moduleChip.textContent = "請先選年級";
-    }else{
-      const name = state.grade === "g1" ? "小1" : state.grade === "g2" ? "小2" : "小3";
-      gradeChip.textContent = `已選年級：${name}`;
-      moduleChip.textContent = `${name} 模組`;
-    }
-  }
-
-  function renderModules(){
-    moduleGrid.innerHTML = "";
-    if(!state.grade){
-      // show disabled skeleton
-      ["—","—","—","—","—"].forEach(() => {
-        const btn = document.createElement("button");
-        btn.className = "moduleCard";
-        btn.disabled = true;
-        btn.innerHTML = `
-          <div class="iconBubble">⬜</div>
-          <div class="moduleText">
-            <div class="moduleTitle">請先選年級</div>
-            <div class="moduleDesc">—</div>
-          </div>`;
-        moduleGrid.appendChild(btn);
-      });
+  // ====== Render grade + modules ======
+  function renderGradeUI() {
+    const badge = $('#gradeBadge');
+    if (!state.grade) {
+      badge.textContent = '未選年級';
+      $('#moduleBadge').textContent = '請先選年級';
+      $('#gradeNote').style.display = '';
+      $$('.gradeCard').forEach(b => b.classList.remove('selected'));
+      $('#moduleGrid').innerHTML = '';
       return;
     }
+
+    const gradeText = state.grade === 'P1' ? '小1' : state.grade === 'P2' ? '小2' : '小3';
+    badge.textContent = `已選年級：${gradeText}`;
+    $('#moduleBadge').textContent = `${gradeText} 模組`;
+
+    $$('.gradeCard').forEach(b => b.classList.toggle('selected', b.dataset.grade === state.grade));
+  }
+
+  function renderModules() {
+    renderGradeUI();
+
+    if (!state.grade) return;
 
     const list = MODULES[state.grade] || [];
-    list.forEach(m => {
-      const btn = document.createElement("button");
-      btn.className = "moduleCard";
-      btn.type = "button";
-      btn.dataset.moduleId = m.id;
-      btn.innerHTML = `
-        <div class="iconBubble">${m.icon}</div>
-        <div class="moduleText">
-          <div class="moduleTitle">${m.title} <span class="moduleRange">${m.range}</span></div>
-          <div class="moduleDesc">${m.desc}</div>
-        </div>
+    const grid = $('#moduleGrid');
+    grid.innerHTML = list.map(m => {
+      const dis = m.enabled ? '' : 'disabled';
+      return `
+        <button class="moduleCard" data-module="${m.id}" ${dis} type="button">
+          <div class="iconBubble">${m.icon}</div>
+          <div class="moduleText">
+            <div class="moduleTitle">${m.title}</div>
+            <div class="moduleRange">${m.range}</div>
+            <div class="moduleDesc">${m.desc}</div>
+          </div>
+        </button>
       `;
-      btn.addEventListener("click", () => startModule(m));
-      moduleGrid.appendChild(btn);
-    });
-  }
+    }).join('');
 
-  gradeRow.addEventListener("click", (e) => {
-    const btn = e.target.closest(".gradeCard");
-    if(!btn) return;
-    state.grade = btn.dataset.grade;
-    localStorage.setItem(LS.grade, state.grade);
-    renderGrade();
-    renderModules();
-  });
+    $('#gradeNote').style.display = '';
+  }
 
   // ====== Practice engine ======
-  const practiceTitle = $("#practiceTitle");
-  const practiceChip = $("#practiceChip");
-  const metaLeft = $("#metaLeft");
-  const metaRight = $("#metaRight");
-  const questionText = $("#questionText");
-  const countStage = $("#countStage");
-  const dots = $("#dots");
-  const options = $("#options");
-  const nextBtn = $("#nextBtn");
-  const exitBtn = $("#exitBtn");
-  const smallHint = $("#smallHint");
+  function startPractice(moduleId) {
+    state.moduleId = moduleId;
+    state.idx = 0;
+    state.correct = 0;
+    state.answered = 0;
+    state.locked = false;
 
-  function startModule(module){
-    if(!state.grade){
-      alertBox("請先選年級");
-      return;
-    }
-    state.activeModule = module;
+    // 标题
+    const gradeText = state.grade === 'P1' ? '小1' : state.grade === 'P2' ? '小2' : '小3';
+    const mod = (MODULES[state.grade] || []).find(x => x.id === moduleId);
+    const modTitle = mod ? mod.title : '模組';
+    const modRange = mod ? mod.range : '( )';
 
-    // setup session
-    state.session = {
-      startAt: Date.now(),
-      grade: state.grade,
-      moduleId: module.id,
-      moduleTitle: module.title,
-      total: state.qCount,
-      idx: 0,
-      correct: 0,
-      answered: 0,
-    };
+    $('#practiceHeader').textContent = `${gradeText}｜${modTitle}`;
+    $('#practiceRange').textContent = modRange;
 
-    practiceTitle.textContent = `${(state.grade==="g1"?"小1":state.grade==="g2"?"小2":"小3")}｜${module.title}`;
-    practiceChip.textContent = `${module.range.replace(/[()]/g,"")}`;
-    showPage("practice");
-    nextBtn.disabled = true;
-    buildQuestion();
+    showPage('practice');
+    nextQuestion(true);
   }
 
-  function buildQuestion(){
-    const s = state.session;
-    if(!s) return;
+  // 产生题目：小一「数对应数量」一定要给数量图点，不把答案写在文字里
+  function makeQuestion() {
+    const moduleId = state.moduleId;
 
-    s.idx += 1;
-    nextBtn.disabled = true;
-    options.innerHTML = "";
-    dots.innerHTML = "";
-    smallHint.textContent = "請選擇答案";
+    // 默认：都做简单选择题（可后续扩充）
+    let answer = 10;
+    let min = 0, max = 20;
+    let prompt = '請選出正確數字。';
+    let items = 0;
 
-    // meta
-    metaLeft.textContent = `第 ${s.idx} 題 / ${s.total} 題`;
-    metaRight.textContent = `正確 ${s.correct} / 作答 ${s.answered}`;
+    if (moduleId === 'p1-qty') {
+      min = 0; max = 20;
+      answer = randInt(min, max);
+      items = answer;
+      prompt = '請數一數下面有幾個，並選正確數字。';
+    } else {
+      // 其他模组先用随机数题
+      min = 0; max = 20;
+      answer = randInt(min, max);
+      items = 0;
+      prompt = `請選出：${answer}`;
+    }
 
-    // Decide question type:
-    // Only "數對應數量" uses dots; others use simple number-choice placeholder.
-    if(s.moduleId === "g1_count"){
-      // random count 0-20 but avoid 0 for kids (use 3-20)
-      const ans = randInt(3, 20);
-      s._answer = ans;
+    const options = makeOptions(answer, 4, min, max);
+    return { answer, options, prompt, items };
+  }
 
-      questionText.textContent = "請數一數下面有幾個●，選出正確數字。";
-      countStage.hidden = false;
+  function nextQuestion(isFirst=false) {
+    if (!state.grade || !state.moduleId) return;
 
-      // render dots
-      const n = ans;
-      for(let i=0;i<n;i++){
-        const d = document.createElement("div");
-        d.className = "dot";
-        dots.appendChild(d);
+    state.locked = false;
+    const q = makeQuestion();
+    state.currentAnswer = q.answer;
+
+    $('#progressText').textContent = `第 ${state.idx + 1} 題 / ${state.qCount} 題`;
+    $('#scoreText').textContent = `正確 ${state.correct} / 作答 ${state.answered}`;
+    $('#qText').textContent = q.prompt;
+
+    // items
+    const box = $('#qItems');
+    box.innerHTML = '';
+    if (q.items > 0) {
+      const cap = Math.min(q.items, 60); // 防爆
+      for (let i=0;i<cap;i++){
+        const d = document.createElement('div');
+        d.className = 'itemDot';
+        box.appendChild(d);
       }
-
-      // options: correct + 3
-      const opts = makeOptions(ans, 3, 2, 20);
-      renderOptions(opts, ans);
-      return;
+      if (q.items > 60) {
+        const more = document.createElement('div');
+        more.className = 'muted';
+        more.textContent = `（共 ${q.items} 個）`;
+        box.appendChild(more);
+      }
     }
 
-    // Other modules: simple demo question (you can expand later)
-    countStage.hidden = true;
+    // options
+    const optWrap = $('#options');
+    optWrap.innerHTML = q.options.map(n => `<button class="optBtn" data-opt="${n}" type="button">${n}</button>`).join('');
 
-    // placeholder question: choose larger
-    const a = randInt(10, 99);
-    const b = randInt(10, 99);
-    const ans = a > b ? a : b;
-    s._answer = ans;
-
-    questionText.textContent = `哪一個比較大？`;
-    const opts = shuffle([a,b, randNear(ans), randNear(ans)]);
-    const unique = Array.from(new Set(opts)).slice(0,4);
-    while(unique.length<4) unique.push(randInt(10,99));
-    renderOptions(shuffle(unique), ans);
+    // tip
+    $('#practiceTip').textContent = '請選擇答案';
+    if (!isFirst) state.idx++;
   }
 
-  function renderOptions(optArr, answer){
-    options.innerHTML = "";
-    optArr.forEach(v => {
-      const btn = document.createElement("button");
-      btn.className = "optBtn";
-      btn.type = "button";
-      btn.textContent = String(v);
-      btn.addEventListener("click", () => choose(btn, v, answer));
-      options.appendChild(btn);
-    });
-  }
+  function finishPractice() {
+    // 保存记录
+    const gradeText = state.grade === 'P1' ? '小1' : state.grade === 'P2' ? '小2' : '小3';
+    const mod = (MODULES[state.grade] || []).find(x => x.id === state.moduleId);
+    const modTitle = mod ? mod.title : '模組';
 
-  function choose(btn, value, answer){
-    const s = state.session;
-    if(!s) return;
-
-    // prevent multi click
-    $$(".optBtn").forEach(b => b.disabled = true);
-
-    s.answered += 1;
-    if(value === answer){
-      s.correct += 1;
-      btn.classList.add("is-right");
-      smallHint.textContent = "答對了！";
-    }else{
-      btn.classList.add("is-wrong");
-      // mark correct
-      $$(".optBtn").forEach(b => {
-        if(Number(b.textContent) === answer) b.classList.add("is-right");
-      });
-      smallHint.textContent = "再想想～（已標示正確答案）";
-    }
-
-    metaRight.textContent = `正確 ${s.correct} / 作答 ${s.answered}`;
-    nextBtn.disabled = false;
-
-    // end?
-    if(s.idx >= s.total){
-      nextBtn.textContent = "完成";
-    }else{
-      nextBtn.textContent = "下一題";
-    }
-  }
-
-  nextBtn.addEventListener("click", () => {
-    const s = state.session;
-    if(!s) return;
-
-    if(s.idx >= s.total){
-      finishSession();
-      return;
-    }
-    // enable options again will happen in buildQuestion
-    buildQuestion();
-  });
-
-  exitBtn.addEventListener("click", () => {
-    if(!state.session){
-      showPage("home");
-      return;
-    }
-    finishSession(true);
-  });
-
-  function finishSession(isExit=false){
-    const s = state.session;
-    const durSec = Math.max(1, Math.round((Date.now() - s.startAt)/1000));
-    const gradeName = s.grade==="g1" ? "小1" : s.grade==="g2" ? "小2" : "小3";
-
-    // save record
     const rec = {
       ts: Date.now(),
-      time: durSec,
-      grade: gradeName,
-      module: s.moduleTitle,
-      total: s.total,
-      answered: s.answered,
-      correct: s.correct,
-      acc: s.answered ? Math.round((s.correct/s.answered)*100) : 0
+      grade: gradeText,
+      module: modTitle,
+      answered: state.answered,
+      correct: state.correct,
+      accuracy: state.answered ? Math.round((state.correct/state.answered)*100) : 0
     };
-
-    const list = JSON.parse(localStorage.getItem(LS.records) || "[]");
+    const list = loadRecords();
     list.unshift(rec);
-    localStorage.setItem(LS.records, JSON.stringify(list));
+    saveRecords(list);
 
-    state.session = null;
-    state.activeModule = null;
-    nextBtn.textContent = "下一題";
-    nextBtn.disabled = true;
-    $$(".optBtn").forEach(b => b.disabled = false);
-
-    if(isExit){
-      alertBox("已退出，紀錄已保存");
-    }else{
-      alertBox("完成！紀錄已保存");
-    }
-    renderRecords();
-    showPage("record");
+    showPage('records');
   }
 
   // ====== Records ======
-  const recordList = $("#recordList");
-  $("#refreshRecordBtn").addEventListener("click", renderRecords);
+  const REC_KEY = 'learn_records_v1';
+  function loadRecords() {
+    try { return JSON.parse(localStorage.getItem(REC_KEY) || '[]'); } catch(e){ return []; }
+  }
+  function saveRecords(list) {
+    localStorage.setItem(REC_KEY, JSON.stringify(list));
+  }
+  function renderRecords() {
+    const list = loadRecords();
+    const wrap = $('#recordList');
+    const empty = $('#recordEmpty');
 
-  $("#clearRecordBtn").addEventListener("click", () => {
-    // simple guard: require password if set
-    const pwd = localStorage.getItem(LS.pwd);
-    if(pwd){
-      const input = prompt("請輸入家長密碼：");
-      if(input !== pwd){
-        alertBox("密碼錯誤");
-        return;
-      }
-    }
-    localStorage.removeItem(LS.records);
-    renderRecords();
-    alertBox("已清除紀錄");
-  });
-
-  function renderRecords(){
-    const list = JSON.parse(localStorage.getItem(LS.records) || "[]");
-    if(!list.length){
-      recordList.textContent = "目前還沒有紀錄完成一次練習就會顯示在這裡。";
+    wrap.innerHTML = '';
+    if (!list.length) {
+      empty.style.display = '';
       return;
     }
-    recordList.innerHTML = "";
-    list.slice(0, 50).forEach(r => {
-      const el = document.createElement("div");
-      el.className = "recordItem";
-      const dt = new Date(r.ts);
-      const dateStr = `${dt.getFullYear()}-${pad2(dt.getMonth()+1)}-${pad2(dt.getDate())} ${pad2(dt.getHours())}:${pad2(dt.getMinutes())}`;
-      el.innerHTML = `
-        <div class="line1">${dateStr}（${r.grade}｜${r.module}）</div>
-        <div class="line2">用時：${r.time} 秒　題數：${r.total}　作答：${r.answered}　答對：${r.correct}　正確率：${r.acc}%</div>
+    empty.style.display = 'none';
+
+    wrap.innerHTML = list.map(r => {
+      const d = new Date(r.ts);
+      const dt = `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())} ${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+      return `
+        <div class="recordItem">
+          <div>${dt}（${r.grade}｜${escapeHtml(r.module)}）</div>
+          <div>題數：${r.answered}｜答對：${r.correct}｜正確率：${r.accuracy}%</div>
+        </div>
       `;
-      recordList.appendChild(el);
-    });
+    }).join('');
   }
 
   // ====== Settings ======
-  const qBtns = $$(".pillBtn");
-  const currentQCount = $("#currentQCount");
-
-  function renderQCount(){
-    qBtns.forEach(b => b.classList.toggle("is-active", Number(b.dataset.qcount) === state.qCount));
-    currentQCount.textContent = `目前題數：${state.qCount} 題`;
+  const QCOUNT_KEY = 'qcount_v1';
+  function loadQCount() {
+    const v = parseInt(localStorage.getItem(QCOUNT_KEY) || '20', 10);
+    return [10,20,30].includes(v) ? v : 20;
   }
-
-  qBtns.forEach(b => {
-    b.addEventListener("click", () => {
-      state.qCount = Number(b.dataset.qcount);
-      localStorage.setItem(LS.qcount, String(state.qCount));
-      renderQCount();
-      alertBox("已更新題數設定");
-    });
-  });
-
-  $("#setPwdBtn").addEventListener("click", () => {
-    const pwd = prompt("設定家長密碼（留空＝取消）：");
-    if(!pwd) return;
-    localStorage.setItem(LS.pwd, pwd);
-    alertBox("已設定密碼");
-  });
-
-  $("#hintPwdBtn").addEventListener("click", () => {
-    if(!localStorage.getItem(LS.pwd)){
-      alertBox("尚未設定密碼");
-      return;
-    }
-    alertBox("離線版暫不提供提示答案：請自行在瀏覽器清除 localStorage 重設。");
-  });
-
-  $("#parentBtn").addEventListener("click", () => {
-    showPage("settings");
-  });
+  function saveQCount(v) {
+    localStorage.setItem(QCOUNT_KEY, String(v));
+  }
+  function renderQCount() {
+    state.qCount = loadQCount();
+    $('#qCountNow').textContent = `目前題數：${state.qCount} 題`;
+    $$('#qCountChips .chip').forEach(c => c.classList.toggle('active', parseInt(c.dataset.qcount,10) === state.qCount));
+  }
 
   // ====== Utils ======
-  function randInt(min, max){
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+  function randInt(min, max) {
+    return Math.floor(Math.random()*(max-min+1))+min;
   }
-  function pad2(n){ return String(n).padStart(2,"0"); }
-
-  function shuffle(arr){
-    const a = arr.slice();
+  function shuffle(a){
     for(let i=a.length-1;i>0;i--){
       const j = Math.floor(Math.random()*(i+1));
       [a[i],a[j]] = [a[j],a[i]];
     }
     return a;
   }
-
-  function makeOptions(answer, count=3, min=0, max=20){
+  function makeOptions(answer, count=4, min=0, max=20){
     const s = new Set([answer]);
-    while(s.size < count+1){
-      s.add(randInt(min, max));
+    while(s.size < count){
+      s.add(randInt(min,max));
     }
     return shuffle(Array.from(s));
   }
-
-  function randNear(x){
-    const delta = randInt(1, 12);
-    return Math.random() < 0.5 ? x - delta : x + delta;
+  function pad2(n){ return String(n).padStart(2,'0'); }
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, m => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[m]));
   }
+
+  // ====== One click handler (事件委派，保证动态按钮也能点) ======
+  document.addEventListener('click', (e) => {
+
+    // bottom nav
+    const nav = e.target.closest('.navBtn');
+    if (nav) {
+      showPage(nav.dataset.page);
+      return;
+    }
+
+    // grade select
+    const g = e.target.closest('.gradeCard');
+    if (g) {
+      state.grade = g.dataset.grade;
+      renderModules();
+      return;
+    }
+
+    // module select
+    const m = e.target.closest('.moduleCard');
+    if (m) {
+      if (m.hasAttribute('disabled')) return;
+      if (!state.grade) return;
+      startPractice(m.dataset.module);
+      return;
+    }
+
+    // option click
+    const opt = e.target.closest('.optBtn');
+    if (opt) {
+      if (state.locked) return;
+      state.locked = true;
+
+      const v = parseInt(opt.dataset.opt, 10);
+      state.answered++;
+      const ok = v === state.currentAnswer;
+      if (ok) state.correct++;
+
+      // UI feedback
+      $$('.optBtn').forEach(b => {
+        const bv = parseInt(b.dataset.opt,10);
+        if (bv === state.currentAnswer) b.classList.add('correct');
+        if (b === opt && !ok) b.classList.add('wrong');
+        b.disabled = true;
+      });
+
+      $('#scoreText').textContent = `正確 ${state.correct} / 作答 ${state.answered}`;
+      $('#practiceTip').textContent = ok ? '✅ 答對了！' : `❌ 答錯了，正確是 ${state.currentAnswer}`;
+
+      // auto next / finish
+      setTimeout(() => {
+        if (state.idx + 1 >= state.qCount) {
+          finishPractice();
+        } else {
+          state.idx++;
+          nextQuestion(true);
+        }
+      }, 450);
+
+      return;
+    }
+
+    // buttons
+    if (e.target.closest('#exitBtn')) {
+      finishPractice();
+      return;
+    }
+    if (e.target.closest('#nextBtn')) {
+      // 手动下一题（不建议一直用，保留）
+      if (state.idx + 1 >= state.qCount) finishPractice();
+      else { state.idx++; nextQuestion(true); }
+      return;
+    }
+
+    if (e.target.closest('#refreshRecordBtn')) {
+      renderRecords();
+      return;
+    }
+    if (e.target.closest('#clearRecordBtn')) {
+      // 简化：直接清（你要密码再加）
+      saveRecords([]);
+      renderRecords();
+      return;
+    }
+
+    // qcount chips
+    const chip = e.target.closest('#qCountChips .chip');
+    if (chip) {
+      const v = parseInt(chip.dataset.qcount, 10);
+      saveQCount(v);
+      renderQCount();
+      return;
+    }
+  });
 
   // ====== Boot ======
-  renderGrade();
-  renderModules();
-  renderRecords();
-  renderQCount();
+  function boot(){
+    state.qCount = loadQCount();
+    renderModules();
+    renderRecords();
+    renderQCount();
+    showPage('home');
+    // 可选：确认 js 真的载入
+    // alert('JS 已啟動 ✅');
+  }
 
-  // Default to home
-  showPage("home");
-
-  // Debug popup once
-  // alertBox("JS 已啟動 ✅");
+  boot();
 })();
-document.querySelectorAll('.gradeCard').forEach(btn=>{
-  btn.addEventListener('click', () => {
-    const grade = btn.dataset.grade;
-    // 这里先用 console 确认有抓到
-    console.log('选到年级:', grade);
-  });
-  
-  document.addEventListener('click', (e) => {
-  // 年级按钮
-  const g = e.target.closest('.gradeCard');
-  if (g) {
-    const grade = g.dataset.grade;
-    console.log('选到年级:', grade);
-    // 这里写你的选择年级逻辑（例如 setGrade(grade); renderModules();）
-    return;
-  }
-
-  // 五大模组按钮（你如果模组卡片 class 是 moduleCard 就用这个）
-  const m = e.target.closest('.moduleCard');
-  if (m) {
-    const moduleId = m.dataset.module;
-    console.log('点到模组:', moduleId);
-    // 这里写进入练习逻辑（例如 startModule(moduleId)）
-    return;
-  }
-
-  // 底部导航（如果你的导航按钮是 navBtn）
-  const n = e.target.closest('[data-page]');
-  if (n) {
-    const page = n.dataset.page;
-    console.log('切换页面:', page);
-    // showPage(page);
-    return;
-  }
-});
-});
-});
