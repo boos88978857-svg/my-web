@@ -436,10 +436,11 @@ alert("JS 有執行");
   // Debug popup once
   // alertBox("JS 已啟動 ✅");
 })();
-
-document.querySelectorAll('.gradeBtn').forEach(btn => {
+document.querySelectorAll('.gradeCard').forEach(btn=>{
   btn.addEventListener('click', () => {
     const grade = btn.dataset.grade;
-    alert('你点了年级：小' + grade);
+    // 这里先用 console 确认有抓到
+    console.log('选到年级:', grade);
   });
+});
 });
