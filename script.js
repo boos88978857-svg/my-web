@@ -436,3 +436,10 @@ alert("JS 有執行");
   // Debug popup once
   // alertBox("JS 已啟動 ✅");
 })();
+
+document.querySelectorAll('.gradeBtn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const grade = btn.dataset.grade;
+    alert('你点了年级：小' + grade);
+  });
+});
