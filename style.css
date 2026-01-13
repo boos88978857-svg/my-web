@@ -1,139 +1,153 @@
-/* ===== 全局 ===== */
-*{
-  box-sizing:border-box;
-}
+/* ====== Reset / Base ====== */
+*{ box-sizing:border-box; }
+html,body{ margin:0; padding:0; }
+img{ max-width:100%; height:auto; display:block; }
 
+/* ====== Layout container (避免整页跑版) ====== */
 body{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
-  background:#f5f6f7;
-  color:#222;
+  background:#f5f7fb;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang TC","Noto Sans TC","Microsoft JhengHei", sans-serif;
+  color:#111;
 }
 
-/* ===== 容器 ===== */
-.page{
-  padding:16px;
+/* 你原本有外层容器的话不改；没有也不会影响 */
+.page, .container, main{
+  width:100%;
 }
 
-/* ===== 标题卡 ===== */
-.section{
-  background:#fff;
-  border-radius:20px;
-  padding:16px;
-  margin-bottom:16px;
-  box-shadow:0 8px 24px rgba(0,0,0,.06);
-}
-
-.section h2{
-  margin:0 0 12px 0;
-  font-size:26px;
-  font-weight:800;
-}
-
-/* ===== 年级按钮 ===== */
-.gradeRow{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-}
-
-.gradeCard{
-  border-radius:18px;
-  padding:16px 8px;
-  text-align:center;
-  background:#eaf4ff;
-  border:2px solid #d6eaff;
-}
-
-.gradeBig{
-  font-size:28px;
-  font-weight:800;
-  color:#1e88e5;
-}
-
-.gradeSmall{
-  margin-top:6px;
-  font-size:14px;
-  font-weight:600;
-  color:#333;
-}
-
-/* ===== 五大模组 ===== */
+/* ====== 模组区 Grid ====== */
 .moduleGrid{
   display:grid;
-  grid-template-columns:repeat(2,1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap:14px;
+  margin-top:10px;
 }
 
-/* 卡片本体 */
+/* ====== 模组卡片 ====== */
 .moduleCard{
-  background:#f2f2f2;
+  border:0;
   border-radius:20px;
-  padding:16px;
+  background:#f3f3f3;
+  padding:14px;
   display:flex;
   align-items:center;
   gap:12px;
-  min-height:110px;     /* 左右等高关键 */
+  text-align:left;
+
+  /* 关键：左右等高 + 不会被内容撑歪 */
+  min-height:110px;
+  width:100%;
 }
 
-/* ❌ 图标蓝底彻底移除 */
+/* disabled 时仍可显示但降低透明度（不影响点击逻辑） */
+.moduleCard[disabled]{
+  opacity:.45;
+}
+
+/* ====== 图标容器：去蓝底（你强调要） ====== */
 .iconBubble{
-  background:none !important;
-  padding:0 !important;
-  border-radius:0 !important;
-  width:auto !important;
-  height:auto !important;
-  flex-shrink:0;
-}
+  /* 去掉任何蓝底、阴影、固定框 */
+  background:transparent !important;
+  box-shadow:none !important;
+  border:0 !important;
 
-/* 图标尺寸 */
-.iconBubble img{
-  width:36px;
-  height:36px;
-  display:block;
-}
-
-/* 文本区 */
-.moduleText{
+  width:auto;
+  height:auto;
+  padding:0;
+  flex: 0 0 auto;
   display:flex;
-  flex-direction:column;
-  gap:4px;
+  align-items:center;
+  justify-content:center;
 }
 
+/* 图标本体尺寸（若你是 emoji/图片都能吃到） */
+.iconBubble img{
+  width:34px;
+  height:34px;
+}
+.iconBubble .emoji, .iconBubble{
+  font-size:34px;
+  line-height:1;
+}
+
+/* ====== 文字区 ====== */
+.moduleText{
+  min-width:0;              /* 关键：让长字不会把卡片撑爆 */
+  flex:1 1 auto;
+}
+
+/* 蓝色标题：允许两行但对齐一致，不要左右高度乱 */
 .moduleTitle{
-  font-size:18px;
-  font-weight:800;
+  font-size:22px;
+  font-weight:900;
   color:#1e88e5;
-  line-height:1.2;
+  line-height:1.15;
+
+  /* 关键：统一高度让左右卡片对齐 */
+  min-height: 2.3em;        /* 大约两行高度 */
+  display:block;
+  word-break:keep-all;
 }
 
-.moduleSub{
-  font-size:14px;
-  font-weight:700;
+/* (0~20) 那行 */
+.moduleRange{
+  font-size:15px;
+  font-weight:900;
   color:#1e88e5;
+  opacity:.9;
+  margin-top:2px;
 }
 
+/* 黑色说明 */
 .moduleDesc{
-  font-size:14px;
-  font-weight:600;
+  margin-top:6px;
+  font-size:16px;
+  font-weight:800;
+  color:#333;
+  line-height:1.25;
+
+  /* 关键：避免描述把卡片撑太高 */
+  max-height: 2.6em;
+  overflow:hidden;
+}
+
+/* ====== Grade 卡片（小一小二小三）若你 class 名是 gradeCard ====== */
+.gradeRow{
+  display:flex;
+  gap:12px;
+}
+.gradeCard{
+  flex:1 1 0;
+  border:0;
+  border-radius:18px;
+  background:#e8f3ff;
+  padding:14px;
+}
+.gradeBig{
+  font-size:34px;
+  font-weight:900;
+  color:#1e88e5;
+  line-height:1.1;
+}
+.gradeSmall{
+  margin-top:6px;
+  font-size:18px;
+  font-weight:900;
   color:#333;
 }
 
-/* ===== 底部导航 ===== */
-.bottomNav{
-  position:fixed;
-  left:0;
-  right:0;
-  bottom:0;
-  background:#eee;
-  display:flex;
-  justify-content:space-around;
-  padding:10px 0;
-  border-top:1px solid #ddd;
+/* ====== 手机更稳（iPhone 16 Pro Max 也适用） ====== */
+@media (max-width: 430px){
+  .moduleCard{ min-height: 106px; padding:12px; }
+  .moduleTitle{ font-size:20px; min-height: 2.3em; }
+  .moduleDesc{ font-size:15px; }
+  .iconBubble img{ width:32px; height:32px; }
+  .iconBubble{ font-size:32px; }
 }
 
-.bottomNav button{
-  background:none;
-  border:none;
-  font-size:14px;
+/* ====== 更小机种一栏显示（防爆版） ====== */
+@media (max-width: 360px){
+  .moduleGrid{ grid-template-columns: 1fr; }
+  .moduleCard{ min-height: 96px; }
+  .moduleTitle{ min-height: auto; }
 }
