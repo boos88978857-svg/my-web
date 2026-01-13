@@ -1,387 +1,357 @@
 (() => {
-  // ====== State ======
-  const state = {
-    page: 'home',
-    grade: null,          // P1 / P2 / P3
-    moduleId: null,
-    qCount: 20,
-    // practice runtime
-    idx: 0,
-    correct: 0,
-    answered: 0,
-    currentAnswer: null,
-    locked: false,
-  };
-
-  // ====== DOM helpers ======
   const $ = (sel) => document.querySelector(sel);
   const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
-  function showPage(page) {
-    state.page = page;
-    $$('.page').forEach(p => p.classList.remove('active'));
-    $(`#page-${page}`).classList.add('active');
-
-    $$('.navBtn').forEach(b => b.classList.toggle('active', b.dataset.page === page));
-
-    // 每次进页面刷新需要的东西
-    if (page === 'records') renderRecords();
-    if (page === 'settings') renderQCount();
-  }
-
-  // ====== Data ======
-  // 模组标题规则：主标题 + (范围/说明) 要显示在下一行更小
-  const MODULES = {
-    P1: [
-      { id:'p1-qty', icon:'🔢', title:'數對應數量', range:'(0～20)', desc:'數數、對應數量', enabled:true },
-      { id:'p1-100', icon:'🧭', title:'認識 100', range:'(不要求計算)', desc:'比大小、找數字', enabled:true },
-      { id:'p1-place', icon:'🧩', title:'十與一', range:'(位值)', desc:'十個＝一個十', enabled:true },
-      { id:'p1-ten', icon:'🧮', title:'湊 10', range:'(補到 10)', desc:'為進位做準備', enabled:true },
-      { id:'p1-add', icon:'➕', title:'20 以內加減', range:'(先理解)', desc:'不比快、先正確', enabled:true },
-    ],
-    P2: [
-      { id:'p2-add', icon:'➕', title:'加減', range:'(100 內)', desc:'含進退位', enabled:true },
-      { id:'p2-mul', icon:'✖️', title:'乘法', range:'(九九)', desc:'0～9', enabled:true },
-      { id:'p2-div', icon:'➗', title:'除法', range:'(整除)', desc:'配合乘法', enabled:true },
-      { id:'p2-place', icon:'🏷️', title:'位值', range:'(千百十個)', desc:'讀寫數', enabled:true },
-      { id:'p2-app', icon:'📝', title:'應用題', range:'(基礎)', desc:'關鍵字理解', enabled:true },
-    ],
-    P3: [
-      { id:'p3-mul', icon:'🧠', title:'乘除', range:'(12 內)', desc:'更熟練', enabled:true },
-      { id:'p3-big', icon:'📌', title:'位值與大數', range:'(到萬位)', desc:'讀寫比較', enabled:true },
-      { id:'p3-frac', icon:'🍰', title:'分數初步', range:'(等分)', desc:'概念建立', enabled:true },
-      { id:'p3-measure', icon:'⏱️', title:'量與測量', range:'(時間長度重量)', desc:'單位認識', enabled:true },
-      { id:'p3-app', icon:'🧾', title:'應用題', range:'(進階)', desc:'步驟與檢查', enabled:true },
-    ]
+  // ---------- State ----------
+  const state = {
+    grade: null,            // "P1" | "P2" | "P3"
+    moduleId: null,         // string
+    qCount: 20,
+    qIndex: 0,
+    answered: 0,
+    correct: 0,
+    currentAnswer: null,
+    currentOptions: [],
   };
 
-  // ====== Render grade + modules ======
-  function renderGradeUI() {
-    const badge = $('#gradeBadge');
-    if (!state.grade) {
-      badge.textContent = '未選年級';
-      $('#moduleBadge').textContent = '請先選年級';
-      $('#gradeNote').style.display = '';
-      $$('.gradeCard').forEach(b => b.classList.remove('selected'));
-      $('#moduleGrid').innerHTML = '';
+  // ---------- Data ----------
+  const GRADE_LABEL = {
+    P1: "小1",
+    P2: "小2",
+    P3: "小3",
+  };
+
+  // 这里就是你的“五大模組”内容来源
+  const MODULES_BY_GRADE = {
+    P1: [
+      { id:"p1_count", icon:"🔢", title:"數對應數量", range:"(0～20)", desc:"數數、對應數量", enabled:true },
+      { id:"p1_100",   icon:"🧭", title:"認識 100",    range:"(不要求計算)", desc:"比大小、找數字", enabled:true },
+      { id:"p1_ten1",  icon:"🧩", title:"十與一",      range:"(位值)", desc:"十個＝一個十", enabled:true },
+      { id:"p1_make10",icon:"🧮", title:"湊 10",       range:"(補到 10)", desc:"為進位做準備", enabled:true },
+      { id:"p1_20",    icon:"➕", title:"20 以內加減", range:"(先理解)", desc:"不比快、先正確", enabled:true },
+    ],
+    P2: [
+      { id:"p2_addsub", icon:"➕", title:"加減", range:"(100 內)", desc:"含進退位", enabled:true },
+      { id:"p2_mul99",  icon:"✖️", title:"乘法", range:"(九九)", desc:"0～9", enabled:true },
+      { id:"p2_div",    icon:"➗", title:"除法", range:"(整除)", desc:"配合乘法", enabled:true },
+      { id:"p2_place",  icon:"🏷️", title:"位值", range:"(千百十個)", desc:"讀寫數", enabled:true },
+      { id:"p2_word",   icon:"📝", title:"應用題", range:"(基礎)", desc:"關鍵字理解", enabled:true },
+    ],
+    P3: [
+      { id:"p3_div12",  icon:"🧠", title:"乘除", range:"(12 內)", desc:"更熟練", enabled:true },
+      { id:"p3_place",  icon:"📌", title:"位值與大數", range:"(到萬位)", desc:"讀寫比較", enabled:true },
+      { id:"p3_frac",   icon:"🍰", title:"分數初步", range:"(等分)", desc:"概念建立", enabled:true },
+      { id:"p3_meas",   icon:"⏱️", title:"量與測量", range:"(時間長度重量)", desc:"單位認識", enabled:true },
+      { id:"p3_word2",  icon:"🧾", title:"應用題", range:"(進階)", desc:"步驟與檢查", enabled:true },
+    ],
+  };
+
+  // ---------- Page / Nav ----------
+  function showPage(pageName){
+    const pages = ["home","practice","records","settings"];
+    pages.forEach(p => {
+      const el = $("#page-" + p);
+      if (!el) return;
+      el.hidden = (p !== pageName);
+    });
+
+    $$(".navBtn").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.page === pageName);
+    });
+  }
+
+  // ---------- Grade ----------
+  function setGrade(grade){
+    state.grade = grade;
+    state.moduleId = null;
+
+    $("#gradeBadge").textContent = `已選年級：${GRADE_LABEL[grade]}`;
+    $("#moduleBadge").textContent = `${GRADE_LABEL[grade]} 模組`;
+
+    // active style
+    $$(".gradeCard").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.grade === grade);
+    });
+
+    renderModules();
+  }
+
+  // ---------- Modules ----------
+  function renderModules(){
+    const grid = $("#moduleGrid");
+    grid.innerHTML = "";
+
+    if (!state.grade){
+      $("#moduleBadge").textContent = "請先選年級";
       return;
     }
 
-    const gradeText = state.grade === 'P1' ? '小1' : state.grade === 'P2' ? '小2' : '小3';
-    badge.textContent = `已選年級：${gradeText}`;
-    $('#moduleBadge').textContent = `${gradeText} 模組`;
+    const list = MODULES_BY_GRADE[state.grade] || [];
+    list.forEach(m => {
+      const btn = document.createElement("button");
+      btn.className = "moduleCard";
+      btn.type = "button";
+      btn.dataset.moduleId = m.id;
+      if (!m.enabled) btn.disabled = true;
 
-    $$('.gradeCard').forEach(b => b.classList.toggle('selected', b.dataset.grade === state.grade));
-  }
-
-  function renderModules() {
-    renderGradeUI();
-
-    if (!state.grade) return;
-
-    const list = MODULES[state.grade] || [];
-    const grid = $('#moduleGrid');
-    grid.innerHTML = list.map(m => {
-      const dis = m.enabled ? '' : 'disabled';
-      return `
-        <button class="moduleCard" data-module="${m.id}" ${dis} type="button">
-          <div class="iconBubble">${m.icon}</div>
-          <div class="moduleText">
-            <div class="moduleTitle">${m.title}</div>
-            <div class="moduleRange">${m.range}</div>
-            <div class="moduleDesc">${m.desc}</div>
-          </div>
-        </button>
-      `;
-    }).join('');
-
-    $('#gradeNote').style.display = '';
-  }
-
-  // ====== Practice engine ======
-  function startPractice(moduleId) {
-    state.moduleId = moduleId;
-    state.idx = 0;
-    state.correct = 0;
-    state.answered = 0;
-    state.locked = false;
-
-    // 标题
-    const gradeText = state.grade === 'P1' ? '小1' : state.grade === 'P2' ? '小2' : '小3';
-    const mod = (MODULES[state.grade] || []).find(x => x.id === moduleId);
-    const modTitle = mod ? mod.title : '模組';
-    const modRange = mod ? mod.range : '( )';
-
-    $('#practiceHeader').textContent = `${gradeText}｜${modTitle}`;
-    $('#practiceRange').textContent = modRange;
-
-    showPage('practice');
-    nextQuestion(true);
-  }
-
-  // 产生题目：小一「数对应数量」一定要给数量图点，不把答案写在文字里
-  function makeQuestion() {
-    const moduleId = state.moduleId;
-
-    // 默认：都做简单选择题（可后续扩充）
-    let answer = 10;
-    let min = 0, max = 20;
-    let prompt = '請選出正確數字。';
-    let items = 0;
-
-    if (moduleId === 'p1-qty') {
-      min = 0; max = 20;
-      answer = randInt(min, max);
-      items = answer;
-      prompt = '請數一數下面有幾個，並選正確數字。';
-    } else {
-      // 其他模组先用随机数题
-      min = 0; max = 20;
-      answer = randInt(min, max);
-      items = 0;
-      prompt = `請選出：${answer}`;
-    }
-
-    const options = makeOptions(answer, 4, min, max);
-    return { answer, options, prompt, items };
-  }
-
-  function nextQuestion(isFirst=false) {
-    if (!state.grade || !state.moduleId) return;
-
-    state.locked = false;
-    const q = makeQuestion();
-    state.currentAnswer = q.answer;
-
-    $('#progressText').textContent = `第 ${state.idx + 1} 題 / ${state.qCount} 題`;
-    $('#scoreText').textContent = `正確 ${state.correct} / 作答 ${state.answered}`;
-    $('#qText').textContent = q.prompt;
-
-    // items
-    const box = $('#qItems');
-    box.innerHTML = '';
-    if (q.items > 0) {
-      const cap = Math.min(q.items, 60); // 防爆
-      for (let i=0;i<cap;i++){
-        const d = document.createElement('div');
-        d.className = 'itemDot';
-        box.appendChild(d);
-      }
-      if (q.items > 60) {
-        const more = document.createElement('div');
-        more.className = 'muted';
-        more.textContent = `（共 ${q.items} 個）`;
-        box.appendChild(more);
-      }
-    }
-
-    // options
-    const optWrap = $('#options');
-    optWrap.innerHTML = q.options.map(n => `<button class="optBtn" data-opt="${n}" type="button">${n}</button>`).join('');
-
-    // tip
-    $('#practiceTip').textContent = '請選擇答案';
-    if (!isFirst) state.idx++;
-  }
-
-  function finishPractice() {
-    // 保存记录
-    const gradeText = state.grade === 'P1' ? '小1' : state.grade === 'P2' ? '小2' : '小3';
-    const mod = (MODULES[state.grade] || []).find(x => x.id === state.moduleId);
-    const modTitle = mod ? mod.title : '模組';
-
-    const rec = {
-      ts: Date.now(),
-      grade: gradeText,
-      module: modTitle,
-      answered: state.answered,
-      correct: state.correct,
-      accuracy: state.answered ? Math.round((state.correct/state.answered)*100) : 0
-    };
-    const list = loadRecords();
-    list.unshift(rec);
-    saveRecords(list);
-
-    showPage('records');
-  }
-
-  // ====== Records ======
-  const REC_KEY = 'learn_records_v1';
-  function loadRecords() {
-    try { return JSON.parse(localStorage.getItem(REC_KEY) || '[]'); } catch(e){ return []; }
-  }
-  function saveRecords(list) {
-    localStorage.setItem(REC_KEY, JSON.stringify(list));
-  }
-  function renderRecords() {
-    const list = loadRecords();
-    const wrap = $('#recordList');
-    const empty = $('#recordEmpty');
-
-    wrap.innerHTML = '';
-    if (!list.length) {
-      empty.style.display = '';
-      return;
-    }
-    empty.style.display = 'none';
-
-    wrap.innerHTML = list.map(r => {
-      const d = new Date(r.ts);
-      const dt = `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())} ${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
-      return `
-        <div class="recordItem">
-          <div>${dt}（${r.grade}｜${escapeHtml(r.module)}）</div>
-          <div>題數：${r.answered}｜答對：${r.correct}｜正確率：${r.accuracy}%</div>
+      btn.innerHTML = `
+        <div class="iconBubble">${m.icon}</div>
+        <div class="moduleText">
+          <div class="moduleTitle">${m.title}</div>
+          <div class="moduleRange">${m.range || ""}</div>
+          <div class="moduleDesc">${m.desc || ""}</div>
         </div>
       `;
-    }).join('');
+
+      btn.addEventListener("click", () => {
+        if (!state.grade) return;
+        if (btn.disabled) return;
+        startPractice(m);
+      });
+
+      grid.appendChild(btn);
+    });
   }
 
-  // ====== Settings ======
-  const QCOUNT_KEY = 'qcount_v1';
-  function loadQCount() {
-    const v = parseInt(localStorage.getItem(QCOUNT_KEY) || '20', 10);
-    return [10,20,30].includes(v) ? v : 20;
-  }
-  function saveQCount(v) {
-    localStorage.setItem(QCOUNT_KEY, String(v));
-  }
-  function renderQCount() {
-    state.qCount = loadQCount();
-    $('#qCountNow').textContent = `目前題數：${state.qCount} 題`;
-    $$('#qCountChips .chip').forEach(c => c.classList.toggle('active', parseInt(c.dataset.qcount,10) === state.qCount));
+  // ---------- Practice ----------
+  function startPractice(module){
+    state.moduleId = module.id;
+    state.qIndex = 0;
+    state.answered = 0;
+    state.correct = 0;
+
+    $("#practiceTitle").textContent = `${GRADE_LABEL[state.grade]}｜${module.title}`;
+    $("#practiceBadge").textContent = module.range || "—";
+
+    buildQuestion();
+    showPage("practice");
   }
 
-  // ====== Utils ======
-  function randInt(min, max) {
-    return Math.floor(Math.random()*(max-min+1))+min;
-  }
-  function shuffle(a){
-    for(let i=a.length-1;i>0;i--){
-      const j = Math.floor(Math.random()*(i+1));
-      [a[i],a[j]] = [a[j],a[i]];
+  function buildQuestion(){
+    // 这里做“数对应数量”类题目：用点点显示，不把答案写在题目上
+    const isCountModule = (state.moduleId === "p1_count");
+    let answer;
+
+    if (isCountModule){
+      answer = randInt(1, 20);
+      $("#questionPrompt").textContent = "共有幾個 ● ？請選正確數字。";
+      renderDots(answer);
+    } else {
+      // 其他模块给一个简单占位题型（不影响 UI）
+      answer = randInt(0, 20);
+      $("#questionPrompt").textContent = "請選正確答案。";
+      renderDots(null);
     }
-    return a;
+
+    state.currentAnswer = answer;
+    state.currentOptions = makeOptions(answer, 4, 0, 20);
+
+    renderOptions();
+    updatePracticeMeta();
   }
+
+  function renderDots(n){
+    const wrap = $("#dots");
+    wrap.innerHTML = "";
+    if (typeof n !== "number") return;
+    for (let i=0;i<n;i++){
+      const d = document.createElement("span");
+      d.className = "dot";
+      wrap.appendChild(d);
+    }
+  }
+
+  function renderOptions(){
+    const wrap = $("#options");
+    wrap.innerHTML = "";
+    state.currentOptions.forEach(val => {
+      const b = document.createElement("button");
+      b.className = "optionBtn";
+      b.type = "button";
+      b.textContent = String(val);
+      b.addEventListener("click", () => onChoose(val, b));
+      wrap.appendChild(b);
+    });
+  }
+
+  function onChoose(val, btnEl){
+    // 防止重复答题
+    if ($$(".optionBtn").some(b => b.disabled)) return;
+
+    state.answered += 1;
+    if (val === state.currentAnswer){
+      state.correct += 1;
+      btnEl.classList.add("correct");
+    } else {
+      btnEl.classList.add("wrong");
+      // 标出正确
+      $$(".optionBtn").forEach(b => {
+        if (Number(b.textContent) === state.currentAnswer) b.classList.add("correct");
+      });
+    }
+
+    // disable all
+    $$(".optionBtn").forEach(b => b.disabled = true);
+    updatePracticeMeta();
+  }
+
+  function updatePracticeMeta(){
+    $("#qProgress").textContent = `第 ${state.qIndex + 1} 題 / ${state.qCount} 題`;
+    $("#qScore").textContent = `正確 ${state.correct} / 作答 ${state.answered}`;
+  }
+
+  function nextQuestion(){
+    if (state.qIndex + 1 >= state.qCount){
+      // 记录到 records
+      saveRecord();
+      alert("本次練習完成 ✅ 已寫入學習紀錄");
+      showPage("records");
+      renderRecords();
+      return;
+    }
+    state.qIndex += 1;
+    buildQuestion();
+  }
+
+  function exitPractice(){
+    saveRecord();
+    showPage("home");
+  }
+
+  // ---------- Records ----------
+  function saveRecord(){
+    if (!state.grade || !state.moduleId) return;
+
+    const rec = {
+      t: new Date().toISOString(),
+      grade: state.grade,
+      moduleId: state.moduleId,
+      qCount: state.qCount,
+      answered: state.answered,
+      correct: state.correct
+    };
+
+    const key = "records_v1";
+    const old = JSON.parse(localStorage.getItem(key) || "[]");
+    old.unshift(rec);
+    localStorage.setItem(key, JSON.stringify(old.slice(0, 50)));
+  }
+
+  function renderRecords(){
+    const key = "records_v1";
+    const list = JSON.parse(localStorage.getItem(key) || "[]");
+    const wrap = $("#recordList");
+
+    if (!list.length){
+      wrap.textContent = "目前還沒有紀錄，完成一次練習就會顯示在這裡。";
+      $("#recordBadge").textContent = "—";
+      return;
+    }
+
+    $("#recordBadge").textContent = `${list.length} 筆`;
+    wrap.innerHTML = list.map(r => {
+      const dt = new Date(r.t);
+      const grade = GRADE_LABEL[r.grade] || r.grade;
+      const acc = (r.answered ? Math.round((r.correct / r.answered) * 100) : 0);
+      return `
+        <div class="recordItem">
+          <div><b>${dt.toLocaleString()}</b>（${grade}）</div>
+          <div>題數：${r.qCount}｜作答：${r.answered}｜答對：${r.correct}｜正確率：${acc}%</div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  function clearRecords(){
+    const pwd = localStorage.getItem("parent_pwd_v1");
+    if (pwd){
+      const input = prompt("請輸入家長密碼以清除紀錄：");
+      if (input !== pwd){
+        alert("密碼錯誤");
+        return;
+      }
+    }
+    localStorage.removeItem("records_v1");
+    renderRecords();
+  }
+
+  // ---------- Settings ----------
+  function setQCount(n){
+    state.qCount = n;
+    $("#qCountHint").textContent = `目前題數：${n} 題`;
+    $$("#qCountRow .chip").forEach(c => {
+      c.classList.toggle("active", Number(c.dataset.count) === n);
+    });
+  }
+
+  function changePassword(){
+    const pwd = prompt("設定家長密碼（留空=取消）：");
+    if (!pwd) return;
+    localStorage.setItem("parent_pwd_v1", pwd);
+    alert("已設定家長密碼 ✅");
+  }
+
+  function forgotPassword(){
+    alert("離線版本無法找回密碼。你可以在 localStorage 清除 parent_pwd_v1 來重設。");
+  }
+
+  // ---------- Utils ----------
+  function randInt(min, max){
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
   function makeOptions(answer, count=4, min=0, max=20){
     const s = new Set([answer]);
-    while(s.size < count){
-      s.add(randInt(min,max));
+    while (s.size < count){
+      s.add(randInt(min, max));
     }
     return shuffle(Array.from(s));
   }
-  function pad2(n){ return String(n).padStart(2,'0'); }
-  function escapeHtml(str){
-    return String(str).replace(/[&<>"']/g, m => ({
-      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-    }[m]));
+
+  function shuffle(arr){
+    for (let i=arr.length-1; i>0; i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
   }
 
-  // ====== One click handler (事件委派，保证动态按钮也能点) ======
-  document.addEventListener('click', (e) => {
+  // ---------- Bind events ----------
+  function bind(){
+    // nav
+    $$(".navBtn").forEach(btn => {
+      btn.addEventListener("click", () => showPage(btn.dataset.page));
+    });
 
-    // bottom nav
-    const nav = e.target.closest('.navBtn');
-    if (nav) {
-      showPage(nav.dataset.page);
-      return;
-    }
+    // grade
+    $$(".gradeCard").forEach(btn => {
+      btn.addEventListener("click", () => setGrade(btn.dataset.grade));
+    });
 
-    // grade select
-    const g = e.target.closest('.gradeCard');
-    if (g) {
-      state.grade = g.dataset.grade;
-      renderModules();
-      return;
-    }
+    // practice buttons
+    $("#nextBtn").addEventListener("click", nextQuestion);
+    $("#exitBtn").addEventListener("click", exitPractice);
 
-    // module select
-    const m = e.target.closest('.moduleCard');
-    if (m) {
-      if (m.hasAttribute('disabled')) return;
-      if (!state.grade) return;
-      startPractice(m.dataset.module);
-      return;
-    }
+    // records
+    $("#refreshRecordBtn").addEventListener("click", renderRecords);
+    $("#clearRecordBtn").addEventListener("click", clearRecords);
 
-    // option click
-    const opt = e.target.closest('.optBtn');
-    if (opt) {
-      if (state.locked) return;
-      state.locked = true;
+    // settings
+    $("#changePwdBtn").addEventListener("click", changePassword);
+    $("#forgotPwdBtn").addEventListener("click", forgotPassword);
 
-      const v = parseInt(opt.dataset.opt, 10);
-      state.answered++;
-      const ok = v === state.currentAnswer;
-      if (ok) state.correct++;
+    $$("#qCountRow .chip").forEach(chip => {
+      chip.addEventListener("click", () => setQCount(Number(chip.dataset.count)));
+    });
 
-      // UI feedback
-      $$('.optBtn').forEach(b => {
-        const bv = parseInt(b.dataset.opt,10);
-        if (bv === state.currentAnswer) b.classList.add('correct');
-        if (b === opt && !ok) b.classList.add('wrong');
-        b.disabled = true;
-      });
-
-      $('#scoreText').textContent = `正確 ${state.correct} / 作答 ${state.answered}`;
-      $('#practiceTip').textContent = ok ? '✅ 答對了！' : `❌ 答錯了，正確是 ${state.currentAnswer}`;
-
-      // auto next / finish
-      setTimeout(() => {
-        if (state.idx + 1 >= state.qCount) {
-          finishPractice();
-        } else {
-          state.idx++;
-          nextQuestion(true);
-        }
-      }, 450);
-
-      return;
-    }
-
-    // buttons
-    if (e.target.closest('#exitBtn')) {
-      finishPractice();
-      return;
-    }
-    if (e.target.closest('#nextBtn')) {
-      // 手动下一题（不建议一直用，保留）
-      if (state.idx + 1 >= state.qCount) finishPractice();
-      else { state.idx++; nextQuestion(true); }
-      return;
-    }
-
-    if (e.target.closest('#refreshRecordBtn')) {
-      renderRecords();
-      return;
-    }
-    if (e.target.closest('#clearRecordBtn')) {
-      // 简化：直接清（你要密码再加）
-      saveRecords([]);
-      renderRecords();
-      return;
-    }
-
-    // qcount chips
-    const chip = e.target.closest('#qCountChips .chip');
-    if (chip) {
-      const v = parseInt(chip.dataset.qcount, 10);
-      saveQCount(v);
-      renderQCount();
-      return;
-    }
-  });
-
-  // ====== Boot ======
-  function boot(){
-    state.qCount = loadQCount();
-    renderModules();
-    renderRecords();
-    renderQCount();
-    showPage('home');
-    // 可选：确认 js 真的载入
-    // alert('JS 已啟動 ✅');
+    // parent
+    $("#parentBtn").addEventListener("click", () => showPage("settings"));
   }
 
-  boot();
+  // ---------- Boot ----------
+  bind();
+  renderModules();
+  renderRecords();
+  setQCount(20);
+  showPage("home");
 })();
