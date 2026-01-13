@@ -1,8 +1,7 @@
-* { box-sizing: border-box; }
-
+*{ box-sizing:border-box; }
 body{
   margin:0;
-  font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif;
   background:#f5f6f7;
   color:#111;
 }
@@ -10,38 +9,63 @@ body{
 .app{
   max-width: 980px;
   margin: 0 auto;
-  padding: 14px 14px 90px;
+  padding: 16px 16px 92px; /* 留底部導覽高度 */
 }
 
 .topbar{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  background: linear-gradient(135deg, #14a6ad, #0f8f9a);
+  gap: 12px;
+  background: linear-gradient(135deg,#14a6ad,#0e8ea1);
   color:#fff;
   border-radius: 18px;
   padding: 14px 16px;
   margin-bottom: 14px;
 }
 
-.brand{
-  display:flex;
-  align-items:center;
-  gap: 12px;
-}
+.brand{ display:flex; gap:12px; align-items:center; }
 .book{ font-size: 26px; }
-.brand-text{ line-height: 1.2; }
-.brand-title{ font-size: 26px; font-weight: 1000; }
-.brand-sub{ font-size: 13px; opacity: .92; font-weight: 700; }
+.brandText{ line-height:1.1; }
+.brandTitle{ font-size: 26px; font-weight: 1000; }
+.brandSub{ font-size: 13px; opacity:0.92; font-weight: 800; margin-top: 4px; }
 
 .pill{
-  background: rgba(255,255,255,0.9);
-  border: 0;
-  color:#0f7f8a;
+  background: rgba(255,255,255,0.92);
+  border: 2px solid rgba(255,255,255,0.6);
+  color:#117fb0;
   font-weight: 1000;
-  border-radius: 18px;
+  border-radius: 16px;
   padding: 10px 14px;
-  font-size: 16px;
+  font-size: 18px;
+}
+
+.card{
+  background:#fff;
+  border-radius: 22px;
+  padding: 18px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  margin-bottom: 14px;
+}
+
+h2{
+  margin: 2px 0 10px;
+  font-size: 30px;
+  font-weight: 1000;
+}
+
+.sep{
+  border:none;
+  height:1px;
+  background:#eee;
+  margin: 16px 0;
+}
+
+.row{
+  display:flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items:center;
 }
 
 .pill2{
@@ -49,107 +73,60 @@ body{
   border:0;
   color:#1e88e5;
   font-weight: 1000;
-  border-radius: 14px;
-  padding: 12px 14px;
-  font-size: 16px;
+  border-radius: 16px;
+  padding: 12px 16px;
+  font-size: 18px;
 }
 .pill2.danger{ color:#d32f2f; }
 
-.card{
-  background:#fff;
-  border-radius: 22px;
-  padding: 16px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-  margin-bottom: 14px;
-}
+.pages .page{ display:none; }
+.pages .page.active{ display:block; }
 
-.card-head{
+.sectionHead{
   display:flex;
-  align-items:center;
+  align-items:flex-start;
   justify-content:space-between;
   gap: 10px;
-  margin-bottom: 12px;
-}
-
-h2{
-  margin: 0;
-  font-size: 30px;
-  font-weight: 1000;
-  letter-spacing: .02em;
+  margin-bottom: 10px;
 }
 
 .badge{
-  display:inline-flex;
-  align-items:center;
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: #eaf4ff;
+  background:#eaf4ff;
   color:#1e88e5;
   font-weight: 1000;
-  font-size: 14px;
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-size: 16px;
+  white-space: nowrap;
 }
 
-.sep{
-  border:none;
-  height:1px;
-  background:#eee;
-  margin: 14px 0;
-}
-
-.hint-line{
-  margin-top: 10px;
-  color:#555;
-  font-weight: 800;
-  font-size: 13px;
-}
-
-.row{
-  display:flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 12px;
-}
-
-/* ===== 分頁切換 ===== */
-.page{ display:none; }
-.page-active{ display:block; }
-
-/* ===== 年級卡 ===== */
-.grade-row{
+.gradeRow{
   display:grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
 }
 
-.grade-card{
+.gradeBtn{
   border:0;
   border-radius: 18px;
-  background:#dff1ff;
-  padding: 14px;
+  background:#e9f4ff;
+  padding: 14px 12px;
   text-align:left;
 }
-.grade-card:active{ transform: scale(0.99); }
-
-.g-title{
-  font-size: 26px;
-  font-weight: 1000;
-  color:#1e88e5;
+.gradeBtn.active{
+  outline: 3px solid rgba(30,136,229,0.25);
+  background:#dff1ff;
 }
-.g-sub{
-  margin-top: 4px;
-  font-size: 14px;
-  font-weight: 900;
-  color:#444;
-}
+.gTitle{ font-size: 26px; font-weight: 1000; color:#1e88e5; }
+.gSub{ font-size: 16px; font-weight: 900; color:#333; margin-top: 6px; opacity:0.9; }
 
-/* ===== 五大模組 ===== */
-.module-grid{
+.moduleGrid{
   display:grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  gap: 14px;
+  margin-top: 10px;
 }
-
-.module-card{
+.moduleCard{
   border:0;
   border-radius: 20px;
   background:#f3f3f3;
@@ -158,120 +135,135 @@ h2{
   gap: 12px;
   align-items:center;
   text-align:left;
-  min-height: 92px;
+  min-height: 86px;
 }
-.module-card:active{ transform: scale(0.99); }
-
-.module-icon{
-  width: 46px;
-  height: 46px;
-  border-radius: 14px;
-  background:#eaf4ff;
+.moduleCard[disabled]{
+  opacity: 0.45;
+}
+.iconBubble{
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  background:#e8f2ff;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size: 24px;
+  font-size: 26px;
   flex: 0 0 auto;
 }
-
-.module-text{
-  flex: 1 1 auto;
-  min-width: 0;
-}
-
-.m-title{
-  font-size: 20px;
+.moduleText{ min-width: 0; }
+.moduleTitle{
+  font-size: 22px;
   font-weight: 1000;
   color:#1e88e5;
-  line-height: 1.15;
+  line-height: 1.1;
 }
-
-.m-sub{
-  margin-top: 4px;
-  font-size: 14px;
+.moduleRange{
+  font-size: 15px;
   font-weight: 1000;
-  color:#666;
-  line-height: 1.2;
+  color:#1e88e5;
+  opacity: 0.9;
+  margin-top: 4px;
 }
-
-.m-desc{
+.moduleDesc{
   margin-top: 6px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 900;
   color:#333;
-  line-height: 1.25;
+  opacity: 0.9;
 }
 
-.module-card.locked{
-  opacity: 0.45;
+.hintText{
+  margin-top: 12px;
+  color:#555;
+  font-weight: 900;
+  font-size: 16px;
 }
-.module-card.locked .m-title,
-.module-card.locked .m-sub,
-.module-card.locked .m-desc{
+
+.bottomNav{
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255,255,255,0.98);
+  border-top: 1px solid #eee;
+  display:flex;
+  justify-content:space-around;
+  padding: 10px 10px env(safe-area-inset-bottom);
+  z-index: 999;
+}
+.navBtn{
+  border:0;
+  background:transparent;
+  font-weight: 1000;
   color:#666;
+  border-radius: 18px;
+  padding: 10px 16px;
+  min-width: 84px;
 }
+.navBtn.active{
+  background:#eaf4ff;
+  color:#1e88e5;
+  outline: 2px solid rgba(30,136,229,0.15);
+}
+.navBtn div{ font-size: 14px; margin-top: 6px; }
 
-/* ===== 練習 ===== */
-.practice-top{
+/* Practice */
+.practiceTop{
   display:flex;
   align-items:flex-start;
   justify-content:space-between;
-  gap: 12px;
+  gap: 10px;
 }
-
-.pt-title{
-  font-size: 26px;
+.pTitle{
+  font-size: 30px;
   font-weight: 1000;
 }
-.pt-meta{
-  margin-top: 4px;
-  font-size: 14px;
-  font-weight: 900;
-  color:#555;
+.pMeta{
+  font-size: 16px;
+  font-weight: 1000;
+  color:#444;
+  margin-top: 6px;
 }
+.rightMeta{ text-align:right; }
 
-.question-box{
-  background:#f7f7f7;
+.prompt{
+  margin-top: 14px;
+  font-size: 24px;
+  font-weight: 1000;
+}
+.visualArea{
+  margin-top: 12px;
+  background:#f3f3f3;
   border-radius: 18px;
   padding: 14px;
+  min-height: 76px;
 }
 
-.question-text{
-  font-size: 22px;
-  font-weight: 1000;
-  margin-bottom: 10px;
-}
-
-.icon-field{
+.dots{
   display:flex;
   flex-wrap: wrap;
-  gap: 8px;
-  align-items:center;
-  min-height: 44px;
+  gap: 10px 12px;
 }
-.icon-chip{
-  width: 34px;
-  height: 34px;
-  border-radius: 12px;
-  background:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size: 20px;
-  box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+.dot{
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background:#111;
+  opacity: 0.9;
 }
 
 .choices{
+  margin-top: 12px;
   display:grid;
   gap: 10px;
-  margin-top: 12px;
 }
 .choice{
   border:0;
-  border-radius: 16px;
+  border-radius: 18px;
   background:#f1f1f1;
   padding: 14px 12px;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 1000;
   text-align:left;
 }
@@ -282,147 +274,39 @@ h2{
   margin-top: 12px;
   font-size: 18px;
   font-weight: 1000;
+  color:#333;
 }
 
-.report{
-  margin-top: 10px;
-  padding: 12px;
-  border-radius: 14px;
-  background:#f3f3f3;
-  font-weight: 1000;
-}
-
-/* ===== 紀錄 ===== */
+/* Records */
 .history .item{
   background:#f3f3f3;
   border-radius: 14px;
   padding: 12px 14px;
   margin: 10px 0;
 }
-.history .empty{
-  color:#555;
-  font-weight: 900;
+.history .item b{
+  display:block;
+  margin-bottom: 8px;
 }
 
-/* ===== Tabbar ===== */
-.tabbar{
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(255,255,255,0.92);
-  border-top: 1px solid rgba(0,0,0,0.06);
-  padding: 10px 10px 16px;
-  display:grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  backdrop-filter: blur(10px);
-}
-
-.tab{
-  border:0;
-  border-radius: 18px;
-  padding: 10px 8px;
-  background:#f3f3f3;
-  font-weight: 1000;
-  font-size: 14px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap: 6px;
-}
-.tab span{ display:inline-block; }
-.tab-active{
-  background:#dff1ff;
-  outline: 2px solid rgba(30,136,229,0.25);
-}
-
-/* ===== Modal ===== */
-.modal-mask{
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.35);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding: 14px;
-  z-index: 9999;
-}
-
-.modal{
-  width: 100%;
-  max-width: 560px;
-  background:#fff;
-  border-radius: 18px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-  overflow:hidden;
-}
-
-.modal-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding: 14px 14px;
+.settingBlock{
   background:#f7f7f7;
-  border-bottom: 1px solid #eee;
-}
-.modal-title{
-  font-size: 18px;
-  font-weight: 1000;
-}
-.icon-btn{
-  border:0;
-  background:transparent;
-  font-size: 18px;
-  font-weight: 1000;
-}
-
-.modal-body{
+  border-radius: 18px;
   padding: 14px;
 }
-
-.form-block{
-  background:#fafafa;
-  border: 1px solid #eee;
-  border-radius: 14px;
-  padding: 12px;
-  margin-bottom: 12px;
-}
-.form-title{
-  font-size: 16px;
+.settingTitle{
+  font-size: 20px;
   font-weight: 1000;
-  margin-bottom: 10px;
 }
-.form-row{
-  display:grid;
-  grid-template-columns: 92px 1fr;
-  gap: 10px;
-  align-items:center;
-  margin: 10px 0;
-}
-.label{
-  font-weight: 1000;
-  color:#333;
-  font-size: 14px;
-}
-.input{
-  width: 100%;
-  border-radius: 12px;
-  border: 1px solid #ddd;
-  padding: 10px 12px;
-  font-size: 14px;
-  font-weight: 900;
-}
-
-.tiny{
+.settingDesc{
   margin-top: 6px;
-  font-size: 12px;
-  color:#666;
-  font-weight: 800;
-}
-
-.ul{
-  margin: 8px 0 0 18px;
-  color:#444;
+  font-size: 15px;
   font-weight: 900;
+  opacity: 0.9;
+}
+.smallNote{
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 900;
+  color:#555;
 }
