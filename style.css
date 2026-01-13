@@ -171,12 +171,19 @@ h2{
 
 .moduleText{ min-width:0; }
 .moduleTitle{
-  font-size:22px;
-  font-weight:1000;
-  color:var(--blue);
-  line-height:1.12;
-  /* 关键：让长标题不乱跳，但允许换行更顺 */
-  word-break: keep-all;
+  font-size: clamp(18px, 4.8vw, 22px);
+  font-weight: 1000;
+  color:#1e88e5;
+  line-height: 1.15;
+
+  /* ✅ 关键：不让中文一字一字掉到下一行 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  /* ✅ 让 flex 里可以缩，不会把字挤断 */
+  min-width: 0;
+}
 }
 .moduleRange{
   margin-top:4px;
