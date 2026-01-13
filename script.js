@@ -1,3 +1,4 @@
+alert("JS 有執行");
 (() => {
   // ====== Basic helpers ======
   const $ = (q) => document.querySelector(q);
