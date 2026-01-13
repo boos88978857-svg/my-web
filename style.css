@@ -1,192 +1,54 @@
 /* ===============================
-   Base
+   0. 防止整体被挤爆（基础保险）
 ================================ */
-* { box-sizing: border-box; }
-html, body { height: 100%; }
-body{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;
-  background:#f2f4f7;
-  color:#111;
-}
-
-/* 外层容器（你的是 .app） */
-.app{
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 14px 12px 98px; /* 底部留给 nav */
+*{
+  box-sizing: border-box;
 }
 
 /* ===============================
-   Top Banner（topBanner）
+   1. 移除右上角「家长」按钮
 ================================ */
-.topBanner{
-  background: linear-gradient(90deg,#0ea7a6,#16b2c0);
-  border-radius: 22px;
-  padding: 16px 16px;
-  margin: 6px 10px 16px;
-  color:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  box-shadow: 0 10px 24px rgba(0,0,0,.10);
+#parentBtn,
+.parentBtn{
+  display: none !important;
 }
-.topBanner .titleWrap{
-  display:flex;
-  flex-direction:column;
-  gap:4px;
-  min-width:0;
-}
-.topBanner .titleWrap .bigTitle{
-  font-size: 30px;
-  font-weight: 1000;
-  line-height:1.1;
-}
-.topBanner .titleWrap .subTitle{
-  font-size: 16px;
-  font-weight: 800;
-  opacity:.95;
-}
-.topBanner .parentBtn,
-.topBanner button{
-  border:0;
-  background:#eaf4ff;
-  color:#1e88e5;
-  font-weight:1000;
-  padding: 10px 16px;
+
+/* ===============================
+   2. 「已选年级」蓝色 badge 缩到包字
+================================ */
+#gradeBadge,
+.badge{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content !important;
+  max-width: 100%;
+  padding: 6px 12px !important;
   border-radius: 999px;
-  white-space:nowrap;
+  font-size: 14px;
+  line-height: 1;
 }
 
 /* ===============================
-   Cards / Sections（白底大卡片）
+   3. 五大模组卡片整体结构稳定
 ================================ */
-.sectionCard, .card, .panel, section{
-  background:#fff;
-  border-radius: 28px;
-  box-shadow: 0 10px 24px rgba(0,0,0,.08);
-  padding: 22px 18px;
-  margin: 16px 10px;
-}
-
-/* 标题行（五大模组那行右边的小胶囊） */
-.sectionHead, .headRow{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  margin-bottom: 12px;
-}
-.sectionTitle, h2{
-  margin:0;
-  font-size: 44px;
-  font-weight: 1000;
-  letter-spacing:1px;
-}
-.badge, .chip, .pill{
-  background:#eaf4ff;
-  color:#1e88e5;
-  font-weight:1000;
-  border-radius: 999px;
-  padding: 6px 10px;        /* 原本 10px 16px 太大 */
-  white-space:nowrap;
-  display:inline-flex;       /* 让背景跟字更贴 */
-  align-items:center;
-}
-}
-
-/* 提示文字 */
-.helperText, .note{
-  margin: 10px 0 0;
-  color:#666;
-  font-weight:800;
-}
-
-/* ===============================
-   Grade 3 cards（年级三格）
-   你的 HTML： gradeRow > button.gradeCard
-================================ */
-.gradeRow{
-  display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-  margin-top: 10px;
-}
-
-.gradeCard{
-  width:100%;
-  border:0;
-  border-radius: 20px;
-  background:#eaf4ff;
-  padding: 18px 12px;
-  text-align:center;
-  box-shadow: inset 0 0 0 2px rgba(30,136,229,.18);
-  cursor:pointer;
-}
-.gradeCard:active{ transform: scale(.99); }
-
-.gradeCard.selected,
-.gradeCard[aria-pressed="true"]{
-  box-shadow: inset 0 0 0 3px rgba(30,136,229,.35);
-}
-
-.gradeBig{
-  font-size: 38px;
-  font-weight: 1000;
-  color:#1e88e5;
-  line-height: 1.05;
-}
-.gradeSmall{
-  margin-top: 8px;
-  font-size: 18px;
-  font-weight: 900;
-  color:#333;
-}
-
-/* ===============================
-   Modules（五大模组）
-   你的 HTML： moduleGrid > button.moduleCard
-================================ */
-.moduleGrid{
-  display:grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
-  margin-top: 12px;
-  align-items: stretch;
-}
-
-/* ✅ 重点：每张卡固定最小高度 + 拉齐 */
 .moduleCard{
-  border:0;
-  border-radius: 22px;
-  background:#f3f3f3;
-  padding: 16px;
-  display:flex;
+  display: flex;
+  align-items: center;
   gap: 12px;
-  align-items:center;
-  text-align:left;
-  min-height: 120px;
-  height: 100%;
-  cursor:pointer;
-}
-.moduleCard:active{ transform: scale(.995); }
-
-.moduleCard[disabled], .moduleCard.disabled{
-  opacity: .45;
-  cursor: default;
+  width: 100%;
 }
 
-/* ===== 五大模组：图标（无蓝底、缩小、不挤字）===== */
+/* ===============================
+   4. 图标：无蓝底 + 缩小
+================================ */
 .iconBubble{
   width: 40px;
   height: 40px;
   flex: 0 0 40px;
-
-  background: transparent !important; /* ❗彻底无蓝底 */
+  background: transparent !important;
   box-shadow: none !important;
-  border-radius: 0;
-
+  border-radius: 0 !important;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -198,93 +60,34 @@ body{
   object-fit: contain;
 }
 
-/* 文字区域 */
-.moduleText{ min-width:0; }
-
-/* ✅ 标题不要乱断行：控制在两行内，超过就省略 */
-.moduleTitle{
-  font-size: 24px;
-  font-weight: 1000;
-  color:#1e88e5;
-  line-height: 1.15;
-
-  display:-webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow:hidden;
+/* ===============================
+   5. 模组文字区域（禁止再出现 ...）
+================================ */
+.moduleText{
+  flex: 1 1 auto;
+  min-width: 0;
+  text-align: left;
 }
-.moduleRange{
-  margin-top: 2px;
-  font-size: 15px;
-  font-weight: 1000;
-  color:#1e88e5;
-  opacity:.9;
-}
+
+/* 标题 / 范围 / 说明：全部允许换行 */
+.moduleTitle,
+.moduleRange,
 .moduleDesc{
-  margin-top: 6px;
-  font-size: 18px;
-  font-weight: 900;
-  color:#333;
-  line-height: 1.25;
-
-  display:-webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow:hidden;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  word-break: keep-all;
+  line-height: 1.4;
 }
 
 /* ===============================
-   Bottom Nav（底部固定栏）
+   6. 防止 iPhone Pro Max 字体撑爆
 ================================ */
-#bottomNav, .bottomNav{
-  position: fixed;
-  left:0; right:0; bottom:0;
-  background:#f0f0f0;
-  border-top: 1px solid rgba(0,0,0,.08);
-  padding: 10px 10px calc(18px + env(safe-area-inset-bottom));
-  display:grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  z-index: 50;
-}
-
-/* ✅ 不要遮住点击：nav 只占自己高度，不要全屏 */
-#bottomNav *{ pointer-events:auto; }
-
-.navBtn{
-  border:0;
-  background: transparent;
-  display:grid;
-  place-items:center;
-  gap: 6px;
-  padding: 8px 0;
-  font-weight: 900;
-  color:#444;
-  cursor:pointer;
-}
-.navBtn.active{
-  background:#d9edff;
-  border-radius: 18px;
-  color:#1e88e5;
-}
-.navBtn img{
-  width: 26px;
-  height: 26px;
-  object-fit: contain;
-}
-
-/* ===============================
-   Responsive（iPhone 16 Pro Max 也不会超出）
-================================ */
-@media (max-width: 520px){
-  .sectionTitle, h2{ font-size: 38px; }
-  .gradeBig{ font-size: 34px; }
-  .moduleTitle{ font-size: 22px; }
-  .moduleDesc{ font-size: 17px; }
-  .moduleCard{ min-height: 112px; }
-}
-
-@media (max-width: 420px){
-  .gradeRow{ gap: 10px; }
-  .moduleGrid{ gap: 12px; }
+@media (max-width: 430px){
+  .moduleTitle{
+    font-size: 16px;
+  }
+  .moduleDesc{
+    font-size: 14px;
+  }
 }
