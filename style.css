@@ -151,33 +151,17 @@ h2{
   font-size: 26px;
   flex: 0 0 auto;
 }
-/* 五大模組：文字區（關鍵修正） */
-.moduleText{
-  flex: 1;
-  min-width: 0;          /* ★★ 沒這行就一定會亂排 ★★ */
-}
-
-/* 主標題 */
-.moduleTitle{
-  font-size: 20px;
-  font-weight: 900;
-  color: #2a7de1;
-  line-height: 1.25;
-  word-break: keep-all;  /* 中文不亂斷 */
-}
-
-/* 括號小字：一定在下面 */
-.moduleSub{
-  margin-top: 4px;
-  font-size: 14px;
-  color: #666;
-}
 .moduleText{ min-width: 0; }
 .moduleTitle{
   font-size: 22px;
   font-weight: 1000;
   color:#1e88e5;
   line-height: 1.1;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 }
 .moduleRange{
   font-size: 15px;
