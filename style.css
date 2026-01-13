@@ -366,3 +366,54 @@ h2{
   .gradeBig{ font-size:28px; }
   .moduleTitle{ font-size:21px; }
 }
+
+/* ===== 模组卡片文字对齐修正（强制覆盖） ===== */
+
+.moduleCard{
+  align-items: flex-start !important;
+}
+
+/* 文字区块整体 */
+.moduleText{
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* 蓝色标题（统一最多两行） */
+.moduleTitle{
+  color:#1e88e5;
+  font-weight:1000;
+  font-size:22px;
+  line-height:1.15;
+
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+/* 括号小字 */
+.moduleRange{
+  font-size:15px;
+  font-weight:900;
+  color:#1e88e5;
+  opacity:0.9;
+  line-height:1.1;
+}
+
+/* 黑色说明文字 */
+.moduleDesc{
+  font-size:16px;
+  font-weight:900;
+  line-height:1.2;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
