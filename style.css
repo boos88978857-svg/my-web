@@ -1,65 +1,370 @@
-/* ===== 模块 Grid：强制两栏、等高 ===== */
-.moduleGrid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
+/* =========================
+   全站基础
+========================= */
+:root{
+  --bg:#f4f7fb;
+  --card:#ffffff;
+  --soft:#f3f3f3;
+  --blue:#1e88e5;
+  --teal:#1aa6a8;
+  --teal2:#19b7b8;
+  --text:#111;
+  --muted:#6b7280;
+  --shadow: 0 8px 22px rgba(0,0,0,.08);
+  --r24:24px;
+  --r20:20px;
+  --r18:18px;
 }
 
-/* ===== 模块卡片：统一高度 ===== */
-.moduleCard {
-  display: flex;
-  align-items: center;
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  font-family: -apple-system,BlinkMacSystemFont,"PingFang TC","PingFang SC","Noto Sans TC","Noto Sans CJK TC",Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* 让内容不要被底部导航盖住 */
+main, .app, #app{
+  padding-bottom: 110px;
+}
+
+/* 容器宽度（手机/平板都稳） */
+.container, .wrap, .app, #app{
+  width: min(980px, 100%);
+  margin: 0 auto;
+  padding: 14px 14px 0;
+}
+
+/* =========================
+   顶部横幅
+========================= */
+.topBanner, .banner{
+  background: linear-gradient(135deg,var(--teal),var(--teal2));
+  border-radius: 22px;
+  padding: 18px 16px;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
   gap: 12px;
-  padding: 14px;
-  border-radius: 20px;
-  background: #f3f3f3;
-  min-height: 118px;        /* ⭐关键：强制等高 */
-  box-sizing: border-box;
+  box-shadow: var(--shadow);
 }
-
-/* ===== 左边 icon 固定大小 ===== */
-.iconBubble {
-  flex: 0 0 52px;
-  width: 52px;
-  height: 52px;
+.topBanner .left, .banner .left{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  min-width:0;
 }
-
-/* ===== 文字区域 ===== */
-.moduleText {
-  flex: 1;
-  min-width: 0;
+.topBanner .logo, .banner .logo{
+  width:42px; height:42px;
+  border-radius: 12px;
+  display:flex; align-items:center; justify-content:center;
+  background: rgba(255,255,255,.18);
+  flex: 0 0 auto;
 }
-
-/* ===== 蓝色标题：不允许乱撑高度 ===== */
-.moduleTitle {
-  font-size: 20px;          /* ⭐手机安全字号 */
+.topBanner .title, .banner .title{
   font-weight: 900;
-  color: #1e88e5;
-  line-height: 1.25;
-  white-space: normal;
-  word-break: keep-all;     /* 中文不拆字 */
+  font-size: 26px;
+  line-height:1.1;
+  margin:0;
 }
-
-/* ===== 范围文字（0~20） ===== */
-.moduleRange {
-  font-size: 14px;
-  font-weight: 700;
-  color: #1e88e5;
-  margin-top: 2px;
-}
-
-/* ===== 说明文字 ===== */
-.moduleDesc {
+.topBanner .sub, .banner .sub{
+  margin: 4px 0 0;
   font-size: 15px;
-  font-weight: 700;
-  color: #333;
-  margin-top: 6px;
-  line-height: 1.3;
+  opacity: .95;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 62vw;
+}
+.parentBtn, .btnParent{
+  border:0;
+  padding: 10px 16px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.88);
+  color: var(--blue);
+  font-weight: 900;
+  font-size: 18px;
+  box-shadow: 0 6px 14px rgba(0,0,0,.12);
+  cursor:pointer;
 }
 
-/* ===== iPhone 大屏修正（Pro Max） ===== */
-@media (min-width: 430px) {
-  .moduleTitle {
-    font-size: 19px;        /* 防止横向被挤 */
-  }
+/* =========================
+   白色区块卡片（大框）
+========================= */
+.sectionCard, .card{
+  margin-top: 14px;
+  background: var(--card);
+  border-radius: var(--r24);
+  padding: 18px;
+  box-shadow: var(--shadow);
+}
+
+.sectionHeader{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+}
+.sectionHeader h2{
+  margin:0;
+  font-size: 44px;
+  letter-spacing: .5px;
+  font-weight: 900;
+}
+.pill, .tagPill{
+  background:#e8f2ff;
+  color: var(--blue);
+  font-weight: 900;
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-size: 18px;
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+
+/* =========================
+   年级选择
+========================= */
+.gradeRow{
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.gradeCard{
+  border:0;
+  background:#eaf4ff;
+  border-radius: 20px;
+  padding: 18px 12px;
+  text-align:center;
+  cursor:pointer;
+  box-shadow: inset 0 0 0 2px rgba(30,136,229,.12);
+}
+.gradeCard.selected{
+  box-shadow: inset 0 0 0 3px rgba(30,136,229,.35);
+}
+.gradeBig{
+  color: var(--blue);
+  font-weight: 900;
+  font-size: 34px;
+  line-height:1.05;
+}
+.gradeSmall{
+  margin-top: 8px;
+  font-weight: 900;
+  font-size: 18px;
+  color: #2b2b2b;
+}
+.hintText, .noteText{
+  margin: 12px 0 0;
+  color: #4b5563;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+/* =========================
+   五大模块
+========================= */
+.moduleGrid{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.moduleCard{
+  border:0;
+  width:100%;
+  background: var(--soft);
+  border-radius: 20px;
+  padding: 14px;
+  display:flex;
+  gap: 12px;
+  align-items:center;
+  text-align:left;
+  cursor:pointer;
+  min-height: 118px;          /* 关键：等高 */
+}
+.moduleCard[disabled],
+.moduleCard.disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+
+.iconBubble{
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background:#dff1ff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex: 0 0 56px;
+}
+.iconBubble img{
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+}
+
+.moduleText{ flex:1; min-width:0; }
+
+.moduleTitle{
+  margin:0;
+  color: var(--blue);
+  font-weight: 900;
+  font-size: 22px;
+  line-height: 1.18;
+  word-break: keep-all;       /* 中文不拆字 */
+}
+.moduleRange{
+  margin-top: 3px;
+  color: var(--blue);
+  font-weight: 800;
+  font-size: 15px;
+  opacity:.95;
+}
+.moduleDesc{
+  margin-top: 8px;
+  color:#2b2b2b;
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+/* =========================
+   练习区（题目/按钮）
+========================= */
+.practiceBox, .qaBox{
+  margin-top: 14px;
+  background: var(--card);
+  border-radius: var(--r24);
+  padding: 18px;
+  box-shadow: var(--shadow);
+}
+.qTitle{
+  margin:0;
+  font-weight: 900;
+  font-size: 26px;
+}
+.qSub{
+  margin-top: 6px;
+  color:#374151;
+  font-weight: 800;
+}
+.options{
+  margin-top: 12px;
+  display:grid;
+  gap: 10px;
+}
+.optionBtn{
+  border:0;
+  background:#efefef;
+  border-radius: 16px;
+  padding: 14px 16px;
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--blue);
+  text-align:left;
+  cursor:pointer;
+}
+.rowBtns{
+  margin-top: 12px;
+  display:flex;
+  gap: 10px;
+}
+.smallBtn{
+  border:0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-weight: 900;
+  cursor:pointer;
+  background:#eaeaea;
+}
+.smallBtn.danger{ background:#ffe3e3; color:#c62828; }
+
+/* =========================
+   学习记录 / 设置
+========================= */
+.recordsBox, .settingsBox{
+  margin-top: 14px;
+  background: var(--card);
+  border-radius: var(--r24);
+  padding: 18px;
+  box-shadow: var(--shadow);
+}
+.sectionTitle{
+  margin:0;
+  font-size: 44px;
+  font-weight: 900;
+}
+.divider{
+  height:1px;
+  background: rgba(0,0,0,.12);
+  margin: 14px 0;
+}
+
+/* =========================
+   底部导航（固定）
+========================= */
+.bottomNav, .navBar{
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 12px 12px calc(12px + env(safe-area-inset-bottom));
+  background: rgba(255,255,255,.82);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(0,0,0,.06);
+  z-index: 999;
+}
+
+.navRow{
+  width: min(980px, 100%);
+  margin: 0 auto;
+  display:grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap: 10px;
+}
+
+.navBtn{
+  border:0;
+  background:#f0f0f0;
+  border-radius: 18px;
+  padding: 10px 8px;
+  font-weight: 900;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap: 8px;
+}
+.navBtn.active{
+  background:#dff1ff;
+  box-shadow: inset 0 0 0 2px rgba(30,136,229,.20);
+  color: var(--blue);
+}
+
+/* =========================
+   页面切换（如果你有 .page）
+========================= */
+.page{ display:none; }
+.page.active{ display:block; }
+
+/* =========================
+   iPhone / 小屏微调
+========================= */
+@media (max-width: 390px){
+  .sectionHeader h2, .sectionTitle{ font-size: 40px; }
+  .moduleTitle{ font-size: 20px; }
+  .gradeBig{ font-size: 32px; }
+}
+
+/* iPhone 16 Pro Max 这类大屏：避免右边被挤出 */
+@media (min-width: 430px){
+  .moduleTitle{ font-size: 21px; }
 }
