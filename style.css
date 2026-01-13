@@ -1,174 +1,199 @@
-/* =========================
-   基本防 Safari 放大
-========================= */
-html{
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
+/* =====================
+   全域基础
+===================== */
+*{
+  box-sizing: border-box;
 }
 
 body{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",
-  Roboto,"PingFang TC","Noto Sans TC",sans-serif;
-  background:#f6f7f9;
-  color:#222;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+               "PingFang TC", "Noto Sans TC", sans-serif;
+  background: #f6f7f9;
+  color: #222;
 }
 
-/* =========================
-   共用卡片
-========================= */
+/* =====================
+   页面容器
+===================== */
+.page{
+  max-width: 100%;
+  padding: 14px;
+}
+
+/* =====================
+   卡片通用外观
+===================== */
 .card{
-  background:#fff;
-  border-radius:22px;
-  padding:18px;
-  margin:16px;
-  box-shadow:0 6px 18px rgba(0,0,0,.05);
+  background: #fff;
+  border-radius: 20px;
+  padding: 16px;
+  margin-bottom: 16px;
 }
 
-/* =========================
-   年級卡
-========================= */
+/* =====================
+   年级选择
+===================== */
 .gradeRow{
-  display:flex;
-  gap:14px;
+  display: flex;
+  gap: 12px;
 }
 
 .gradeCard{
-  flex:1;
-  background:#eaf4ff;
-  border-radius:18px;
-  padding:14px 10px;
-  text-align:center;
-  border:2px solid transparent;
+  flex: 1;
+  border-radius: 18px;
+  padding: 14px 8px;
+  background: #eaf4ff;
+  border: 2px solid transparent;
+  text-align: center;
 }
 
 .gradeCard.active{
-  border-color:#8cc4ff;
+  border-color: #9cc9f5;
+  background: #e3f1ff;
 }
 
 .gradeBig{
-  font-size:26px;
-  font-weight:900;
-  color:#1e88e5;
+  font-size: 22px;
+  font-weight: 800;
+  color: #1e88e5;
 }
 
 .gradeSmall{
-  font-size:15px;
-  font-weight:700;
-  color:#333;
-  margin-top:4px;
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
 }
 
-/* =========================
-   五大模組 Grid
-========================= */
+/* =====================
+   五大模组（重点）
+===================== */
 .moduleGrid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:16px;
-  margin-top:12px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+
+  /* 🔴 关键：同一排等高 */
+  align-items: stretch;
 }
 
-/* =========================
-   模組卡（重点）
-========================= */
 .moduleCard{
-  background:#f3f3f3;
-  border-radius:20px;
-  padding:14px;
-  display:flex;
-  gap:12px;
-  align-items:flex-start; /* 🔑 对齐用 */
-  min-height:108px;
+  background: #f3f3f3;
+  border-radius: 20px;
+  padding: 14px;
+
+  /* 🔴 关键：强制等高 */
+  height: 100%;
+
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
 }
 
-/* icon */
+/* button 版本也要撑满 */
+button.moduleCard{
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #f3f3f3;
+  padding: 14px;
+  text-align: left;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* =====================
+   模组 icon
+===================== */
 .iconBubble{
-  width:48px;
-  height:48px;
-  border-radius:14px;
-  background:#e6f2ff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex:0 0 auto;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: #e6f3ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-/* 文字区 */
+/* =====================
+   模组文字区（关键）
+===================== */
 .moduleText{
-  flex:1;
-  min-width:0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;   /* 🔴 防止爆版 */
 }
 
-/* 蓝色标题：固定两行 */
+/* 蓝色标题 */
 .moduleTitle{
-  font-size:20px;
-  font-weight:900;
-  color:#1e88e5;
-  line-height:1.2;
+  font-size: 20px;
+  font-weight: 900;
+  color: #1e88e5;
+  line-height: 1.25;
 
-  display:-webkit-box;
-  -webkit-box-orient:vertical;
-  -webkit-line-clamp:2;
-  overflow:hidden;
-  min-height:calc(1.2em * 2);
+  /* 🔴 关键：不要奇怪换行 */
+  word-break: keep-all;
+  white-space: normal;
 }
 
-/* 蓝色括号 / 范围 */
+/* 括号说明 */
 .moduleRange{
-  font-size:14px;
-  font-weight:800;
-  color:#1e88e5;
-  opacity:.9;
-  margin-top:2px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1e88e5;
+  opacity: 0.9;
 }
 
-/* 黑色说明：固定两行 */
+/* 黑色说明 */
 .moduleDesc{
-  font-size:14px;
-  font-weight:700;
-  color:#333;
-  margin-top:4px;
-  line-height:1.25;
-
-  display:-webkit-box;
-  -webkit-box-orient:vertical;
-  -webkit-line-clamp:2;
-  overflow:hidden;
-  min-height:calc(1.25em * 2);
+  font-size: 15px;
+  font-weight: 700;
+  color: #333;
+  line-height: 1.3;
 }
 
-/* =========================
+/* =====================
    底部导航
-========================= */
-.bottomNav{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  background:#fff;
-  padding:10px 8px 14px;
-  display:flex;
-  justify-content:space-around;
-  box-shadow:0 -6px 20px rgba(0,0,0,.08);
+===================== */
+.nav{
+  position: sticky;
+  bottom: 0;
+  background: #fff;
+  display: flex;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 18px 18px 0 0;
 }
 
-.bottomNav .navItem{
-  flex:1;
-  text-align:center;
-  font-size:13px;
-  font-weight:700;
-  color:#777;
+.navItem{
+  flex: 1;
+  text-align: center;
+  padding: 6px 0;
+  border-radius: 14px;
+  font-size: 13px;
 }
 
-.bottomNav .navItem.active{
-  color:#1e88e5;
+.navItem.active{
+  background: #e3f1ff;
 }
 
-/* =========================
-   小萤幕再保险
-========================= */
-@media(max-width:430px){
-  .moduleTitle{ font-size:18px; }
-  .moduleDesc{ font-size:13px; }
+/* =====================
+   手机适配（防爆）
+===================== */
+@media (max-width: 420px){
+  .moduleTitle{
+    font-size: 18px;
+  }
+
+  .moduleDesc{
+    font-size: 14px;
+  }
+
+  .gradeBig{
+    font-size: 20px;
+  }
 }
