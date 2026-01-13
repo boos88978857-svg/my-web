@@ -227,6 +227,60 @@ button{ cursor:pointer; }
   line-height: 1.2;
 }
 
+/* ======== FIX 模组卡片左右不对称 / 标题乱跳 ======== */
+
+/* 卡片本体：高度统一 */
+.moduleCard{
+  display: flex;
+  align-items: center;
+  min-height: 96px;
+}
+
+/* 左侧图标区：统一宽度，不要挤文字 */
+.iconBubble{
+  background: #eaf4ff;      /* 保留你原本的浅蓝感 */
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 56px;           /* ⭐关键：固定宽度 */
+  padding: 0;
+}
+
+/* 图标本身 */
+.iconBubble img,
+.iconBubble svg{
+  width: 36px;
+  height: 36px;
+}
+
+/* 右侧文字区：吃满剩余空间 */
+.moduleText{
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* 蓝色标题：不再被挤到歪掉 */
+.moduleTitle{
+  font-size: 20px;
+  line-height: 1.2;
+  word-break: keep-all;
+}
+
+/* 小字说明 */
+.moduleDesc{
+  font-size: 15px;
+  line-height: 1.3;
+}
+
+/* 手机 / 大屏 iPhone 微调 */
+@media (max-width: 430px){
+  .moduleTitle{
+    font-size: 18px;
+  }
+}
 /* ===== practice ===== */
 .practiceHeader{
   display:flex;
