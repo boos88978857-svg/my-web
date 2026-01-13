@@ -1,29 +1,158 @@
-/* ====== Reset / Base ====== */
+/* =========================
+   0) Base / Reset
+========================= */
 *{ box-sizing:border-box; }
 html,body{ margin:0; padding:0; }
 img{ max-width:100%; height:auto; display:block; }
-
-/* ====== Layout container (避免整页跑版) ====== */
-body{
-  background:#f5f7fb;
-  font-family: -apple-system, BlinkMacSystemFont, "PingFang TC","Noto Sans TC","Microsoft JhengHei", sans-serif;
-  color:#111;
+button{ font:inherit; }
+:root{
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --shadow: 0 10px 24px rgba(0,0,0,.08);
+  --shadowSoft: 0 8px 18px rgba(0,0,0,.06);
+  --blue:#1e88e5;
+  --teal1:#1fb3b4;
+  --teal2:#0fa3a9;
+  --radiusL:28px;
+  --radiusM:20px;
 }
 
-/* 你原本有外层容器的话不改；没有也不会影响 */
-.page, .container, main{
+body{
+  background:var(--bg);
+  color:#111;
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;
+  /* 让底部栏不压内容 */
+  padding-bottom: 110px;
+}
+
+/* =========================
+   1) 让「整页介面」回到原本那种：白色大卡片 + 阴影 + 圆角
+   你页面里常见的容器 class 我都兼容进去
+========================= */
+.card, .panel, .section, .sectionCard, .block, .box, .paper, .wrapCard,
+#homeCard, #gradeCard, #moduleCard, #recordCard, #settingsCard{
+  background:var(--card);
+  border-radius:var(--radiusL);
+  box-shadow:var(--shadow);
+}
+
+/* 常见外层 content 区域的左右留白 */
+.container, .page, main, .content, .app{
   width:100%;
 }
 
-/* ====== 模组区 Grid ====== */
+/* 如果你原本每个区块外面是一个大白卡片：补 padding 与间距 */
+.card, .panel, .section, .sectionCard, .block, .box, .paper, .wrapCard,
+#homeCard, #gradeCard, #moduleCard, #recordCard, #settingsCard{
+  padding: 22px 18px;
+  margin: 18px 16px;
+}
+
+/* 标题（选择年级 / 五大模组 等） */
+h1,h2,h3,.title,.sectionTitle{
+  margin:0 0 14px 0;
+  line-height:1.1;
+}
+
+/* 右上小胶囊（例如：已选年级、小1模组） */
+.pill, .badge, .chip, .tag{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background:#eaf3ff;
+  color:var(--blue);
+  font-weight:900;
+  white-space:nowrap;
+}
+
+/* =========================
+   2) 顶部绿色横幅（你的“我的学习机”那块）
+   兼容常见 class/id（你有就会套上）
+========================= */
+.topBanner, .banner, .hero, .headerBanner, #topBanner{
+  margin: 14px 16px 10px;
+  padding: 18px 18px;
+  border-radius: 22px;
+  background: linear-gradient(135deg, var(--teal1), var(--teal2));
+  color:#fff;
+  box-shadow: var(--shadowSoft);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.topBanner .left, .banner .left, .hero .left, #topBanner .left{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.topBanner .title, .banner .title, .hero .title, #topBanner .title{
+  font-weight:1000;
+  font-size:26px;
+  line-height:1.1;
+}
+.topBanner .sub, .banner .sub, .hero .sub, #topBanner .sub{
+  opacity:.95;
+  font-weight:800;
+}
+.topBanner .parentBtn, .banner .parentBtn, .hero .parentBtn, #topBanner .parentBtn,
+.topBanner button, .banner button, .hero button{
+  border:0;
+  border-radius:999px;
+  padding: 12px 18px;
+  background: rgba(255,255,255,.85);
+  color:#1877d8;
+  font-weight:1000;
+}
+
+/* =========================
+   3) 年级卡片（小一/小二/小三）
+========================= */
+.gradeRow{
+  display:flex;
+  gap:12px;
+}
+.gradeCard{
+  flex:1 1 0;
+  border:0;
+  border-radius:18px;
+  background:#e8f3ff;
+  padding:14px 12px;
+  box-shadow: inset 0 0 0 2px rgba(30,136,229,.10);
+}
+.gradeCard[aria-pressed="true"], .gradeCard.active{
+  box-shadow: inset 0 0 0 3px rgba(30,136,229,.25);
+}
+
+.gradeBig{
+  font-size:34px;
+  font-weight:1000;
+  color:var(--blue);
+  line-height:1.05;
+  text-align:center;
+}
+.gradeSmall{
+  margin-top:8px;
+  font-size:18px;
+  font-weight:900;
+  color:#333;
+  text-align:center;
+}
+
+/* =========================
+   4) 五大模组 Grid（你说 OK 的那块继续保留）
+========================= */
 .moduleGrid{
   display:grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap:14px;
-  margin-top:10px;
+  margin-top:12px;
 }
 
-/* ====== 模组卡片 ====== */
+/* 模组卡片 */
 .moduleCard{
   border:0;
   border-radius:20px;
@@ -34,19 +163,19 @@ body{
   gap:12px;
   text-align:left;
 
-  /* 关键：左右等高 + 不会被内容撑歪 */
-  min-height:110px;
+  /* 关键：左右等高 */
+  min-height:120px;
   width:100%;
+  box-shadow: 0 10px 18px rgba(0,0,0,.05);
 }
 
-/* disabled 时仍可显示但降低透明度（不影响点击逻辑） */
+/* disabled 只是淡一点，不影响点击结构 */
 .moduleCard[disabled]{
   opacity:.45;
 }
 
-/* ====== 图标容器：去蓝底（你强调要） ====== */
+/* 图标：你强调“蓝底不要” */
 .iconBubble{
-  /* 去掉任何蓝底、阴影、固定框 */
   background:transparent !important;
   box-shadow:none !important;
   border:0 !important;
@@ -60,94 +189,99 @@ body{
   justify-content:center;
 }
 
-/* 图标本体尺寸（若你是 emoji/图片都能吃到） */
-.iconBubble img{
-  width:34px;
-  height:34px;
-}
-.iconBubble .emoji, .iconBubble{
-  font-size:34px;
-  line-height:1;
-}
+/* 图标尺寸 */
+.iconBubble img{ width:38px; height:38px; }
+.iconBubble, .iconBubble .emoji{ font-size:38px; line-height:1; }
 
-/* ====== 文字区 ====== */
-.moduleText{
-  min-width:0;              /* 关键：让长字不会把卡片撑爆 */
-  flex:1 1 auto;
-}
+/* 文字区 */
+.moduleText{ min-width:0; flex:1 1 auto; }
 
-/* 蓝色标题：允许两行但对齐一致，不要左右高度乱 */
 .moduleTitle{
   font-size:22px;
-  font-weight:900;
-  color:#1e88e5;
+  font-weight:1000;
+  color:var(--blue);
   line-height:1.15;
 
-  /* 关键：统一高度让左右卡片对齐 */
-  min-height: 2.3em;        /* 大约两行高度 */
-  display:block;
+  /* 统一高度，避免左右不齐 */
+  min-height: 2.3em;
   word-break:keep-all;
 }
-
-/* (0~20) 那行 */
 .moduleRange{
   font-size:15px;
-  font-weight:900;
-  color:#1e88e5;
+  font-weight:1000;
+  color:var(--blue);
   opacity:.9;
   margin-top:2px;
 }
-
-/* 黑色说明 */
 .moduleDesc{
   margin-top:6px;
   font-size:16px;
-  font-weight:800;
+  font-weight:900;
   color:#333;
   line-height:1.25;
-
-  /* 关键：避免描述把卡片撑太高 */
   max-height: 2.6em;
   overflow:hidden;
 }
 
-/* ====== Grade 卡片（小一小二小三）若你 class 名是 gradeCard ====== */
-.gradeRow{
+/* =========================
+   5) 底部导航栏（恢复你原本那种大胶囊/浮起来的感觉）
+========================= */
+.bottomNav, .tabBar, .navBar, #bottomNav{
+  position:fixed;
+  left:0; right:0; bottom:0;
+  height:92px;
+  background: rgba(255,255,255,.92);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(0,0,0,.06);
   display:flex;
-  gap:12px;
+  align-items:center;
+  justify-content:space-around;
+  padding: 10px 10px 18px;
+  z-index:9999;
 }
-.gradeCard{
-  flex:1 1 0;
-  border:0;
-  border-radius:18px;
-  background:#e8f3ff;
-  padding:14px;
-}
-.gradeBig{
-  font-size:34px;
-  font-weight:900;
-  color:#1e88e5;
-  line-height:1.1;
-}
-.gradeSmall{
-  margin-top:6px;
-  font-size:18px;
-  font-weight:900;
+
+.bottomNav .item, .tabBar .item, .navBar .item,
+.bottomNav a, .tabBar a, .navBar a{
+  text-decoration:none;
   color:#333;
+  font-weight:900;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  padding:10px 14px;
+  border-radius:18px;
 }
 
-/* ====== 手机更稳（iPhone 16 Pro Max 也适用） ====== */
+.bottomNav .active, .tabBar .active, .navBar .active,
+.bottomNav a.active, .tabBar a.active, .navBar a.active{
+  background:#e8f3ff;
+  color:var(--blue);
+  box-shadow: inset 0 0 0 2px rgba(30,136,229,.10);
+}
+
+/* =========================
+   6) 手机/大屏微调（iPhone 16 Pro Max 也稳）
+========================= */
 @media (max-width: 430px){
-  .moduleCard{ min-height: 106px; padding:12px; }
-  .moduleTitle{ font-size:20px; min-height: 2.3em; }
+  body{ padding-bottom:110px; }
+
+  .card, .panel, .section, .sectionCard, .block, .box, .paper, .wrapCard,
+  #homeCard, #gradeCard, #moduleCard, #recordCard, #settingsCard{
+    padding: 20px 16px;
+    margin: 16px 14px;
+    border-radius: 26px;
+  }
+
+  .moduleCard{ min-height:116px; padding:12px; }
+  .moduleTitle{ font-size:20px; }
   .moduleDesc{ font-size:15px; }
-  .iconBubble img{ width:32px; height:32px; }
-  .iconBubble{ font-size:32px; }
+  .iconBubble img{ width:36px; height:36px; }
+  .iconBubble, .iconBubble .emoji{ font-size:36px; }
 }
 
-/* ====== 更小机种一栏显示（防爆版） ====== */
+/* 小机型防爆：一栏 */
 @media (max-width: 360px){
-  .moduleGrid{ grid-template-columns: 1fr; }
-  .moduleCard{ min-height: 96px; }
-  .moduleTitle{ min-height: auto; }
+  .moduleGrid{ grid-template-columns:1fr; }
 }
