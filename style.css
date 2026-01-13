@@ -89,8 +89,11 @@ body{
   color:#1e88e5;
   font-weight:1000;
   border-radius: 999px;
-  padding: 10px 16px;
+  padding: 6px 10px;        /* 原本 10px 16px 太大 */
   white-space:nowrap;
+  display:inline-flex;       /* 让背景跟字更贴 */
+  align-items:center;
+}
 }
 
 /* 提示文字 */
@@ -174,22 +177,24 @@ body{
   cursor: default;
 }
 
-/* ✅ 图标：蓝底不要（你要的） */
+/* ===== 五大模组：图标（无蓝底、缩小、不挤字）===== */
 .iconBubble{
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
-  background: transparent !important;  /* 强制无蓝底 */
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+
+  background: transparent !important; /* ❗彻底无蓝底 */
   box-shadow: none !important;
-  display:grid;
-  place-items:center;
-  flex: 0 0 56px;
+  border-radius: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* 有些你可能是用 img 或 emoji */
 .iconBubble img{
-  width: 34px;
-  height: 34px;
+  width: 28px;
+  height: 28px;
   object-fit: contain;
 }
 
