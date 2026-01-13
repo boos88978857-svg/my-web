@@ -1,259 +1,139 @@
-/* =========================
-   Base / Reset
-========================= */
-*{ box-sizing:border-box; }
-html,body{ margin:0; padding:0; }
-html{ -webkit-text-size-adjust:100%; } /* iPhone 不要自己放大字 */
+/* ===== 全局 ===== */
+*{
+  box-sizing:border-box;
+}
+
 body{
-  font-family: system-ui,-apple-system,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;
-  background:#f5f7fb;
-  color:#111;
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+  background:#f5f6f7;
+  color:#222;
 }
 
-/* Page container (避免貼邊) */
-.app{
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 14px 14px 92px; /* 底部留給 navbar */
+/* ===== 容器 ===== */
+.page{
+  padding:16px;
 }
 
-/* =========================
-   Top banner
-========================= */
-.topBanner{
-  background: linear-gradient(135deg,#0aa7a6,#15b6c2);
-  color:#fff;
-  border-radius: 18px;
-  padding: 16px 16px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  box-shadow: 0 6px 18px rgba(0,0,0,.08);
-  margin-bottom: 14px;
-}
-
-.parentBtn{
-  background: rgba(255,255,255,.85);
-  border:0;
-  padding: 10px 14px;
-  border-radius: 999px;
-  font-weight: 800;
-  color:#0b7f86;
-}
-
-/* =========================
-   Section card
-========================= */
+/* ===== 标题卡 ===== */
 .section{
   background:#fff;
-  border-radius: 22px;
-  padding: 18px;
-  box-shadow: 0 8px 22px rgba(0,0,0,.06);
-  margin-bottom: 14px;
+  border-radius:20px;
+  padding:16px;
+  margin-bottom:16px;
+  box-shadow:0 8px 24px rgba(0,0,0,.06);
 }
 
-/* header row inside section */
-.sectionHeader{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap: 10px;
-  margin-bottom: 12px;
+.section h2{
+  margin:0 0 12px 0;
+  font-size:26px;
+  font-weight:800;
 }
 
-.sectionTitle{
-  font-size: 38px;
-  font-weight: 900;
-  letter-spacing: 1px;
-  margin:0;
-}
-
-.badge{
-  background:#eaf3ff;
-  color:#2a78c9;
-  font-weight: 800;
-  border-radius: 999px;
-  padding: 10px 14px;
-  font-size: 16px;
-  white-space: nowrap;
-}
-
-/* =========================
-   Grade cards (3 columns)
-========================= */
+/* ===== 年级按钮 ===== */
 .gradeRow{
   display:grid;
-  grid-template-columns: repeat(3, minmax(0,1fr));
-  gap: 12px;
-  margin: 10px 0 10px;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
 }
 
 .gradeCard{
-  border:0;
-  background:#eaf4ff;
-  border-radius: 18px;
-  padding: 14px 10px;
+  border-radius:18px;
+  padding:16px 8px;
   text-align:center;
-  box-shadow: inset 0 0 0 2px rgba(34,120,196,.12);
-}
-
-.gradeCard.active{
-  box-shadow: inset 0 0 0 3px rgba(34,120,196,.30);
+  background:#eaf4ff;
+  border:2px solid #d6eaff;
 }
 
 .gradeBig{
-  color:#1976c9;
-  font-weight: 1000;
-  font-size: 36px;
-  line-height:1.05;
+  font-size:28px;
+  font-weight:800;
+  color:#1e88e5;
 }
 
 .gradeSmall{
+  margin-top:6px;
+  font-size:14px;
+  font-weight:600;
   color:#333;
-  font-weight: 900;
-  font-size: 18px;
-  margin-top: 8px;
 }
 
-/* =========================
-   Module grid (2 columns)
-   ✅ 關鍵：每張卡等高、左右不會一大一小
-========================= */
+/* ===== 五大模组 ===== */
 .moduleGrid{
   display:grid;
-  grid-template-columns: repeat(2, minmax(0,1fr));
-  gap: 14px;
-  align-items: stretch;     /* 讓格子撐滿 */
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
 }
 
+/* 卡片本体 */
 .moduleCard{
-  border:0;
-  border-radius: 20px;
-  background:#f3f3f3;
-  padding: 14px;
+  background:#f2f2f2;
+  border-radius:20px;
+  padding:16px;
   display:flex;
-  gap: 12px;
   align-items:center;
-  text-align:left;
-  min-height: 110px;        /* ✅ 固定基本高度 */
-  height: 100%;             /* ✅ 撐滿格子高度 */
-  width: 100%;
+  gap:12px;
+  min-height:110px;     /* 左右等高关键 */
 }
 
-.moduleCard[disabled]{
-  opacity:.45;
-}
-
+/* ❌ 图标蓝底彻底移除 */
 .iconBubble{
-  width: 56px;
-  height: 56px;
-  flex: 0 0 56px;
-  border-radius: 14px;
-  background:#dff0ff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  background:none !important;
+  padding:0 !important;
+  border-radius:0 !important;
+  width:auto !important;
+  height:auto !important;
+  flex-shrink:0;
 }
 
+/* 图标尺寸 */
 .iconBubble img{
-  width: 34px;
-  height: 34px;
+  width:36px;
+  height:36px;
   display:block;
 }
 
-/* 文字區：避免擠爆、避免莫名換行造成左右高度差 */
+/* 文本区 */
 .moduleText{
-  min-width:0;
-  flex: 1 1 auto;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
 }
 
 .moduleTitle{
-  font-size: 22px;
-  font-weight: 1000;
+  font-size:18px;
+  font-weight:800;
   color:#1e88e5;
-  line-height: 1.15;
-  margin: 0;
-  word-break: keep-all;     /* 中文不要亂拆 */
+  line-height:1.2;
 }
 
-.moduleRange{
-  font-size: 15px;
-  font-weight: 1000;
+.moduleSub{
+  font-size:14px;
+  font-weight:700;
   color:#1e88e5;
-  opacity: .9;
-  margin-top: 4px;
-  line-height: 1.1;
 }
 
 .moduleDesc{
-  margin-top: 6px;
-  font-size: 16px;
-  font-weight: 900;
+  font-size:14px;
+  font-weight:600;
   color:#333;
-  line-height: 1.2;
 }
 
-/* =========================
-   Bottom nav
-========================= */
-.navbar{
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(255,255,255,.92);
-  backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(0,0,0,.06);
-  padding: 10px 14px 18px;
-}
-
-.navbarInner{
-  max-width: 980px;
-  margin: 0 auto;
-  display:grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-}
-
-.navBtn{
-  border:0;
-  background:#f0f0f0;
-  border-radius: 16px;
-  padding: 10px 8px;
+/* ===== 底部导航 ===== */
+.bottomNav{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  background:#eee;
   display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap: 6px;
-  font-weight: 900;
-  color:#333;
+  justify-content:space-around;
+  padding:10px 0;
+  border-top:1px solid #ddd;
 }
 
-.navBtn.active{
-  background:#dff0ff;
-  box-shadow: inset 0 0 0 2px rgba(34,120,196,.20);
-}
-
-.navBtn img{
-  width: 26px;
-  height: 26px;
-  display:block;
-}
-
-/* =========================
-   Responsive
-   (手機 / 平板都穩)
-========================= */
-@media (max-width: 420px){
-  .sectionTitle{ font-size: 34px; }
-  .gradeBig{ font-size: 32px; }
-  .moduleTitle{ font-size: 20px; }
-  .moduleDesc{ font-size: 15px; }
-  .moduleCard{ min-height: 104px; }
-}
-
-@media (min-width: 768px){
-  .app{ padding: 18px 18px 92px; }
-  .sectionTitle{ font-size: 44px; }
-  .moduleCard{ min-height: 118px; }
+.bottomNav button{
+  background:none;
+  border:none;
+  font-size:14px;
 }
