@@ -7,147 +7,171 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="app">
 
-    <!-- 頂部 -->
+  <div class="app">
+    <!-- Header -->
     <header class="topbar">
       <div class="brand">
         <span class="book">📘</span>
-        <div class="brandText">
-          <div class="title">我的學習機</div>
-          <div class="sub">先選年級，再選模組開始練習</div>
+        <div class="brand-text">
+          <div class="brand-title">我的學習機</div>
+          <div id="brandSub" class="brand-sub">先選年級，再選模組開始練習</div>
         </div>
       </div>
       <button id="btnParent" class="pill" type="button">家長</button>
     </header>
 
-    <!-- 首頁 -->
-    <main id="pageHome" class="page">
-      <!-- 年級 -->
-      <section class="card">
-        <div class="cardHead">
-          <h2>選擇年級</h2>
-          <div class="tag" id="gradeTag">未選年級</div>
-        </div>
+    <!-- Pages (SPA) -->
+    <main class="pages">
+      <!-- HOME -->
+      <section id="pageHome" class="page active">
+        <div class="card">
+          <div class="card-head">
+            <h2>選擇年級</h2>
+            <span id="gradeBadge" class="badge">未選年級</span>
+          </div>
 
-        <div class="gradeRow">
-          <button class="gradeBtn" data-grade="1">
-            <div class="gTitle">小一</div>
-            <div class="gSub">基礎數感</div>
-          </button>
-          <button class="gradeBtn" data-grade="2">
-            <div class="gTitle">小二</div>
-            <div class="gSub">加減乘除</div>
-          </button>
-          <button class="gradeBtn" data-grade="3">
-            <div class="gTitle">小三</div>
-            <div class="gSub">位值與乘除</div>
-          </button>
-        </div>
-      </section>
+          <div class="grade-grid">
+            <button class="grade-card" data-grade="1">
+              <div class="g-title">小一</div>
+              <div class="g-sub">基礎數感</div>
+            </button>
+            <button class="grade-card" data-grade="2">
+              <div class="g-title">小二</div>
+              <div class="g-sub">加減乘除</div>
+            </button>
+            <button class="grade-card" data-grade="3">
+              <div class="g-title">小三</div>
+              <div class="g-sub">位值與乘除</div>
+            </button>
+          </div>
 
-      <!-- 五大模組 -->
-      <section class="card">
-        <div class="cardHead">
-          <h2>五大模組</h2>
-          <div class="tag" id="moduleTag">請先選年級</div>
-        </div>
-
-        <div class="moduleGrid">
-          <button class="moduleBtn" data-module="numSense">
-            <div class="mIcon">🔢</div>
-            <div class="mText">
-              <div class="mTitle">數與數量</div>
-              <div class="mSub">數數、對應數量</div>
-            </div>
-          </button>
-
-          <button class="moduleBtn" data-module="compare100">
-            <div class="mIcon">📏</div>
-            <div class="mText">
-              <div class="mTitle">認識 100</div>
-              <div class="mSub">比大小、找數字</div>
-            </div>
-          </button>
-
-          <button class="moduleBtn" data-module="placeValue">
-            <div class="mIcon">🧩</div>
-            <div class="mText">
-              <div class="mTitle">十與一（位值）</div>
-              <div class="mSub">十個一＝一個十</div>
-            </div>
-          </button>
-
-          <button class="moduleBtn" data-module="make10">
-            <div class="mIcon">🧮</div>
-            <div class="mText">
-              <div class="mTitle">湊 10</div>
-              <div class="mSub">補到 10 的概念</div>
-            </div>
-          </button>
-
-          <button class="moduleBtn" data-module="addSub20">
-            <div class="mIcon">➕</div>
-            <div class="mText">
-              <div class="mTitle">20 以內加減</div>
-              <div class="mSub">不進位退位（先理解）</div>
-            </div>
-          </button>
-        </div>
-
-        <div class="hintLine" id="lockHint">
-          小一先做「理解型」五大模組；乘除會在小二/小三開放。
-        </div>
-      </section>
-
-      <!-- 學習紀錄 -->
-      <section class="card">
-        <div class="cardHead">
-          <h2>學習紀錄</h2>
-          <div class="row">
-            <button id="btnRefreshHistory" class="pill2" type="button">更新紀錄</button>
-            <button id="btnClearHistory" class="pill2 danger" type="button">清除紀錄</button>
+          <div class="hint-line">
+            先點「小一 / 小二 / 小三」，再到下方五大模組選內容。
           </div>
         </div>
-        <div id="historyList" class="history"></div>
+
+        <div class="card">
+          <div class="card-head">
+            <h2>五大模組</h2>
+            <span id="moduleBadge" class="badge">請先選年級</span>
+          </div>
+
+          <div id="moduleGrid" class="module-grid"></div>
+
+          <div id="moduleNote" class="hint-line">
+            小一先做「理解型」五大模組；乘除會在小二 / 小三開放（可在程式調整）。
+          </div>
+        </div>
+      </section>
+
+      <!-- PRACTICE -->
+      <section id="pagePractice" class="page">
+        <div class="card">
+          <div class="card-head">
+            <h2 id="practiceTitle">練習</h2>
+            <span id="practiceBadge" class="badge">未開始</span>
+          </div>
+
+          <!-- 模組介紹 -->
+          <div id="moduleIntro" class="module-intro">
+            <div id="moduleIntroText" class="intro-text">
+              請先到「首頁」選擇年級與模組。
+            </div>
+            <div class="row">
+              <button id="btnStartModule" class="primary" type="button" disabled>開始</button>
+              <button id="btnBackHome" class="pill2" type="button">回首頁選模組</button>
+            </div>
+          </div>
+
+          <!-- 互動題（同一套顯示區） -->
+          <div id="quizArea" class="quiz" style="display:none;">
+            <div class="quiz-top">
+              <div id="quizMeta" class="quiz-meta">—</div>
+              <div id="quizStat" class="quiz-stat">0 / 0</div>
+            </div>
+
+            <div id="question" class="question">題目</div>
+
+            <!-- 用於「數與數量」的點點展示 -->
+            <div id="dotsBox" class="dots" style="display:none;"></div>
+
+            <div id="choices" class="choices"></div>
+
+            <div class="row">
+              <button id="next" class="pill2" type="button" disabled>下一題</button>
+              <button id="btnQuit" class="pill2 danger" type="button">結束回首頁</button>
+            </div>
+
+            <div id="status" class="status">請選擇答案</div>
+            <div id="report" class="report" style="display:none;"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RECORDS -->
+      <section id="pageRecords" class="page">
+        <div class="card">
+          <div class="card-head">
+            <h2>學習記錄</h2>
+            <span class="badge">最多顯示 20 筆</span>
+          </div>
+
+          <div class="row">
+            <button id="refreshHistoryBtn" class="pill2" type="button">更新記錄</button>
+            <button id="clearHistoryBtn" class="pill2 danger" type="button">清除記錄</button>
+          </div>
+
+          <div id="historyList" class="history"></div>
+        </div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section id="pageSettings" class="page">
+        <div class="card">
+          <div class="card-head">
+            <h2>設定</h2>
+            <span class="badge">本機儲存</span>
+          </div>
+
+          <div class="setting-block">
+            <div class="setting-title">家長模式</div>
+            <div class="setting-desc">設定密碼、變更密碼、忘記密碼（用復原碼）。</div>
+            <div class="row">
+              <button id="btnParentOpen" class="primary" type="button">打開家長設定</button>
+            </div>
+          </div>
+
+          <div class="setting-block">
+            <div class="setting-title">版本資訊</div>
+            <div class="setting-desc">此頁面為純前端（HTML/CSS/JS），資料存在瀏覽器 localStorage。</div>
+          </div>
+        </div>
       </section>
     </main>
 
-    <!-- 練習頁 -->
-    <main id="pagePractice" class="page" style="display:none;">
-      <section class="card">
-        <div class="practiceTop">
-          <button id="btnBackHome" class="pill2" type="button">← 返回</button>
-          <div class="tag" id="practiceTag">小1</div>
-        </div>
-
-        <h2 id="practiceTitle">練習</h2>
-        <div class="hintLine" id="practiceHint">請作答</div>
-
-        <div class="qBox">
-          <div id="question" class="question">題目</div>
-          <div id="choices" class="choices"></div>
-        </div>
-
-        <div class="row">
-          <button id="btnNext" class="pill2" type="button" disabled>下一題</button>
-        </div>
-
-        <div id="status" class="status">請選擇答案</div>
-        <div id="report" class="report" style="display:none;"></div>
-      </section>
-    </main>
-
-    <!-- 底部導覽 -->
-    <nav class="bottomNav">
-      <button class="navBtn active" data-nav="home">🏠<span>首頁</span></button>
-      <button class="navBtn" data-nav="practice">🧠<span>練習</span></button>
-      <button class="navBtn" data-nav="history">📒<span>紀錄</span></button>
-      <button class="navBtn" data-nav="settings">⚙️<span>設定</span></button>
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+      <button class="tab active" data-tab="Home" type="button">🏠<span>首頁</span></button>
+      <button class="tab" data-tab="Practice" type="button">🧠<span>練習</span></button>
+      <button class="tab" data-tab="Records" type="button">📒<span>記錄</span></button>
+      <button class="tab" data-tab="Settings" type="button">⚙️<span>設定</span></button>
     </nav>
-
   </div>
 
+  <!-- Modal -->
+  <div id="modal" class="modal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true">
+      <div class="modal-head">
+        <div id="modalTitle" class="modal-title">提示</div>
+        <button id="modalClose" class="icon-btn" type="button">✕</button>
+      </div>
+      <div id="modalBody" class="modal-body"></div>
+      <div id="modalActions" class="modal-actions"></div>
+    </div>
+  </div>
+
+  <div id="confetti"></div>
   <script src="script.js"></script>
 </body>
 </html>
