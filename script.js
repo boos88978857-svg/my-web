@@ -1,3 +1,4 @@
+alert("JS 已啟動 ✅");
 document.addEventListener("DOMContentLoaded", () => {
 
   // ===== 基本 DOM =====
