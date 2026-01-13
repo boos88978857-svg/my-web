@@ -1,214 +1,65 @@
-/* =====================
-   全域基础
-===================== */
-*{
+/* ===== 模块 Grid：强制两栏、等高 ===== */
+.moduleGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+/* ===== 模块卡片：统一高度 ===== */
+.moduleCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 20px;
+  background: #f3f3f3;
+  min-height: 118px;        /* ⭐关键：强制等高 */
   box-sizing: border-box;
 }
 
-body{
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-               "PingFang TC", "Noto Sans TC", sans-serif;
-  background: #f6f7f9;
-  color: #222;
+/* ===== 左边 icon 固定大小 ===== */
+.iconBubble {
+  flex: 0 0 52px;
+  width: 52px;
+  height: 52px;
 }
 
-/* =====================
-   页面容器
-===================== */
-.page{
-  max-width: 100%;
-  padding: 14px;
-}
-
-/* =====================
-   卡片通用外观
-===================== */
-.card{
-  background: #fff;
-  border-radius: 20px;
-  padding: 16px;
-  margin-bottom: 16px;
-}
-
-/* =====================
-   年级选择
-===================== */
-.gradeRow{
-  display: flex;
-  gap: 12px;
-}
-
-.gradeCard{
+/* ===== 文字区域 ===== */
+.moduleText {
   flex: 1;
-  border-radius: 18px;
-  padding: 14px 8px;
-  background: #eaf4ff;
-  border: 2px solid transparent;
-  text-align: center;
+  min-width: 0;
 }
 
-.gradeCard.active{
-  border-color: #9cc9f5;
-  background: #e3f1ff;
-}
-
-.gradeBig{
-  font-size: 22px;
-  font-weight: 800;
-  color: #1e88e5;
-}
-
-.gradeSmall{
-  margin-top: 4px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #333;
-}
-
-/* =====================
-   五大模组（重点）
-===================== */
-.moduleGrid{
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
-
-  /* 🔴 关键：同一排等高 */
-  align-items: stretch;
-}
-
-.moduleCard{
-  background: #f3f3f3;
-  border-radius: 20px;
-  padding: 14px;
-
-  /* 🔴 关键：强制等高 */
-  height: 100%;
-
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-}
-
-/* button 版本也要撑满 */
-button.moduleCard{
-  width: 100%;
-  height: 100%;
-  border: 0;
-  background: #f3f3f3;
-  padding: 14px;
-  text-align: left;
-  appearance: none;
-  -webkit-appearance: none;
-}
-
-/* =====================
-   模组 icon
-===================== */
-.iconBubble{
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
-  background: #e6f3ff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-/* =====================
-   模组文字区（关键）
-===================== */
-.moduleText{
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;   /* 🔴 防止爆版 */
-}
-
-/* 蓝色标题 */
-.moduleTitle{
-  font-size: 20px;
+/* ===== 蓝色标题：不允许乱撑高度 ===== */
+.moduleTitle {
+  font-size: 20px;          /* ⭐手机安全字号 */
   font-weight: 900;
   color: #1e88e5;
   line-height: 1.25;
-
-  /* 🔴 关键：不要奇怪换行 */
-  word-break: keep-all;
   white-space: normal;
+  word-break: keep-all;     /* 中文不拆字 */
 }
 
-/* 括号说明 */
-.moduleRange{
+/* ===== 范围文字（0~20） ===== */
+.moduleRange {
   font-size: 14px;
   font-weight: 700;
   color: #1e88e5;
-  opacity: 0.9;
+  margin-top: 2px;
 }
 
-/* 黑色说明 */
-.moduleDesc{
+/* ===== 说明文字 ===== */
+.moduleDesc {
   font-size: 15px;
   font-weight: 700;
   color: #333;
+  margin-top: 6px;
   line-height: 1.3;
 }
 
-/* =====================
-   底部导航
-===================== */
-.nav{
-  position: sticky;
-  bottom: 0;
-  background: #fff;
-  display: flex;
-  gap: 6px;
-  padding: 8px 10px;
-  border-radius: 18px 18px 0 0;
-}
-
-.navItem{
-  flex: 1;
-  text-align: center;
-  padding: 6px 0;
-  border-radius: 14px;
-  font-size: 13px;
-}
-
-.navItem.active{
-  background: #e3f1ff;
-}
-
-/* =====================
-   手机适配（防爆）
-===================== */
-@media (max-width: 420px){
-  .moduleTitle{
-    font-size: 18px;
+/* ===== iPhone 大屏修正（Pro Max） ===== */
+@media (min-width: 430px) {
+  .moduleTitle {
+    font-size: 19px;        /* 防止横向被挤 */
   }
-
-  .moduleDesc{
-    font-size: 14px;
-  }
-
-  .gradeBig{
-    font-size: 20px;
-  }
-}
-
-/* ===== 五大模组强制等高（安全补丁） ===== */
-.moduleGrid{
-  align-items: stretch;
-}
-
-.moduleCard{
-  height: 100%;
-  display: flex;
-  align-items: flex-start;
-}
-
-button.moduleCard{
-  height: 100%;
 }
