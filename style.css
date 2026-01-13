@@ -499,3 +499,40 @@ h2{
     flex-shrink: 0;
   }
 }
+
+/* ====== iPhone / 手機：防止 Safari 自動放大字 + 五大模組對齊 ====== */
+html{
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+.moduleCard{
+  align-items: flex-start; /* 讓內容從上緣對齊，卡片更整齊 */
+}
+
+/* 藍色主標題：固定最多 2 行，超過就省略，所有卡片高度一致 */
+.moduleTitle{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;     /* 2 行 */
+  overflow: hidden;
+  line-height: 1.2;
+  min-height: calc(1.2em * 2); /* 強制留 2 行高度，排版就對稱 */
+}
+
+/* 黑色說明：固定最多 2 行，超過就省略 */
+.moduleDesc{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; 
+  overflow: hidden;
+  line-height: 1.25;
+  min-height: calc(1.25em * 2);
+}
+
+/* 手機再縮一點，避免極端情況又被撐爆 */
+@media (max-width: 430px){
+  .moduleTitle{ font-size: 18px; }
+  .moduleRange{ font-size: 14px; }
+  .moduleDesc{ font-size: 14px; }
+}
