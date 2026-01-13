@@ -1,538 +1,174 @@
-*{ box-sizing:border-box; }
-:root{
-  --bg:#f5f6f7;
-  --card:#ffffff;
-  --shadow:0 2px 12px rgba(0,0,0,.06);
-  --teal:#13a6ad;
-  --blue:#1e88e5;
-  --soft:#eaf4ff;
-  --soft2:#dff1ff;
-  --grey:#e9e9e9;
-  --text:#111;
-  --muted:#666;
-  --radius:22px;
-}
-
-body{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif;
-  background:var(--bg);
-  color:var(--text);
-}
-
-.app{
-  max-width:980px;
-  margin:0 auto;
-  padding:16px 16px 96px; /* 留底部导航空间 */
-}
-
-.topbar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  background:linear-gradient(135deg, #12a6ad, #19b3b9);
-  color:#fff;
-  border-radius:16px;
-  padding:14px 16px;
-  margin-bottom:14px;
-  box-shadow: var(--shadow);
-}
-
-.brand{ display:flex; align-items:center; gap:12px; }
-.book{ font-size:26px; }
-.brandTitle{ font-size:26px; font-weight:900; line-height:1; }
-.brandSub{ font-size:14px; opacity:.9; margin-top:4px; }
-
-.pill{
-  background:#eaf4ff;
-  border:2px solid rgba(255,255,255,.7);
-  color:var(--blue);
-  font-weight:900;
-  border-radius:18px;
-  padding:10px 14px;
-  font-size:18px;
-}
-
-.page{ display:none; }
-.page.active{ display:block; }
-
-.panel{
-  background:var(--card);
-  border-radius: var(--radius);
-  padding:18px;
-  box-shadow: var(--shadow);
-  margin-bottom:16px;
-}
-
-.panelHead{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  margin-bottom:12px;
-}
-
-h2{
-  margin:0;
-  font-size:34px;
-  font-weight:1000;
-}
-
-.badge{
-  background:var(--soft);
-  color:var(--blue);
-  font-weight:900;
-  border-radius:999px;
-  padding:10px 14px;
-  font-size:16px;
-  white-space:nowrap;
-}
-
-.hint{
-  margin:10px 0 0;
-  color:var(--muted);
-  font-weight:700;
-}
-
-.footerNote{
-  margin:10px 0 0;
-  color:#555;
-  font-weight:800;
-  line-height:1.4;
-}
-
-/* Grade cards */
-.gradeRow{
-  display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap:12px;
-  margin-top:12px;
-}
-.gradeCard{
-  border:0;
-  background:var(--soft);
-  border-radius:18px;
-  padding:16px 14px;
-  text-align:left;
-  box-shadow: inset 0 0 0 2px rgba(30,136,229,.08);
-}
-.gradeCard.selected{
-  background: var(--soft2);
-  box-shadow: inset 0 0 0 3px rgba(30,136,229,.25);
-}
-.gradeBig{
-  font-size:30px;
-  font-weight:1000;
-  color:var(--blue);
-}
-.gradeSmall{
-  margin-top:6px;
-  font-size:18px;
-  font-weight:900;
-  color:#333;
-}
-
-/* Modules */
-.moduleGrid{
-  display:grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap:14px;
-  margin-top:10px;
-}
-
-.moduleCard{
-  border:0;
-  border-radius:20px;
-  background:#f3f3f3;
-  padding:14px;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  min-height:92px;
-  text-align:left;
-}
-
-.moduleCard[disabled]{
-  opacity:.45;
-}
-
-.iconBubble{
-  width:54px;
-  height:54px;
-  border-radius:16px;
-  background:var(--soft2);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:26px;
-  flex:0 0 auto;
-}
-
-.moduleText{ min-width:0; }
-.moduleTitle{
-  font-size: clamp(18px, 4.8vw, 22px);
-  font-weight: 1000;
-  color:#1e88e5;
-  line-height: 1.15;
-
-  /* ✅ 关键：不让中文一字一字掉到下一行 */
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-  /* ✅ 让 flex 里可以缩，不会把字挤断 */
-  min-width: 0;
-}
-}
-.moduleRange{
-  margin-top:4px;
-  font-size:15px;
-  font-weight:1000;
-  color:var(--blue);
-  opacity:.9;
-}
-.moduleDesc{
-  margin-top:6px;
-  font-size:16px;
-  font-weight:900;
-  color:#333;
-  line-height:1.2;
-}
-
-/* Practice */
-.practiceHead{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:12px;
-  margin-bottom:12px;
-}
-.practiceTitle .line1{
-  font-size:26px;
-  font-weight:1000;
-}
-.practiceTitle .line2{
-  margin-top:6px;
-  font-weight:900;
-  color:#333;
-}
-.split{ opacity:.5; margin:0 6px; }
-
-.questionBox{
-  background:#f3f3f3;
-  border-radius:18px;
-  padding:14px;
-}
-
-.qText{
-  font-size:26px;
-  font-weight:1000;
-  margin-bottom:10px;
-}
-.qItems{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-}
-.itemDot{
-  width:20px;
-  height:20px;
-  border-radius:6px;
-  background:var(--soft2);
-  box-shadow: inset 0 0 0 2px rgba(30,136,229,.18);
-}
-
-/* options */
-.options{
-  display:grid;
-  grid-template-columns: 1fr;
-  gap:12px;
-  margin-top:14px;
-}
-.optBtn{
-  border:0;
-  border-radius:16px;
-  background:#efefef;
-  padding:16px;
-  font-size:22px;
-  font-weight:1000;
-  color:var(--blue);
-  text-align:left;
-}
-.optBtn.correct{ background:#e8f6ea; color:#1b7f2a; }
-.optBtn.wrong{ background:#fdecec; color:#b11b1b; }
-
-.practiceActions{
-  display:flex;
-  gap:10px;
-  margin-top:14px;
-}
-
-.btn{
-  border:0;
-  border-radius:16px;
-  padding:12px 14px;
-  font-weight:1000;
-  background:var(--soft);
-  color:var(--blue);
-}
-.btn.ghost{
-  background:#ececec;
-  color:#333;
-}
-.btn.danger{
-  background:#ffe9e9;
-  color:#b11b1b;
-}
-
-.smallTip{
-  margin-top:10px;
-  font-weight:900;
-  color:#333;
-}
-
-/* Records */
-.headBtns{ display:flex; gap:10px; }
-.recordList{ margin-top:10px; display:flex; flex-direction:column; gap:10px; }
-.recordItem{
-  background:#f3f3f3;
-  border-radius:16px;
-  padding:12px;
-  font-weight:900;
-  line-height:1.4;
-}
-.muted{ color:var(--muted); font-weight:800; margin-top:10px; }
-
-/* Settings */
-.settingBlock{ margin-top:10px; }
-.settingTitle{ font-size:18px; font-weight:1000; margin-bottom:4px; }
-.settingRow{ display:flex; gap:10px; margin-top:10px; }
-.divider{
-  border:none;
-  border-top:2px solid #e4e4e4;
-  margin:16px 0;
-}
-.chipRow{ display:flex; gap:10px; margin-top:10px; }
-.chip{
-  border:0;
-  border-radius:999px;
-  background:#ececec;
-  padding:10px 14px;
-  font-weight:1000;
-}
-.chip.active{
-  background:var(--soft2);
-  color:var(--blue);
-}
-
-/* Bottom Nav */
-.bottomNav{
-  position:fixed;
-  left:0; right:0; bottom:0;
-  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
-  background:rgba(245,246,247,.92);
-  backdrop-filter: blur(10px);
-  border-top:1px solid rgba(0,0,0,.06);
-}
-.bottomNav{
-  max-width:980px;
-  margin:0 auto;
-  display:grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap:10px;
-}
-
-.navBtn{
-  border:0;
-  border-radius:18px;
-  padding:10px 8px;
-  background:#efefef;
-  font-weight:1000;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-}
-.navBtn span{ font-size:16px; }
-.navBtn.active{
-  background:var(--soft2);
-  color:var(--blue);
-  box-shadow: inset 0 0 0 2px rgba(30,136,229,.18);
-}
-
-@media (max-width:420px){
-  h2{ font-size:32px; }
-  .gradeBig{ font-size:28px; }
-  .moduleTitle{ font-size:21px; }
-}
-
-/* ===== 模组卡片文字对齐修正（强制覆盖） ===== */
-
-.moduleCard{
-  align-items: flex-start !important;
-}
-
-/* 文字区块整体 */
-.moduleText{
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-/* 蓝色标题（统一最多两行） */
-.moduleTitle{
-  color:#1e88e5;
-  font-weight:1000;
-  font-size:22px;
-  line-height:1.15;
-
-  word-break: keep-all;
-  overflow-wrap: anywhere;
-
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
-}
-
-/* 括号小字 */
-.moduleRange{
-  font-size:15px;
-  font-weight:900;
-  color:#1e88e5;
-  opacity:0.9;
-  line-height:1.1;
-}
-
-/* 黑色说明文字 */
-.moduleDesc{
-  font-size:16px;
-  font-weight:900;
-  line-height:1.2;
-
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
-}
-
-/* ===============================
-   Responsive: 手機 / 平板
-   =============================== */
-
-/* 手机（iPhone 直向） */
-@media (max-width: 480px){
-  .moduleTitle{
-    font-size:20px;
-    line-height:1.2;
-    text-align:left;
-  }
-
-  .moduleRange{
-    font-size:14px;
-  }
-
-  .moduleCard{
-    min-height:140px;   /* 固定高度，避免歪 */
-  }
-}
-
-/* 平板（iPad 直向） */
-@media (min-width: 481px) and (max-width: 900px){
-  .moduleTitle{
-    font-size:22px;
-    line-height:1.25;
-  }
-
-  .moduleRange{
-    font-size:15px;
-  }
-
-  .moduleCard{
-    min-height:150px;
-  }
-}
-
 /* =========================
-   手機版修正（iPhone / Android）
-   ========================= */
-@media (max-width: 430px) {
-
-  /* 五大模組：兩欄固定，不要被撐開 */
-  .moduleGrid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-
-  /* 單一卡片整體縮一點 */
-  .moduleCard {
-    padding: 12px;
-    min-height: 90px;
-  }
-
-  /* 藍色主標題（數對應數量、認識100…） */
-  .moduleTitle {
-    font-size: 18px;      /* 原本太大 → 縮 */
-    line-height: 1.2;
-    text-align: left;
-    word-break: keep-all; /* 中文不要亂斷 */
-  }
-
-  /* 藍色副標（0~20、補到10） */
-  .moduleRange {
-    font-size: 14px;
-    margin-top: 2px;
-  }
-
-  /* 黑色說明文字 */
-  .moduleDesc {
-    font-size: 14px;
-    line-height: 1.3;
-  }
-
-  /* icon 區塊不要太大 */
-  .iconBubble {
-    width: 44px;
-    height: 44px;
-    flex-shrink: 0;
-  }
-}
-
-/* ====== iPhone / 手機：防止 Safari 自動放大字 + 五大模組對齊 ====== */
+   基本防 Safari 放大
+========================= */
 html{
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
 
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",
+  Roboto,"PingFang TC","Noto Sans TC",sans-serif;
+  background:#f6f7f9;
+  color:#222;
+}
+
+/* =========================
+   共用卡片
+========================= */
+.card{
+  background:#fff;
+  border-radius:22px;
+  padding:18px;
+  margin:16px;
+  box-shadow:0 6px 18px rgba(0,0,0,.05);
+}
+
+/* =========================
+   年級卡
+========================= */
+.gradeRow{
+  display:flex;
+  gap:14px;
+}
+
+.gradeCard{
+  flex:1;
+  background:#eaf4ff;
+  border-radius:18px;
+  padding:14px 10px;
+  text-align:center;
+  border:2px solid transparent;
+}
+
+.gradeCard.active{
+  border-color:#8cc4ff;
+}
+
+.gradeBig{
+  font-size:26px;
+  font-weight:900;
+  color:#1e88e5;
+}
+
+.gradeSmall{
+  font-size:15px;
+  font-weight:700;
+  color:#333;
+  margin-top:4px;
+}
+
+/* =========================
+   五大模組 Grid
+========================= */
+.moduleGrid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
+  margin-top:12px;
+}
+
+/* =========================
+   模組卡（重点）
+========================= */
 .moduleCard{
-  align-items: flex-start; /* 讓內容從上緣對齊，卡片更整齊 */
+  background:#f3f3f3;
+  border-radius:20px;
+  padding:14px;
+  display:flex;
+  gap:12px;
+  align-items:flex-start; /* 🔑 对齐用 */
+  min-height:108px;
 }
 
-/* 藍色主標題：固定最多 2 行，超過就省略，所有卡片高度一致 */
+/* icon */
+.iconBubble{
+  width:48px;
+  height:48px;
+  border-radius:14px;
+  background:#e6f2ff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 auto;
+}
+
+/* 文字区 */
+.moduleText{
+  flex:1;
+  min-width:0;
+}
+
+/* 蓝色标题：固定两行 */
 .moduleTitle{
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;     /* 2 行 */
-  overflow: hidden;
-  line-height: 1.2;
-  min-height: calc(1.2em * 2); /* 強制留 2 行高度，排版就對稱 */
+  font-size:20px;
+  font-weight:900;
+  color:#1e88e5;
+  line-height:1.2;
+
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+  overflow:hidden;
+  min-height:calc(1.2em * 2);
 }
 
-/* 黑色說明：固定最多 2 行，超過就省略 */
+/* 蓝色括号 / 范围 */
+.moduleRange{
+  font-size:14px;
+  font-weight:800;
+  color:#1e88e5;
+  opacity:.9;
+  margin-top:2px;
+}
+
+/* 黑色说明：固定两行 */
 .moduleDesc{
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2; 
-  overflow: hidden;
-  line-height: 1.25;
-  min-height: calc(1.25em * 2);
+  font-size:14px;
+  font-weight:700;
+  color:#333;
+  margin-top:4px;
+  line-height:1.25;
+
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+  overflow:hidden;
+  min-height:calc(1.25em * 2);
 }
 
-/* 手機再縮一點，避免極端情況又被撐爆 */
-@media (max-width: 430px){
-  .moduleTitle{ font-size: 18px; }
-  .moduleRange{ font-size: 14px; }
-  .moduleDesc{ font-size: 14px; }
+/* =========================
+   底部导航
+========================= */
+.bottomNav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:#fff;
+  padding:10px 8px 14px;
+  display:flex;
+  justify-content:space-around;
+  box-shadow:0 -6px 20px rgba(0,0,0,.08);
+}
+
+.bottomNav .navItem{
+  flex:1;
+  text-align:center;
+  font-size:13px;
+  font-weight:700;
+  color:#777;
+}
+
+.bottomNav .navItem.active{
+  color:#1e88e5;
+}
+
+/* =========================
+   小萤幕再保险
+========================= */
+@media(max-width:430px){
+  .moduleTitle{ font-size:18px; }
+  .moduleDesc{ font-size:13px; }
 }
