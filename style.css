@@ -1,405 +1,259 @@
-* { box-sizing: border-box; }
-html, body { height: 100%; }
+/* =========================
+   Base / Reset
+========================= */
+*{ box-sizing:border-box; }
+html,body{ margin:0; padding:0; }
+html{ -webkit-text-size-adjust:100%; } /* iPhone 不要自己放大字 */
 body{
-  margin:0;
-  font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", Arial, sans-serif;
-  background:#f6f7f9;
+  font-family: system-ui,-apple-system,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;
+  background:#f5f7fb;
   color:#111;
-  overflow-x:hidden;
 }
 
-:root{
-  --teal1:#169c9b;
-  --teal2:#26b6b5;
-  --card:#ffffff;
-  --soft:#f2f2f2;
-  --blue:#1e88e5;
-  --shadow: 0 10px 22px rgba(0,0,0,.08);
-  --radius:24px;
-}
-
-input, button, select, textarea{ font-size:16px; }
-button{ cursor:pointer; }
-
+/* Page container (避免貼邊) */
 .app{
   max-width: 980px;
   margin: 0 auto;
-  padding: 16px 14px 110px;
+  padding: 14px 14px 92px; /* 底部留給 navbar */
 }
 
+/* =========================
+   Top banner
+========================= */
 .topBanner{
-  background: linear-gradient(135deg, var(--teal1), var(--teal2));
-  border-radius: 18px;
+  background: linear-gradient(135deg,#0aa7a6,#15b6c2);
   color:#fff;
+  border-radius: 18px;
   padding: 16px 16px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  box-shadow: var(--shadow);
-}
-
-.topBanner .left{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  min-width:0;
-}
-
-.topBanner .logo{
-  width:34px; height:34px;
-  display:flex; align-items:center; justify-content:center;
-}
-
-.topBanner .titleWrap{ min-width:0; }
-
-.topBanner .mainTitle{
-  font-size: 24px;
-  font-weight: 900;
-  line-height: 1.05;
-}
-
-.topBanner .subTitle{
-  font-size: 15px;
-  opacity:.95;
-  margin-top: 4px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.08);
+  margin-bottom: 14px;
 }
 
 .parentBtn{
-  border:0;
   background: rgba(255,255,255,.85);
-  color: var(--blue);
-  font-weight: 900;
-  border-radius: 18px;
-  padding: 10px 18px;
+  border:0;
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-weight: 800;
+  color:#0b7f86;
 }
 
-.sectionCard{
-  background: var(--card);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
+/* =========================
+   Section card
+========================= */
+.section{
+  background:#fff;
+  border-radius: 22px;
   padding: 18px;
-  margin: 14px 0;
+  box-shadow: 0 8px 22px rgba(0,0,0,.06);
+  margin-bottom: 14px;
 }
 
+/* header row inside section */
 .sectionHeader{
   display:flex;
-  align-items:baseline;
+  align-items:center;
   justify-content:space-between;
-  gap:12px;
-  margin-bottom: 10px;
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
-.sectionHeader h2{
+.sectionTitle{
+  font-size: 38px;
+  font-weight: 900;
+  letter-spacing: 1px;
   margin:0;
-  font-size: 40px;
-  font-weight: 1000;
-  letter-spacing: .5px;
 }
 
 .badge{
   background:#eaf3ff;
-  color: var(--blue);
-  font-weight:900;
-  padding: 10px 14px;
+  color:#2a78c9;
+  font-weight: 800;
   border-radius: 999px;
-  white-space:nowrap;
-}
-
-.helperText{
-  margin: 12px 0 0;
+  padding: 10px 14px;
   font-size: 16px;
-  color:#444;
-  opacity:.85;
+  white-space: nowrap;
 }
 
+/* =========================
+   Grade cards (3 columns)
+========================= */
 .gradeRow{
   display:grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-  margin-top: 10px;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 12px;
+  margin: 10px 0 10px;
 }
 
 .gradeCard{
   border:0;
   background:#eaf4ff;
-  border-radius: 22px;
-  padding: 18px 12px;
-  box-shadow: 0 6px 14px rgba(0,0,0,.06);
+  border-radius: 18px;
+  padding: 14px 10px;
   text-align:center;
+  box-shadow: inset 0 0 0 2px rgba(34,120,196,.12);
 }
 
 .gradeCard.active{
-  outline: 3px solid rgba(30,136,229,.25);
-  background:#e1f0ff;
+  box-shadow: inset 0 0 0 3px rgba(34,120,196,.30);
 }
 
 .gradeBig{
-  color: var(--blue);
+  color:#1976c9;
   font-weight: 1000;
-  font-size: 34px;
-  line-height: 1.05;
+  font-size: 36px;
+  line-height:1.05;
 }
 
 .gradeSmall{
-  margin-top: 6px;
+  color:#333;
   font-weight: 900;
   font-size: 18px;
-  opacity:.85;
+  margin-top: 8px;
 }
 
-/* ====== modules ====== */
+/* =========================
+   Module grid (2 columns)
+   ✅ 關鍵：每張卡等高、左右不會一大一小
+========================= */
 .moduleGrid{
   display:grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0,1fr));
   gap: 14px;
-  margin-top: 10px;
-
-  /* 关键：同一列高度一致 */
-  grid-auto-rows: 1fr;
-  align-items: stretch;
+  align-items: stretch;     /* 讓格子撐滿 */
 }
 
 .moduleCard{
   border:0;
-  border-radius: 22px;
-  background: var(--soft);
-  padding: 16px 14px;
-  box-shadow: 0 6px 14px rgba(0,0,0,.06);
-
+  border-radius: 20px;
+  background:#f3f3f3;
+  padding: 14px;
   display:flex;
   gap: 12px;
-  align-items: center;
-
-  /* 关键：左右灰框同高 */
-  height: 100%;
-  min-height: 118px;
-
+  align-items:center;
   text-align:left;
+  min-height: 110px;        /* ✅ 固定基本高度 */
+  height: 100%;             /* ✅ 撐滿格子高度 */
+  width: 100%;
 }
 
 .moduleCard[disabled]{
   opacity:.45;
-  cursor: not-allowed;
 }
 
 .iconBubble{
-  width: 58px;
-  height: 58px;
-  border-radius: 18px;
+  width: 56px;
+  height: 56px;
+  flex: 0 0 56px;
+  border-radius: 14px;
   background:#dff0ff;
   display:flex;
   align-items:center;
   justify-content:center;
-  flex: 0 0 auto;
 }
 
+.iconBubble img{
+  width: 34px;
+  height: 34px;
+  display:block;
+}
+
+/* 文字區：避免擠爆、避免莫名換行造成左右高度差 */
 .moduleText{
   min-width:0;
   flex: 1 1 auto;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  gap: 6px;
 }
 
 .moduleTitle{
-  color: var(--blue);
   font-size: 22px;
   font-weight: 1000;
+  color:#1e88e5;
   line-height: 1.15;
-  word-break: keep-all;
+  margin: 0;
+  word-break: keep-all;     /* 中文不要亂拆 */
 }
 
 .moduleRange{
-  color: var(--blue);
-  font-size: 16px;
-  font-weight: 900;
-  opacity:.95;
+  font-size: 15px;
+  font-weight: 1000;
+  color:#1e88e5;
+  opacity: .9;
+  margin-top: 4px;
   line-height: 1.1;
-  margin-top: -2px;
 }
 
 .moduleDesc{
-  font-size: 18px;
+  margin-top: 6px;
+  font-size: 16px;
   font-weight: 900;
-  color:#111;
-  opacity:.75;
+  color:#333;
   line-height: 1.2;
 }
 
-/* ===== practice ===== */
-.practiceHeader{
-  display:flex;
-  align-items:baseline;
-  justify-content:space-between;
-  gap:12px;
-  margin-bottom: 8px;
-}
-.practiceTitle{
-  font-size: 36px;
-  font-weight: 1000;
-}
-.practiceMeta{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  margin: 8px 0 12px;
-  font-weight: 900;
-  opacity: .8;
-}
-.questionBox{
-  background:#f5f5f5;
-  border-radius: 18px;
-  padding: 14px;
-  box-shadow: 0 6px 14px rgba(0,0,0,.05);
-}
-.questionPrompt{
-  font-size: 22px;
-  font-weight: 1000;
-  margin-bottom: 10px;
-}
-.dots{
-  display:flex;
-  flex-wrap:wrap;
-  gap: 6px;
-  min-height: 20px;
-}
-.dot{
-  width: 12px;
-  height: 12px;
-  border-radius: 999px;
-  background: #111;
-  opacity: .85;
-}
-
-.options{
-  display:grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
-  margin-top: 14px;
-}
-.optionBtn{
-  border:0;
-  background:#f0f0f0;
-  border-radius: 18px;
-  padding: 14px 16px;
-  text-align:left;
-  font-weight: 1000;
-  font-size: 22px;
-  box-shadow: 0 6px 14px rgba(0,0,0,.05);
-}
-.optionBtn.correct{ outline: 3px solid rgba(46, 204, 113, .35); }
-.optionBtn.wrong{ outline: 3px solid rgba(231, 76, 60, .35); }
-
-.actions{
-  display:flex;
-  gap: 10px;
-  margin-top: 14px;
-}
-
-.rowBtns{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin: 10px 0;
-}
-
-.smallBtn{
-  border:0;
-  background:#e9e9e9;
-  border-radius: 999px;
-  padding: 10px 14px;
-  font-weight: 1000;
-}
-.smallBtn.danger{
-  background:#ffe7e7;
-  color:#c0392b;
-}
-
-/* records */
-.recordList{
-  margin-top: 10px;
-  font-weight: 900;
-  opacity:.85;
-  line-height: 1.35;
-}
-
-/* settings */
-.settingBlock{ margin-top: 6px; }
-.settingTitle{ font-size: 22px; font-weight: 1000; }
-.settingDesc{ margin-top: 4px; opacity:.8; font-weight: 900; }
-.divider{ border:0; border-top:1px solid rgba(0,0,0,.15); margin: 16px 0; }
-
-.chipRow{
-  display:flex;
-  gap:10px;
-  margin-top: 10px;
-}
-.chip{
-  border:0;
-  background:#e9e9e9;
-  border-radius: 999px;
-  padding: 10px 14px;
-  font-weight: 1000;
-}
-.chip.active{
-  background:#dfefff;
-  color: var(--blue);
-  outline: 2px solid rgba(30,136,229,.2);
-}
-
-/* ===== bottom nav ===== */
-.bottomNav{
+/* =========================
+   Bottom nav
+========================= */
+.navbar{
   position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 10px;
-  width: min(980px, calc(100% - 24px));
-  background: rgba(245,245,245,.92);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255,255,255,.92);
   backdrop-filter: blur(10px);
-  border-radius: 26px;
-  box-shadow: var(--shadow);
-  padding: 10px;
+  border-top: 1px solid rgba(0,0,0,.06);
+  padding: 10px 14px 18px;
+}
+
+.navbarInner{
+  max-width: 980px;
+  margin: 0 auto;
   display:grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 10px;
-  z-index: 50;
 }
 
 .navBtn{
   border:0;
-  background: transparent;
-  border-radius: 18px;
+  background:#f0f0f0;
+  border-radius: 16px;
   padding: 10px 8px;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  gap: 4px;
-  font-weight: 1000;
+  gap: 6px;
+  font-weight: 900;
   color:#333;
 }
 
 .navBtn.active{
-  background:#dfefff;
-  color: var(--blue);
-  outline: 2px solid rgba(30,136,229,.2);
+  background:#dff0ff;
+  box-shadow: inset 0 0 0 2px rgba(34,120,196,.20);
 }
 
-.navIcon{ font-size: 20px; line-height: 1; }
-.navLabel{ font-size: 14px; }
+.navBtn img{
+  width: 26px;
+  height: 26px;
+  display:block;
+}
 
-/* ===== responsive: iPhone / small ===== */
-@media (max-width: 430px){
-  .app{ padding: 14px 12px 110px; }
-  .sectionHeader h2{ font-size: 36px; }
+/* =========================
+   Responsive
+   (手機 / 平板都穩)
+========================= */
+@media (max-width: 420px){
+  .sectionTitle{ font-size: 34px; }
   .gradeBig{ font-size: 32px; }
-  .moduleTitle{ font-size: 21px; }
-  .moduleDesc{ font-size: 17px; }
-  .moduleCard{ min-height: 114px; }
+  .moduleTitle{ font-size: 20px; }
+  .moduleDesc{ font-size: 15px; }
+  .moduleCard{ min-height: 104px; }
 }
 
-@media (max-width: 390px){
-  .sectionHeader h2{ font-size: 34px; }
-  .moduleTitle{ font-size: 20px; }
+@media (min-width: 768px){
+  .app{ padding: 18px 18px 92px; }
+  .sectionTitle{ font-size: 44px; }
+  .moduleCard{ min-height: 118px; }
 }
